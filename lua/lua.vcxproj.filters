@@ -13,15 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="shared">
+      <UniqueIdentifier>{5c1f95f6-050f-4dec-a662-c2720d68132e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="simple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="simple.cpp">
+    <ClCompile Include="..\shared\game.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="luaGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lua.cpp">
@@ -34,6 +40,9 @@
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\game.h">
+      <Filter>shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

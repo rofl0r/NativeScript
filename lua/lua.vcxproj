@@ -160,11 +160,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="..\shared\game.cpp" />
+    <ClCompile Include="luaGame.cpp" />
     <ClCompile Include="simple.cpp" />
     <ClCompile Include="lua.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\shared\game.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="simple.h" />
   </ItemGroup>

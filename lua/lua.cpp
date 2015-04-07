@@ -1,7 +1,7 @@
 #include "simple.h"
-#include "game.h"
+#include "../shared/game.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
 	//return simple();
-	return game();
+	return runGame();
 }
