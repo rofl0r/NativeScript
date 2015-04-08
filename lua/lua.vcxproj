@@ -161,14 +161,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\shared\game.cpp" />
-    <ClCompile Include="luaGame.cpp" />
-    <ClCompile Include="simple.cpp" />
+    <ClCompile Include="expressions.cpp" />
+    <ClCompile Include="gameLoop.cpp" />
     <ClCompile Include="lua.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\game.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="simple.h" />
+    <ClInclude Include="..\shared\settings.h" />
+    <ClInclude Include="gameGlobal.h" />
+    <ClInclude Include="expressions.h" />
+    <ClInclude Include="gameLoop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

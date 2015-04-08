@@ -10,4 +10,5 @@ int main(int argc, char* argv[]) {
 	//return simple();
 	//return game();
 	domain = mono_jit_init("scriptingDomain");
+	mono_jit_cleanup(domain);
 }

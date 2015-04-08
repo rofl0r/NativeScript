@@ -1,4 +1,4 @@
-#include "simple.h"
+#include "expressions.h"
 #include "lua.hpp"
 #include "Windows.h"
 #include <iostream>
@@ -118,7 +118,7 @@ double testLuaNative() {
 	return time;
 }
 
-int simple() {
+int expressions() {
 	printf("Running %d cycles, please wait...\n\n", cycles);
 
 	testNative();
