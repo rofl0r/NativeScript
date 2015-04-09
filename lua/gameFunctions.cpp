@@ -1,5 +1,10 @@
 /* Lua results in ms:
-
+						
+		Release Wall (new str)
+Native:        60            
+ScToNa:      1700          
+ScMinC:      2800          
+Script:      3000         
 */
 
 #include "../shared/settings.h"
@@ -142,7 +147,13 @@ void loopScript(int pointIndex) {
 	*(luaPointPointer) = getPoint(pointIndex); // update point data
 
 	/* push functions and arguments */
-	lua_getglobal(L, "updatePoint");  /* function to be called */
+#if SCRIPT_MODE == ALL_SCRIPT
+	lua_getglobal(L, "allScript");
+#elif SCRIPT_MODE == SCRIPT_TO_NATIVE
+	lua_getglobal(L, "scriptToNative");
+#else  // script min callback
+	lua_getglobal(L, "allScriptMinCallback");
+#endif
 	lua_getglobal(L, "point");
 	lua_getglobal(L, "mouse");
 	lua_pushnumber(L, FRICTION);
@@ -151,6 +162,7 @@ void loopScript(int pointIndex) {
 	if (lua_pcall(L, 3, 0, 0) != 0) {
 		std::cout << "Lua Error: " << lua_tostring(L, -1) << std::endl;
 	}
+
 }
 
 void cleanupScript() {

@@ -1,14 +1,14 @@
 //#include "../shared/settings.h"    // TODO: put here scenario selection
 
 //#include "expressions.h"
-//#include "gameGlobal.h"
+#include "gameGlobal.h"
 //#include "gameLoop.h"
-#include "gameFunctions.h"
+//#include "gameFunctions.h"
 #include "Windows.h"
 
 int main(int argc, char** argv) {
 	//return expression();
-	//return gameGlobal();
+	return gameGlobal();
 	//return gameLoop();
-	return gameFunctions();
+	//return gameFunctions();
 }

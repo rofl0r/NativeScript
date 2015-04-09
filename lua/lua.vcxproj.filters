@@ -30,7 +30,7 @@
     <ClCompile Include="expressions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameFunctions.cpp">
+    <ClCompile Include="gameGlobal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

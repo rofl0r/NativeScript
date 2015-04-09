@@ -2,11 +2,11 @@
 - speed linear with script difficulty
 - calls to c expansive
 
-         Debug Wall   Debug CPU   Release Wall   Release CPU
-Native:      115          125           35            31
-ScToNa:     4800         4800         1150          1150
-ScMinC:     7900         7700         2000          2000
-Script:    10500        10500         2400          2400
+         Release Wall   Release new structure
+Native:        35              50
+ScToNa:      1150            1850
+ScMinC:      2000            3000
+Script:      2400            3750
 */
 
 #include "../shared/settings.h"

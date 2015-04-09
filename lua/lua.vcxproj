@@ -162,7 +162,7 @@
   <ItemGroup>
     <ClCompile Include="..\shared\game.cpp" />
     <ClCompile Include="expressions.cpp" />
-    <ClCompile Include="gameFunctions.cpp" />
+    <ClCompile Include="gameGlobal.cpp" />
     <ClCompile Include="lua.cpp" />
   </ItemGroup>
   <ItemGroup>

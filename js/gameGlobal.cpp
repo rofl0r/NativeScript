@@ -1,11 +1,11 @@
 /* JavaScript results in ms:
 - script starting overhead, then faster than lua
 - calls to c cheap
-         Debug Wall   Debug CPU   Release Wall   Release CPU
-Native:                                 33            31 
-ScToNa:                               1500          1550
-ScMinC:                               2700          2700
-Script:                               2250          2200
+         Release Wall   Release new structure
+Native:        33            55
+ScToNa:      1500          2000
+ScMinC:      2700          3700
+Script:      2250          3100
 */
 
 #include "gameGlobal.h"
@@ -176,8 +176,8 @@ int gameGlobal() {
 		// update points
 		for (int i = 0; i < POINT_COUNT; i++) {
 #if SCRIPT_MODE == NATIVE
-			updateVelocity(points + i);
-			stepPoint(points + i);
+			updateVelocity(getPoint(i));
+			stepPoint(getPoint(i));
 #else
 			jsPoint->SetInternalField(0, External::New(isolate, getPoint(i)));
 			jsMouse->SetInternalField(0, External::New(isolate, getMouse()));

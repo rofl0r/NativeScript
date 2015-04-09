@@ -1,11 +1,10 @@
 /* JavaScript results in ms:
-- script starting overhead, then faster than lua
-- calls to c cheap
-         Debug Wall   Debug CPU   Release Wall   Release CPU
-Native:                                 33            31 
-ScToNa:                               1500          1550
-ScMinC:                               2700          2700
-Script:                               2250          2200
+
+		Release Wall (new str)
+Native:        60            
+ScToNa:      1250          
+ScMinC:      1600          
+Script:      1950         
 */
 
 #include "gameFunctions.h"
@@ -155,16 +154,23 @@ int gameFunctions() {
 	Local<String> source = String::NewFromUtf8(isolate, contents.c_str());//"point.x += 1; stepPoint(point);");
 	Local<Script> script = Script::Compile(source);
 	script->Run();
-	Handle<Value> vUpdatePoint = context->Global()->Get(String::NewFromUtf8(isolate, "updatePoint"));
-	Handle<Function> fUpdatePoint = Handle<Function>::Cast(vUpdatePoint);
 	Handle<Value> friction = Number::New(isolate, FRICTION);
+#if SCRIPT_MODE == ALL_SCRIPT
+	char * functionName = "allScript";
+#elif SCRIPT_MODE == SCRIPT_TO_NATIVE
+	char * functionName = "scriptToNative";
+#else  // script min callback
+	char * functionName = "allScriptMinCallback";
+#endif
+	Handle<Value> vUpdatePoint = context->Global()->Get(String::NewFromUtf8(isolate, functionName));
+	Handle<Function> fUpdatePoint = Handle<Function>::Cast(vUpdatePoint);
+
+	startMeasurement();
 
 #if GAME_MODE != TEST
 	// enter the loop
 	while (!checkEndSingal()) {
 #else
-	startMeasurement();
-
 	for (int i = 0; i < CYCLES; i++) {
 #endif
 
@@ -173,12 +179,12 @@ int gameFunctions() {
 		// update points
 		for (int i = 0; i < POINT_COUNT; i++) {
 #if SCRIPT_MODE == NATIVE
-			updateVelocity(points + i);
-			stepPoint(points + i);
+			updateVelocity(getPoint(i));
+			stepPoint(getPoint(i));
 #else
 			jsPoint->SetInternalField(0, External::New(isolate, getPoint(i)));
 			jsMouse->SetInternalField(0, External::New(isolate, getMouse()));
-			Handle<Value> argv[3] = { jsPoint, jsMouse, friction};
+			Handle<Value> argv[3] = { jsPoint, jsMouse, friction };
 			Handle<Value> result = fUpdatePoint->Call(context->Global(), 3, argv);
 #endif
 		}

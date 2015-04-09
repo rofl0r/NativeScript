@@ -217,11 +217,10 @@ int runGame() {
 	startMeasurement();
 
 #if GAME_MODE != TEST
-	while (!quit) {
+	while (!checkEndSingal()) {
 #else
 	for (int i = 0; i < CYCLES; i++) {
 #endif
-		quit = checkEndSingal();
 		updateMouse();
 
 		// update points
