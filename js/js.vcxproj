@@ -162,12 +162,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="game.cpp" />
+    <ClCompile Include="..\shared\game.cpp" />
+    <ClCompile Include="gameFunctions.cpp" />
     <ClCompile Include="js.cpp" />
     <ClCompile Include="simple.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h" />
+    <ClInclude Include="..\shared\game.h" />
+    <ClInclude Include="..\shared\settings.h" />
+    <ClInclude Include="gameFunctions.h" />
+    <ClInclude Include="gameGlobal.h" />
     <ClInclude Include="simple.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

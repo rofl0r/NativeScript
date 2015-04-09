@@ -1,7 +1,9 @@
 #include "simple.h"
-#include "game.h"
+#include "gameGlobal.h"
+#include "gameFunctions.h"
 
 int main(int argc, char* argv[]) {
 	//return simple();
-	return game();
+	//return gameGlobal();
+	return gameFunctions();
 }

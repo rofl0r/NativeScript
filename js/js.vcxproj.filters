@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="shared">
+      <UniqueIdentifier>{7f01c633-bf01-4d56-a664-25879c3304f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -21,18 +24,30 @@
     <ClCompile Include="js.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="simple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="simple.cpp">
+    <ClCompile Include="..\shared\game.cpp">
+      <Filter>shared</Filter>
+    </ClCompile>
+    <ClCompile Include="gameFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h">
+    <ClInclude Include="simple.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="simple.h">
+    <ClInclude Include="..\shared\game.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\settings.h">
+      <Filter>shared</Filter>
+    </ClInclude>
+    <ClInclude Include="gameGlobal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,11 +2,13 @@
 
 //#include "expressions.h"
 //#include "gameGlobal.h"
-#include "gameLoop.h"
+//#include "gameLoop.h"
+#include "gameFunctions.h"
 #include "Windows.h"
 
 int main(int argc, char** argv) {
 	//return expression();
 	//return gameGlobal();
-	return gameLoop();
+	//return gameLoop();
+	return gameFunctions();
 }

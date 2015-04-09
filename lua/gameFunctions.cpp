@@ -1,14 +1,9 @@
 /* Lua results in ms:
-- speed linear with script difficulty
-- calls to c expansive
 
-         Debug Wall   Debug CPU   Release Wall   Release CPU
-Native:      115          125           35            31
-ScToNa:     4800         4800         1150          1150
-ScMinC:     7900         7700         2000          2000
-Script:    10500        10500         2400          2400
 */
 
+#include "../shared/settings.h"
+#include "gameFunctions.h"
 #include "../shared/game.h"
 #include "lua.hpp"
 #include "Windows.h"
@@ -16,6 +11,13 @@ Script:    10500        10500         2400          2400
 lua_State *L;
 point ** luaPointPointer;
 mouse ** luaMousePointer;
+
+// entry point
+
+int gameFunctions() {
+	// give control to the shared game logic
+	return runGame();
+}
 
 // Lua wrapper functions
 
@@ -131,22 +133,22 @@ void initScript() {
 	lua_pushcfunction(L, stepPoint);
 	lua_setglobal(L, "stepPoint");
 
-	// load custom point logic in lua script
-#if SCRIPT_MODE == ALL_SCRIPT
-	luaL_loadfile(L, "scripts/allScript.lua");
-#elif SCRIPT_MODE == ALL_SCRIPT_MIN_CALLBACK
-	luaL_loadfile(L, "scripts/allScriptMinCallback.lua");
-#else
-	luaL_loadfile(L, "scripts/scriptToNative.lua");
-#endif
-	lua_setglobal(L, "pointScript"); // save script so global, so it is not deleted after first run
-
+	// load script with functions
+	luaL_dofile(L, "scripts/functions.lua");
 }
 
 void loopScript(int pointIndex) {
+
 	*(luaPointPointer) = getPoint(pointIndex); // update point data
-	lua_getglobal(L, "pointScript"); // use precompiled script
-	if (lua_pcall(L, 0, 0, 0) != 0) {
+
+	/* push functions and arguments */
+	lua_getglobal(L, "updatePoint");  /* function to be called */
+	lua_getglobal(L, "point");
+	lua_getglobal(L, "mouse");
+	lua_pushnumber(L, FRICTION);
+
+	/* do the call (3 arguments, no result) */
+	if (lua_pcall(L, 3, 0, 0) != 0) {
 		std::cout << "Lua Error: " << lua_tostring(L, -1) << std::endl;
 	}
 }

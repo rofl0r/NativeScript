@@ -8,6 +8,9 @@ ScMinC:                               2700          2700
 Script:                               2250          2200
 */
 
+#include "gameGlobal.h"
+#include "../shared/settings.h"
+#include "../shared/game.h"
 #include "include/v8.h"
 #include "include/libplatform/libplatform.h"
 #include <SDL.h>
@@ -16,91 +19,10 @@ Script:                               2250          2200
 #include <fstream>
 #include <string>
 #include <cerrno>
-#include "game.h"
 using namespace v8;
 
 ////////////////////////////////////////// Settings /////////////////////////////////////////
-
-// game mode
-#define TEST 1 // no visualization, measurement is taking place
-#define SHOW_TEST 2 // visualize test scenario
-#define INTERACTIVE 3 // intractive mode to see scripted logic
-
-#define GAME_MODE SHOW_TEST // intractive mode to see scripted logic
-
-
-// script mode (olny available if GAME_MODE = TEST)
-#define NATIVE 1 // no scripting used
-#define ALL_SCRIPT 2 // all point logic scripted
-#define ALL_SCRIPT_MIN_CALLBACK 3 // all scripted, but callbacks to c++ minimized at cost of more script variables
-#define SCRIPT_TO_NATIVE 4 // half scripted, half implemented in C++ and called from script
-
-#define SCRIPT_MODE ALL_SCRIPT
-
-// measure mode (olny available if GAME_MODE = TEST)
-#define CPU 1
-#define WALL 2
-
-#define MEASURE_MODE CPU
-
-// scenario size
-#define POINT_COUNT 400
-#define CYCLES 1000 // (olny available if GAME_MODE = TEST)
-
-////////////////////////////////////////// Settings /////////////////////////////////////////
-
-#define FRICTION 0.2
-#define MOUSE_RADIUS 10
-
-struct point {
-	float x;
-	float y;
-	float xVelocity;
-	float yVelocity;
-};
-
-struct mouse {
-	int x;
-	int y;
-};
-
-point points[POINT_COUNT];
-mouse m;
-float mouseAngle;
-
-
-// Native version of computation
-
-void updateVelocity(point * p) {
-	float distance = sqrt(pow(p->x - m.x, 2) + pow(p->y - m.y, 2));
-	if (distance > 20) {
-		// points try to move towards mouse if far enough
-		p->xVelocity += (m.x - p->x) / distance;
-		p->yVelocity += (m.y - p->y) / distance;
-	}
-	else if (distance < 15) {
-		// points try to keep some distance from mouse
-		p->xVelocity -= (m.x - p->x) / distance;
-		p->yVelocity -= (m.y - p->y) / distance;
-	}
-}
-
-void stepPoint(point* p) {
-	float speed = sqrt(pow(p->xVelocity, 2) + pow(p->yVelocity, 2));
-	if (speed <= FRICTION) {
-		p->xVelocity = 0;
-		p->yVelocity = 0;
-	}
-	else {
-		// apply friction
-		p->xVelocity -= FRICTION*p->xVelocity / speed;
-		p->yVelocity -= FRICTION*p->yVelocity / speed;
-
-		// move points
-		p->x += p->xVelocity;
-		p->y += p->yVelocity;
-	}
-}
+// js callbacks
 
 void stepPoint(const v8::FunctionCallbackInfo<v8::Value>& args) {
 	Local<Object> self = Local<Object>::Cast(args[0]);
@@ -177,37 +99,12 @@ void getMouseY(Local<String> prop, const PropertyCallbackInfo<Value>& info) {
 
 // Game skeleton
 
-int game() {
+int gameGlobal() {
+	initMeasurement();
 
-#if MEASURE_MODE == WALL
-	LARGE_INTEGER time1, time2, freq;
-	QueryPerformanceFrequency(&freq);
-#else
-	FILETIME cpuTime1, sysTime1, createTime, exitTime;
-	FILETIME cpuTime2, sysTime2;
-#endif
+	initDrawing();
 
-
-#if GAME_MODE != TEST
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
-		return 1;
-	}
-
-	SDL_Window *win = SDL_CreateWindow("Hello World!", 100, 100, POINT_COUNT, POINT_COUNT, SDL_WINDOW_SHOWN);
-	if (win == nullptr){
-		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}
-	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == nullptr){
-		SDL_DestroyWindow(win);
-		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}
-#endif
+	initGame();
 
 	V8::InitializeICU();
 	Platform* platform = platform::CreateDefaultPlatform();
@@ -244,8 +141,6 @@ int game() {
 	mouse_templ->SetAccessor(String::NewFromUtf8(isolate, "y"), getMouseY, setMouseY);
 	Local<Object> jsMouse = mouse_templ->NewInstance();
 	global->Set(String::NewFromUtf8(isolate, "mouse"), jsMouse);
-	
-	
 		
 
 	// load custom point logic in lua script
@@ -267,60 +162,16 @@ int game() {
 	Local<String> source = String::NewFromUtf8(isolate, contents.c_str());//"point.x += 1; stepPoint(point);");
 	Local<Script> script = Script::Compile(source);
 
-	// initialize point positions
-	for (int i = 0; i < POINT_COUNT; i++) {
-		points[i].x = i;
-		points[i].y = i;
-	}
-
-	// initialize mouse
-	mouseAngle = 0;
-
 #if GAME_MODE != TEST
 	// enter the loop
-	bool quit = false;
-	SDL_Event e;
-	while (!quit) {
-
-		// process events
-		while (SDL_PollEvent(&e)){
-			switch (e.type) {
-			case SDL_QUIT: // user closes the window
-			case SDL_KEYDOWN: // user presses any key
-			case SDL_MOUSEBUTTONDOWN: // user clicks the mouse
-				quit = true;
-				break;
-			}
-		}
+	while (!checkEndSingal()) {
 #else
-	#if SCRIPT_MODE == NATIVE
-		printf("Mode: native\n");
-	#elif SCRIPT_MODE == ALL_SCRIPT
-		printf("Mode: all in script\n");
-	#elif SCRIPT_MODE == ALL_SCRIPT_MIN_CALLBACK
-		printf("Mode: all in script, callbacks minimized\n");
-	#else
-		printf("Mode: script to native\n");
-	#endif
-	printf("Running %d cycles...\n\n", CYCLES);
-
-	#if MEASURE_MODE == WALL
-		QueryPerformanceCounter(&time1);	
-	#else
-		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime1, &cpuTime1);
-	#endif
+	startMeasurement();
 
 	for (int i = 0; i < CYCLES; i++) {
 #endif
 
-		// update mouse
-#if GAME_MODE == INTERACTIVE
-		SDL_GetMouseState(&m.x, &m.y);
-#else
-		mouseAngle += 0.25;
-		m.x = sin(mouseAngle)* MOUSE_RADIUS + POINT_COUNT / 2;
-		m.y = cos(mouseAngle)* MOUSE_RADIUS + POINT_COUNT / 2;
-#endif
+		updateMouse();
 
 		// update points
 		for (int i = 0; i < POINT_COUNT; i++) {
@@ -328,57 +179,33 @@ int game() {
 			updateVelocity(points + i);
 			stepPoint(points + i);
 #else
-			jsPoint->SetInternalField(0, External::New(isolate, &points[i]));
-			jsMouse->SetInternalField(0, External::New(isolate, &m));
+			jsPoint->SetInternalField(0, External::New(isolate, getPoint(i)));
+			jsMouse->SetInternalField(0, External::New(isolate, getMouse()));
 			script->Run();
 #endif
 		}
 
-#if GAME_MODE != TEST
-		// render
-		SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
-		// background
-		SDL_RenderClear(ren);
-		// points
-		SDL_SetRenderDrawColor(ren, 0, 255, 0, 255);
-		for (int i = 0; i < POINT_COUNT; i++) {
-			SDL_RenderDrawPoint(ren, points[i].x, points[i].y);
-		}
-		// mouse
-		SDL_SetRenderDrawColor(ren, 255, 0, 0, 255);
-		SDL_RenderDrawPoint(ren, m.x, m.y);
-
-		SDL_RenderPresent(ren);
-
-		SDL_Delay(20);
-
+		drawPoints();
 	}
 
-	SDL_DestroyRenderer(ren);
-	SDL_DestroyWindow(win);
-	SDL_Quit();
-#else
-	}
+	stopMeasurement();
 
-	#if MEASURE_MODE == WALL
-		QueryPerformanceCounter(&time2);	
-		double time = (double)(time2.QuadPart - time1.QuadPart) * 1000.0 / freq.QuadPart;
-		printf("Total wall-time: %f\n\n", time);
-	#else
-		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime2, &cpuTime2);
-		double sTime1 = (double)(sysTime1.dwLowDateTime | ((unsigned long long)sysTime1.dwHighDateTime << 32)) * 0.0001;
-		double sTime2 = (double)(sysTime2.dwLowDateTime | ((unsigned long long)sysTime2.dwHighDateTime << 32)) * 0.0001;
-		double uTime1 = (double)(cpuTime1.dwLowDateTime | ((unsigned long long)cpuTime1.dwHighDateTime << 32)) * 0.0001;
-		double uTime2 = (double)(cpuTime2.dwLowDateTime | ((unsigned long long)cpuTime2.dwHighDateTime << 32)) * 0.0001;
-		printf("Total system-time: %f\n", sTime2 - sTime1);
-		printf("Total user-time: %f\n\n", uTime2 - uTime1);
-	#endif
-	system("pause");
-#endif
+	cleanupDrawing();
+
+	displayMeasurement();
 
 	isolate->Dispose();
 	V8::Dispose();
 	V8::ShutdownPlatform();
 	delete platform;
 	return 0;
+}
+
+void initScript() {
+}
+
+void loopScript(int pointIndex) {
+}
+
+void cleanupScript() {
 }

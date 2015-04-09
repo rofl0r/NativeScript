@@ -30,7 +30,7 @@
     <ClCompile Include="expressions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameLoop.cpp">
+    <ClCompile Include="gameFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,6 +48,9 @@
       <Filter>shared</Filter>
     </ClInclude>
     <ClInclude Include="gameLoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
