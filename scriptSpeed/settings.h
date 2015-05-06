@@ -1,0 +1,7 @@
+////////////////////////////////////////// Settings /////////////////////////////////////////
+
+// measure mode (olny available if GAME_MODE = TEST)
+#define CPU 1
+#define WALL 2
+
+#define MEASURE_MODE WALL

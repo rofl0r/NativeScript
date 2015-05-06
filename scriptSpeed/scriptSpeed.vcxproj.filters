@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="js">
+      <UniqueIdentifier>{9a13f88f-2fff-4775-82f9-6a0dfcf9fb60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs">
+      <UniqueIdentifier>{05603b38-aad7-4286-bf08-d311ea64f2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{8a64f371-ada3-4cf5-b778-848ffbb45b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scenarios">
+      <UniqueIdentifier>{8cf50a16-3bc2-4077-8844-524005846a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scenarios\expression">
+      <UniqueIdentifier>{2e96b8cb-5467-44e6-badf-cf6736f000e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scenarios\pointSimul">
+      <UniqueIdentifier>{15503dba-4560-4f60-b13a-cce0ca51e277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua\pointSimul">
+      <UniqueIdentifier>{b7bc213c-adf2-4f13-8259-ae3cc0678de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js\pointSimul">
+      <UniqueIdentifier>{a7081919-1a27-493d-9655-25f8c5b697b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua\expression">
+      <UniqueIdentifier>{56632e80-e988-40d7-b2dc-5f8d0a80571f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs\expression">
+      <UniqueIdentifier>{ca60cd8b-14e5-4a71-abe9-b1399f15019a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js\expression">
+      <UniqueIdentifier>{47555164-cee5-49de-b4fe-cbe1afdf95e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cs\pointSimul">
+      <UniqueIdentifier>{8abf7f1c-cbf7-4067-9701-1f328bc096f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="scriptSpeed.cpp" />
+    <ClCompile Include="measure.cpp" />
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_allScript.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\pointSimul\pointSimul.cpp">
+      <Filter>scenarios\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_scriptToNaive.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_allScriptMinCallback.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_allNative.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul.cpp">
+      <Filter>js\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul_allScript.cpp">
+      <Filter>js\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\cs.cpp">
+      <Filter>cs</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lua.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\expression\lua_expression.cpp">
+      <Filter>lua\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopControl.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loop.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopPointsCached.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopPointsScripted.cpp">
+      <Filter>lua\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul_allNative.cpp">
+      <Filter>js\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul_allScriptMinCallback.cpp">
+      <Filter>js\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul_scriptToNative.cpp">
+      <Filter>js\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\expression\cs_expression.cpp">
+      <Filter>cs\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul_loop.cpp">
+      <Filter>js\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="js\expression\js_expression.cpp">
+      <Filter>js\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="js\js.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_allScript.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="lua\lua.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="js\js.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="cs\cs.h">
+      <Filter>cs</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\scenarios.h">
+      <Filter>scenarios</Filter>
+    </ClInclude>
+    <ClInclude Include="measure.h" />
+    <ClInclude Include="lua\pointSimul\lua_pointSimul.h">
+      <Filter>lua\pointSimul</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\pointSimul\pointSimul.h">
+      <Filter>scenarios\pointSimul</Filter>
+    </ClInclude>
+    <ClInclude Include="js\pointSimul\js_pointSimul.h">
+      <Filter>js\pointSimul</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\pointSimul\lua_pointSimul_loop.h">
+      <Filter>lua\pointSimul</Filter>
+    </ClInclude>
+    <ClInclude Include="js\pointSimul\js_pointSimul_loop.h">
+      <Filter>js\pointSimul</Filter>
+    </ClInclude>
+    <ClInclude Include="cs\pointSimul\cs_pointSimul.h">
+      <Filter>cs\pointSimul</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

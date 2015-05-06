@@ -1,6 +1,8 @@
-*.suo
-*.sdf
 x64
 Release
+playground
 lib/*
+*.suo
+*.sdf
 *.opensdf
+*.xlsx
