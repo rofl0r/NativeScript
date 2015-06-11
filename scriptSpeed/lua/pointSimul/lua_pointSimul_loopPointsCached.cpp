@@ -30,7 +30,7 @@ namespace lua {
 			definePoint(L);
 			defineMouse(L);
 			registerCallbacks(L);
-			loadScripts(L);
+			loadScriptFromFile(L, "pointSimul.lua");
 
 			measure::cpuStart();
 

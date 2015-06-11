@@ -73,8 +73,5 @@ int processInput(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	// TODO: this is just for windows to see results
-	int result = processInput(argc, argv);
-	system("pause");
-	return result;
+	return processInput(argc, argv);
 }

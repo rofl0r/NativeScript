@@ -9,21 +9,21 @@ using namespace pointSimul;
 namespace cs {
 	namespace pointSimul {
 
+		typedef void(__stdcall *ScriptFunction)(double, MonoObject*, MonoObject*, MonoException**);
+
 		MonoDomain* dom;
 		MonoAssembly *assembly;
-		MonoObject* mouse;
-		MonoMethod* script;
+		MonoObject* monoMouse;
+		ScriptFunction methodThunk;
+		MonoException* ex;
 
 		/*
 		The scripting that should happen for each point in every game loop
 		*/
 		void allScriptLoop(int pointIndex) {
 			
-			MonoObject* point = createPoint(assembly, dom, getPoint(pointIndex));
-			
-			double friction = SB_PS_FRICTION;
-			void *params[] = { point, mouse, &friction };
-			callMethod(script, params);
+			MonoObject *p = createPoint(assembly, dom, pointIndex);
+			methodThunk(SB_PS_FRICTION, p, monoMouse, &ex);
 		}
 
 		/*
@@ -33,17 +33,19 @@ namespace cs {
 		{
 			dom = init();
 
-			assembly = compileSource(dom, "cs/scripts/PointSimul.cs");
+			assembly = compileSource(dom, "PointSimul.cs");
 			if (!assembly)
 			{
 				printf("JIT compiled assembly failed to load\n");
 				return 1;
 			}
-			script = getMethod(assembly, "", "PointSimul", "allScript", 3);
-			
+
+			MonoMethod* script = getMethod(assembly, "", "PointSimul", "allScript", 3);
+			methodThunk = (ScriptFunction)mono_method_get_unmanaged_thunk(script);
+
 			definePointCallbacks();
 			defineMouseCallbacks();
-			mouse = createMouse(assembly, dom);
+			monoMouse = createMouse(assembly, dom);
 			
 			int result = run(&allScriptLoop);
 			

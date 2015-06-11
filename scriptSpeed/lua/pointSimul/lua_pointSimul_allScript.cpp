@@ -47,7 +47,7 @@ namespace lua {
 
 			definePoint(L);
 			defineMouse(L);
-			loadScripts(L);
+			loadScriptFromFile(L, "pointSimul.lua");
 
 			int result = run(&allScriptLoop);
 

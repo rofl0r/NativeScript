@@ -4,6 +4,11 @@ class Expression
     {
     }
 
+    public static double differenceSquare(double a, double b)
+    {
+        return (a-b)*(a-b);
+    }
+
     public static double add(double a, double b)
     {
         return a + b;

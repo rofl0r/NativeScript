@@ -5,7 +5,7 @@
 #include <iostream>
 #include "../../measure.h"
 
-#define cycles 100000
+#define cycles 1000000
 
 #define SB_JS_EXPRESSION_1 "(x-y)*(x-y)"
 #define SB_JS_EXPRESSION_2 "x * y"
@@ -33,7 +33,7 @@ namespace js {
 			measure::cpuStart();
 			Local<String> xName = v8::String::NewFromUtf8(is, "x");
 			Local<String> yName = v8::String::NewFromUtf8(is, "y");
-			for (int i = 0; i < cycles; i++) {
+			for (long i = 0; i < cycles; i++) {
 				Local<Number> x = Number::New(is, i);
 				Local<Number> y = Number::New(is, i*0.3);
 				

@@ -1,12 +1,12 @@
 function loopCallback(pointCount, cyclesCount, friction) {
 	initSimul();
-	points = getAllPoints(pointCount);
+	var points = getAllPoints(pointCount);
     for (var i = 0; i < cyclesCount; i++) {
         if (processInput()) break;
-        mouse = getMouse();
+        var mouse = getMouse();
         preDraw();
         drawMouse();
-        for (var j = 0; i < pointCount; j++) {
+        for (var j = 0; j < pointCount; j++) {
 
             updateVelocity(points[j]);
             stepPoint(points[j]);
@@ -20,11 +20,11 @@ function loopCallback(pointCount, cyclesCount, friction) {
 
 function loopSetGetMax(pointCount, cyclesCount, friction) {
     initSimul();
-    points = getAllPoints(pointCount);
+    var points = getAllPoints(pointCount);
     for (var i = 0; i < cyclesCount; i++) {
         if (processInput()) break;
-        mouse = getMouse();
-        for (var j = 0; i < pointCount; j++) {
+        var mouse = getMouse();
+        for (var j = 0; j < pointCount; j++) {
 
             allScript(points[j], mouse, friction);
 
@@ -36,11 +36,11 @@ function loopSetGetMax(pointCount, cyclesCount, friction) {
 
 function loopSetGetMin(pointCount, cyclesCount, friction) {
     initSimul();
-    points = getAllPoints(pointCount);
+    var points = getAllPoints(pointCount);
     for (var i = 0; i < cyclesCount; i++) {
         if (processInput()) break;
-        mouse = getMouse();
-        for (var j = 0; i < pointCount; j++) {
+        var mouse = getMouse();
+        for (var j = 0; j < pointCount; j++) {
 
             allScriptMinCallback(points[j], mouse, friction);
 

@@ -18,20 +18,7 @@ namespace lua {
 	// entry point
 	int runPointSimul(int c, char** v)
 	{
-		static const CallbackMap versionMap[] = {
-			{ "allScript", &pointSimul::allScript },
-			{ "scriptToNative", &pointSimul::scriptToNative },
-			{ "allScriptMinCallback", &pointSimul::allScriptMinCallback },
-			{ "allNative", &pointSimul::allNative },
-			{ "loopControl", &pointSimul::loopControl },
-			{ "loopPointsCached", &pointSimul::loopPointsCached },
-			{ "loopPointsScripted", &pointSimul::loopPointsScripted },
-			{ "loopCallback", &pointSimul::loopCallback },
-			{ "loopSetGetMax", &pointSimul::loopSetGetMax },
-			{ "loopSetGetMin", &pointSimul::loopSetGetMin }
-		};
-
-		return processConfig(c, v, versionMap, sizeof(versionMap) / sizeof(CallbackMap));
+		return processConfig(c, v, pointSimul::versionMap, sizeof(pointSimul::versionMap) / sizeof(CallbackMap));
 	}
 
 	namespace pointSimul {	
@@ -151,17 +138,6 @@ namespace lua {
 			mouse** luaMousePointer = static_cast<mouse **>(lua_newuserdata(L, sizeof(mouse *)));
 			luaL_setmetatable(L, "MouseMT"); // set userdata metatable
 			return luaMousePointer;
-		}
-
-		int loadScripts(lua_State * L)
-		{
-			// load script with functions
-			if (luaL_dofile(L, "lua/scripts/pointSimul.lua") != 0) {
-				printf("Lua Error: %s\n", lua_tostring(L, -1));
-				return 1;
-			}
-
-			return 0;
 		}
 	}
 }

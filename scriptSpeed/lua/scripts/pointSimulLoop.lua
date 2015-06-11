@@ -1,3 +1,9 @@
+function simpleCallback(pointCount, cyclesCount, friction)
+	for j=0,cyclesCount-1,1 do
+		count();
+	end
+end
+
 function loopCallback(pointCount, cyclesCount, friction)
 	initSimul();
 	points = getAllPoints(pointCount);

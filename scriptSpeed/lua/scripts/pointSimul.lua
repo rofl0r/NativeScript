@@ -62,10 +62,8 @@ function allScriptMinCallback(point,mouse,friction)
 	y = point:getY();
 	xVelocity = point:getVelocityX();
 	yVelocity = point:getVelocityY();
-	mouseX = mouse:getX();
-	mouseY = mouse:getY();
-	diffX = mouseX - x;
-	diffY = mouseY - y;
+	diffX = mouse:getX() - x;
+	diffY = mouse:getY() - y;
 
 	-- modify velocity based on point decision
 	distance = (diffX^2 + diffY^2)^0.5;

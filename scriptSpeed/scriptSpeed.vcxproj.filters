@@ -37,6 +37,24 @@
     <Filter Include="cs\pointSimul">
       <UniqueIdentifier>{8abf7f1c-cbf7-4067-9701-1f328bc096f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cs\callback">
+      <UniqueIdentifier>{7867ac7a-d1f0-4bc5-a0d4-b8b85ef454c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js\callback">
+      <UniqueIdentifier>{ea0965e4-cda1-4603-8880-8ce00d27b6d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua\callback">
+      <UniqueIdentifier>{1d92fb56-309e-496b-aded-2169838c6180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scenarios\callback">
+      <UniqueIdentifier>{e6d20a47-53a1-4579-9f78-eea1b058db5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua\pointSimul\scriptControl">
+      <UniqueIdentifier>{6826f7d3-cfbb-4232-b348-8a8b47bcdc14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js\pointSimul\scriptControl">
+      <UniqueIdentifier>{85587c01-8e57-4d3c-8222-51fbe3abe9de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scriptSpeed.cpp" />
@@ -74,18 +92,6 @@
     <ClCompile Include="lua\expression\lua_expression.cpp">
       <Filter>lua\expression</Filter>
     </ClCompile>
-    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopControl.cpp">
-      <Filter>lua\pointSimul</Filter>
-    </ClCompile>
-    <ClCompile Include="lua\pointSimul\lua_pointSimul_loop.cpp">
-      <Filter>lua\pointSimul</Filter>
-    </ClCompile>
-    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopPointsCached.cpp">
-      <Filter>lua\pointSimul</Filter>
-    </ClCompile>
-    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopPointsScripted.cpp">
-      <Filter>lua\pointSimul</Filter>
-    </ClCompile>
     <ClCompile Include="js\pointSimul\js_pointSimul_allNative.cpp">
       <Filter>js\pointSimul</Filter>
     </ClCompile>
@@ -98,9 +104,6 @@
     <ClCompile Include="cs\expression\cs_expression.cpp">
       <Filter>cs\expression</Filter>
     </ClCompile>
-    <ClCompile Include="js\pointSimul\js_pointSimul_loop.cpp">
-      <Filter>js\pointSimul</Filter>
-    </ClCompile>
     <ClCompile Include="js\expression\js_expression.cpp">
       <Filter>js\expression</Filter>
     </ClCompile>
@@ -111,6 +114,51 @@
       <Filter>cs\pointSimul</Filter>
     </ClCompile>
     <ClCompile Include="cs\pointSimul\cs_pointSimul_allScript.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\callback\cs_callback.cpp">
+      <Filter>cs\callback</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\callback\lua_callback.cpp">
+      <Filter>lua\callback</Filter>
+    </ClCompile>
+    <ClCompile Include="scenarios\callback\callback.cpp">
+      <Filter>scenarios\callback</Filter>
+    </ClCompile>
+    <ClCompile Include="js\callback\js_callback.cpp">
+      <Filter>js\callback</Filter>
+    </ClCompile>
+    <ClCompile Include="js\pointSimul\js_pointSimul_loop.cpp">
+      <Filter>js\pointSimul\scriptControl</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loop.cpp">
+      <Filter>lua\pointSimul\scriptControl</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopControl.cpp">
+      <Filter>lua\pointSimul\scriptControl</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopPointsCached.cpp">
+      <Filter>lua\pointSimul\scriptControl</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\pointSimul\lua_pointSimul_loopPointsScripted.cpp">
+      <Filter>lua\pointSimul\scriptControl</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_allScriptStruct.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_allScriptMinCallbackStruct.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_allScriptMinCallback.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_scriptToNative.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_scriptToNativeStruct.cpp">
+      <Filter>cs\pointSimul</Filter>
+    </ClCompile>
+    <ClCompile Include="cs\pointSimul\cs_pointSimul_allNative.cpp">
       <Filter>cs\pointSimul</Filter>
     </ClCompile>
   </ItemGroup>
@@ -138,14 +186,17 @@
     <ClInclude Include="js\pointSimul\js_pointSimul.h">
       <Filter>js\pointSimul</Filter>
     </ClInclude>
-    <ClInclude Include="lua\pointSimul\lua_pointSimul_loop.h">
-      <Filter>lua\pointSimul</Filter>
-    </ClInclude>
-    <ClInclude Include="js\pointSimul\js_pointSimul_loop.h">
-      <Filter>js\pointSimul</Filter>
-    </ClInclude>
     <ClInclude Include="cs\pointSimul\cs_pointSimul.h">
       <Filter>cs\pointSimul</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\callback\callback.h">
+      <Filter>scenarios\callback</Filter>
+    </ClInclude>
+    <ClInclude Include="js\pointSimul\js_pointSimul_loop.h">
+      <Filter>js\pointSimul\scriptControl</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\pointSimul\lua_pointSimul_loop.h">
+      <Filter>lua\pointSimul\scriptControl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

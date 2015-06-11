@@ -10,8 +10,6 @@ Script:      1950
 #include "../../scenarios/pointSimul/pointSimul.h"
 #include "js_pointSimul.h"
 #include "include/v8.h"
-#include <iostream>
-#include <fstream>
 
 using namespace v8;
 using namespace pointSimul;
@@ -21,17 +19,7 @@ namespace js {
 	// entry point
 	int runPointSimul(int c, char** v)
 	{
-		static const CallbackMap versionMap[] = {
-			{ "allScript", &pointSimul::allScript },
-			{ "allNative", &pointSimul::allNative },
-			{ "allScriptMinCallback", &pointSimul::allScriptMinCallback },
-			{ "scriptToNative", &pointSimul::scriptToNative },
-			{ "loopCallback", &pointSimul::loopCallback },
-			{ "loopSetGetMax", &pointSimul::loopSetGetMax },
-			{ "loopSetGetMin", &pointSimul::loopSetGetMin }
-		};
-
-		return processConfig(c, v, versionMap, sizeof(versionMap) / sizeof(CallbackMap));
+		return processConfig(c, v, pointSimul::versionMap, sizeof(pointSimul::versionMap) / sizeof(::pointSimul::CallbackMap));
 	}
 
 	namespace pointSimul {
@@ -41,7 +29,11 @@ namespace js {
 		void stepPoint(const v8::FunctionCallbackInfo<v8::Value>& args) {
 			Local<Object> self = Local<Object>::Cast(args[0]);
 			Local<External> wrap = Local<External>::Cast(self->GetInternalField(0));
-			stepPoint(static_cast<point*>(wrap->Value()));
+			//stepPoint(static_cast<point*>(wrap->Value()));
+
+			// TODO: remove hack
+			point* p = static_cast<point*>(wrap->Value());
+			stepPoint(getPoint(0));
 		}
 
 		// Js wrapper functions
@@ -128,23 +120,6 @@ namespace js {
 			mouse_templ->SetAccessor(String::NewFromUtf8(isolate, "x"), getMouseX, setMouseX);
 			mouse_templ->SetAccessor(String::NewFromUtf8(isolate, "y"), getMouseY, setMouseY);
 			return mouse_templ;
-		}
-
-		Local<Script> loadScriptFromFile(Isolate* isolate, const char* fileName) {
-			std::ifstream in(fileName, std::ios::in | std::ios::binary);
-			std::string contents;
-			in.seekg(0, std::ios::end);
-			contents.resize(in.tellg());
-			in.seekg(0, std::ios::beg);
-			in.read(&contents[0], contents.size());
-			in.close();
-			Local<String> source = String::NewFromUtf8(isolate, contents.c_str());//"point.x += 1; stepPoint(point);");
-			return Script::Compile(source);
-		}
-
-		Handle<Function> getFunction(Isolate* isolate, Local<Context> context, const char* functionName) {
-			Handle<Value> vUpdatePoint = context->Global()->Get(String::NewFromUtf8(isolate, functionName));
-			return Handle<Function>::Cast(vUpdatePoint);
 		}
 	}
 }

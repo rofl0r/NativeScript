@@ -51,7 +51,7 @@ namespace lua {
 			lua_pushcfunction(Lstn, stepPoint);
 			lua_setglobal(Lstn, "stepPoint");
 
-			loadScripts(Lstn);
+			loadScriptFromFile(Lstn, "pointSimul.lua");
 
 			int result = run(&scriptToNativeLoop);
 

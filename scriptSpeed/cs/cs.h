@@ -3,6 +3,7 @@
 
 namespace cs {
 	int runExpression(int c, char** v);
+	int runCallback(int c, char** v);
 	int runPointSimul(int c, char** v);
 
 	MonoDomain* init();
@@ -12,7 +13,8 @@ namespace cs {
 	void* callMethod(MonoMethod* method, void** params);
 
 	static const ::CallbackMap scenarioMap[] = {
-		{ "expression", &runExpression },
-		{ "pointSimul", &runPointSimul }
+		{ "expression", runExpression },
+		{ "pointSimul", runPointSimul },
+		{ "callback", runCallback }
 	};	
 }

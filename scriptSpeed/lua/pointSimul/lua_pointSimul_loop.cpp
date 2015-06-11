@@ -9,7 +9,7 @@
 using namespace pointSimul;
 
 namespace lua {
-	namespace pointSimul {	
+	namespace pointSimul {
 
 		void registerCallbacks(lua_State * L) {
 			lua_pushcfunction(L, stepPoint);
@@ -181,10 +181,7 @@ namespace lua {
 			definePoint(L);
 			defineMouse(L);
 			registerCallbacks(L);
-			if (luaL_dofile(L, "lua/scripts/pointSimulLoop.lua") != 0) {
-				printf("Lua Error: %s\n", lua_tostring(L, -1));
-				return 1;
-			}
+			loadScriptFromFile(L, "pointSimulLoop.lua");
 
 			measure::cpuStart();
 

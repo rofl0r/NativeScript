@@ -51,7 +51,7 @@ namespace js {
 				contextMC = Context::New(isolateMC);
 				Context::Scope context_scope(contextMC);
 
-				Local<Script> script = loadScriptFromFile(isolateMC, "js/scripts/pointSimul.js");
+				Local<Script> script = loadScriptFromFile(isolateMC, "pointSimul.js");
 				script->Run();
 
 				pointClassMC = createPointDefinition(isolateMC);

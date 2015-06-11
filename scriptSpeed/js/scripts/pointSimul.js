@@ -53,10 +53,8 @@ function allScriptMinCallback(point, mouse, friction) {
     var y = point.y;
     var velocityX = point.velocityX;
     var velocityY = point.velocityY;
-    var mouseX = mouse.x;
-    var mouseY = mouse.y;
-    var diffX = mouse.x - point.x;
-    var diffY = mouse.y - point.y;
+    var diffX = mouse.x - x;
+    var diffY = mouse.y - y;
 
     // modify velocity based on point decision
     var distance = Math.pow(Math.pow(diffX, 2) + Math.pow(diffY, 2), 0.5);

@@ -20,9 +20,10 @@ namespace cs
 	MonoDomain* init()
 	{
 		// create domain
+		mono_set_dirs("..\\lib", "..\\lib");
 		MonoDomain *domain = mono_jit_init_version("scriptSpeed", "v4.0.30319");
 
-		mono_set_dirs("C:\\Program Files (x86)\\Mono\\lib", ":\\Program Files (x86)\\Mono\\etc");
+		//mono_set_dirs("C:\\Program Files (x86)\\Mono\\lib", ":\\Program Files (x86)\\Mono\\etc");
 		return domain;
 	}
 
@@ -35,18 +36,22 @@ namespace cs
 	{
 		MonoImage *	compilerImage = mono_assembly_get_image(assembly);
 		MonoClass *	claz = mono_class_from_name(compilerImage, nmspace, clazz);
-		return mono_class_get_method_from_name(claz, method, argcnt);
+		MonoMethod* m = mono_class_get_method_from_name(claz, method, argcnt);
+		return m;
 	}
 
 	// TODO, switch to compileSourceCleaner()
 	// compiles source trough manual mono process call
 	MonoAssembly* compileSource(MonoDomain* domain, const char* fileName)
 	{
-		char *s = (char*)malloc(strlen(fileName) + 40);
-		sprintf(s, "mono CSCompiler.exe %s Scripts.dll", fileName);
+		char *s = (char*)malloc(strlen(fileName) + 60);
+		//sprintf(s, "mono CSCompiler.exe %s Scripts.dll", fileName);
+		printf("Compiling C# script...");
+		sprintf(s, "..\\lib\\mono\\mcs.exe cs/scripts/%s -out:CSCompiledScripts.dll", fileName);
 		system(s);
 		free(s);
-		return mono_domain_assembly_open(domain, "Scripts.dll");
+		printf(" Done\n");
+		return mono_domain_assembly_open(domain, "CSCompiledScripts.dll");
 	}
 
 	// TODO fix

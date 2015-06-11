@@ -32,10 +32,7 @@ namespace lua {
 			registerCallbacks(L);
 
 			// load script with functions
-			if (luaL_dofile(L, "lua/scripts/pointSimulLoopPointsScripted.lua") != 0) {
-				printf("Lua Error: %s\n", lua_tostring(L, -1));
-				return 1;
-			}
+			loadScriptFromFile(L, "pointSimulLoopPointsScripted.lua");
 
 			measure::cpuStart();
 

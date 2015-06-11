@@ -1,7 +1,6 @@
 #include "lua.h"
 #include "lua.hpp"
 #include "Windows.h"
-#include "lua.hpp"
 
 namespace lua
 {
@@ -15,5 +14,20 @@ namespace lua
 	void close(lua_State * L)
 	{
 		lua_close(L);
+	}
+
+	int loadScriptFromFile(lua_State * L, char* fileName)
+	{
+		char *s = (char*)malloc(strlen(fileName) + 15);
+		sprintf(s, "lua/scripts/%s", fileName);
+		
+		// load script with functions
+		if (luaL_dofile(L, s) != 0) {
+			printf("Lua Error: %s\n", lua_tostring(L, -1));
+			return 1;
+		}
+		free(s);
+
+		return 0;
 	}
 }

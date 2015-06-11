@@ -15,7 +15,7 @@ namespace js {
 		Local<ObjectTemplate> mouseClass;
 
 		void registerCallbacks(v8::Local<v8::ObjectTemplate> global, Isolate* i) {
-			global->Set(String::NewFromUtf8(i, "stepPoint"), FunctionTemplate::New(i, stepPoint));
+			global->Set(String::NewFromUtf8(i, "stepPoint"), FunctionTemplate::New(i, stepPoint)); 
 			global->Set(String::NewFromUtf8(i, "updateVelocity"), FunctionTemplate::New(i, updateVelocity));
 			global->Set(String::NewFromUtf8(i, "updatePoints"), FunctionTemplate::New(i, updatePoints));
 			global->Set(String::NewFromUtf8(i, "getPoint"), FunctionTemplate::New(i, getPoint));
@@ -34,7 +34,11 @@ namespace js {
 		void updateVelocity(const v8::FunctionCallbackInfo<v8::Value>& args) {
 			Local<Object> self = Local<Object>::Cast(args[0]);
 			Local<External> wrap = Local<External>::Cast(self->GetInternalField(0));
-			::pointSimul::updateVelocity(static_cast<point*>(wrap->Value()));
+			//::pointSimul::updateVelocity(static_cast<point*>(wrap->Value()));
+
+			// TODO: remove hack
+			point* p = static_cast<point*>(wrap->Value());
+			::pointSimul::updateVelocity(::pointSimul::getPoint(0));
 		}
 
 		/*
@@ -53,7 +57,7 @@ namespace js {
 		*/
 		void getPoint(const v8::FunctionCallbackInfo<v8::Value>& args) {
 			point* p = ::pointSimul::getPoint(Local<Value>::Cast(args[0])->Int32Value());
-			Handle<Object> jsPoint = pointClass->NewInstance();
+			Local<Object> jsPoint = pointClass->NewInstance();
 			jsPoint->SetInternalField(0, External::New(args.GetIsolate(), p));
 			args.GetReturnValue().Set(jsPoint);
 		}
@@ -62,7 +66,7 @@ namespace js {
 		Get mouse
 		*/
 		void getMouse(const v8::FunctionCallbackInfo<v8::Value>& args) {
-			Handle<Object> jsMouse = mouseClass->NewInstance();
+			Local<Object> jsMouse = mouseClass->NewInstance();
 			jsMouse->SetInternalField(0, External::New(args.GetIsolate(), ::pointSimul::getMouse()));
 			args.GetReturnValue().Set(jsMouse);
 		}
@@ -145,12 +149,12 @@ namespace js {
 				Local<Context> context = Context::New(i, NULL, global);
 				Context::Scope context_scope(context);
 
-				Local<Script> script = loadScriptFromFile(i, "js/scripts/pointSimulLoop.js");
+				Local<Script> script = loadScriptFromFile(i, "pointSimulLoop.js");
 				script->Run();
 
 				pointClass = createPointDefinition(i);
 				mouseClass = createMouseDefinition(i);
-
+				
 				measure::cpuStart();
 
 				// create parameters
@@ -159,7 +163,7 @@ namespace js {
 				Handle<Value> friction = Number::New(i, SB_PS_FRICTION);
 
 				// call the script function (3 arguments, ignore result)
-				Handle<Value> argv[3] = { c, p, friction };
+				Handle<Value> argv[3] = { p, c, friction };
 				Handle<Value> result = getFunction(i, context, name)->Call(context->Global(), 3, argv);
 
 				measure::cpuStop();
