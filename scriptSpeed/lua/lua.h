@@ -8,15 +8,13 @@ namespace lua {
 
 	// main scenarios
 	int runExpression(int c, char** v);
-	int runExpressionFnc(int c, char** v);
 	int runPointSimul(int c, char** v);
 	int runCallback(int c, char** v);
 
 	static const ::CallbackMap scenarioMap[] = {
 		{ "pointSimul", runPointSimul },
 		{ "expression", runExpression },
-		{ "callback", runCallback },
-		{ "expressionFnc", runExpressionFnc }
+		{ "callback", runCallback }
 	};
 
 	// common util functions

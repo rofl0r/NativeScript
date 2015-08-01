@@ -161,6 +161,9 @@
     <ClCompile Include="cs\pointSimul\cs_pointSimul_allNative.cpp">
       <Filter>cs\pointSimul</Filter>
     </ClCompile>
+    <ClCompile Include="scenarios\expression\expression.cpp">
+      <Filter>scenarios\expression</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="settings.h" />
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="lua\pointSimul\lua_pointSimul_loop.h">
       <Filter>lua\pointSimul\scriptControl</Filter>
+    </ClInclude>
+    <ClInclude Include="scenarios\expression\expression.h">
+      <Filter>scenarios\expression</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

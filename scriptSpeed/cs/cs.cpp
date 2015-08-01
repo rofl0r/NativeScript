@@ -29,7 +29,8 @@ namespace cs
 
 	void close(MonoDomain* domain)
 	{
-		mono_jit_cleanup(domain);
+		// TODO: terminate with cleanup (now it throws exception)
+		//mono_jit_cleanup(domain);
 	}
 
 	MonoMethod* getMethod(MonoAssembly* assembly, char* nmspace, char* clazz, char* method, int argcnt)
@@ -46,11 +47,11 @@ namespace cs
 	{
 		char *s = (char*)malloc(strlen(fileName) + 60);
 		//sprintf(s, "mono CSCompiler.exe %s Scripts.dll", fileName);
-		printf("Compiling C# script...");
-		sprintf(s, "..\\lib\\mono\\mcs.exe cs/scripts/%s -out:CSCompiledScripts.dll", fileName);
+		//printf("Compiling C# script...");
+		sprintf(s, "..\\lib\\mono\\mcs.exe cs/scripts/%s -out:CSCompiledScripts.dll -warn:0", fileName);
 		system(s);
 		free(s);
-		printf(" Done\n");
+		//printf(" Done\n");
 		return mono_domain_assembly_open(domain, "CSCompiledScripts.dll");
 	}
 

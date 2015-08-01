@@ -37,8 +37,8 @@ namespace js {
 			f->Call(g, 1, argv);
 			measure::cpuStop();
 
-			::callback::displayResults();
 			measure::cpuDisplayResults();
+			::callback::displayResults();
 		}
 		close(i);
 

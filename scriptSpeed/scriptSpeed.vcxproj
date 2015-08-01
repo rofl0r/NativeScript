@@ -173,6 +173,7 @@
     <ClCompile Include="lua\pointSimul\lua_pointSimul_allScriptMinCallback.cpp" />
     <ClCompile Include="measure.cpp" />
     <ClCompile Include="scenarios\callback\callback.cpp" />
+    <ClCompile Include="scenarios\expression\expression.cpp" />
     <ClCompile Include="scenarios\pointSimul\pointSimul.cpp" />
     <ClCompile Include="scriptSpeed.cpp" />
   </ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="lua\pointSimul\lua_pointSimul_loop.h" />
     <ClInclude Include="measure.h" />
     <ClInclude Include="scenarios\callback\callback.h" />
+    <ClInclude Include="scenarios\expression\expression.h" />
     <ClInclude Include="scenarios\pointSimul\pointSimul.h" />
     <ClInclude Include="scenarios\scenarios.h" />
     <ClInclude Include="settings.h" />

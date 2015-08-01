@@ -45,8 +45,8 @@ namespace cs {
 		measure::cpuStop();
 
 		// print results
-		::callback::displayResults();
 		measure::cpuDisplayResults();
+		::callback::displayResults();
 
 		// cleanup
 		close(domain);

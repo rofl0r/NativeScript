@@ -25,8 +25,10 @@ namespace measure {
 		double sTime2 = (double)(sysTime2.dwLowDateTime | ((unsigned long long)sysTime2.dwHighDateTime << 32)) * 0.0001;
 		double uTime1 = (double)(cpuTime1.dwLowDateTime | ((unsigned long long)cpuTime1.dwHighDateTime << 32)) * 0.0001;
 		double uTime2 = (double)(cpuTime2.dwLowDateTime | ((unsigned long long)cpuTime2.dwHighDateTime << 32)) * 0.0001;
-		printf("Total system-time: %f\n", sTime2 - sTime1);
-		printf("Total user-time: %f\n\n", uTime2 - uTime1);
+		//printf("Total system-time: %f\n", sTime2 - sTime1);
+		//printf("Total user-time: %f\n\n", uTime2 - uTime1);
+		printf("%f;", sTime2 - sTime1);
+		printf("%f;", uTime2 - uTime1);
 	}
 
 	void wallStart()
@@ -44,6 +46,7 @@ namespace measure {
 	void wallDisplayResults()
 	{
 		double time = (double)(time2.QuadPart - time1.QuadPart) * 1000.0 / freq.QuadPart;
-		printf("Total wall-time: %f\n\n", time);
+		//printf("Total wall-time: %f\n\n", time);
+		printf("%f;", time);
 	}
 }

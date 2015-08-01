@@ -34,8 +34,8 @@ namespace lua {
 		measure::cpuStop();
 
 		// display results
-		::callback::displayResults();
 		measure::cpuDisplayResults();
+		::callback::displayResults();
 
 		close(L);
 

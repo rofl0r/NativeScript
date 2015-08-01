@@ -15,7 +15,7 @@ namespace callback {
 
 	void displayResults()
 	{
-		printf("Callback count: %d\n", cnt);
+		printf("Callback count: %d", cnt);
 	}
 
 	void executeCallbackBody()
