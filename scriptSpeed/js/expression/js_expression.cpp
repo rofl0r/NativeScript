@@ -76,7 +76,7 @@ namespace js {
 			double r = expression::isRunOptimized(c, v) ? runOptimized(is, context) : runNaive(is, context);
 
 			measure::cpuDisplayResults();
-			printf("Result: %f", r);
+			expression::validateResult(r);
 		}
 
 		close(is);

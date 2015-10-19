@@ -33,7 +33,7 @@ namespace cs {
 
 		double r = 0;
 		measure::cpuStart();
-		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+		for (long i = 0; i < SB_E_DEFAULT_CYCLES*100; i++) {
 			r += addThunk(i, i*0.3, &ex);
 			r += timesThunk(i, i*0.3, &ex);
 		}
@@ -59,7 +59,7 @@ namespace cs {
 		double r = expression::isRunOptimized(c, v) ? runOptimized(add, times) : runNaive(add, times);
 		
 		measure::cpuDisplayResults();
-		printf("Result: %f", r);
+		expression::validateResult(r);
 		// cleanup
 		close(domain);
 		

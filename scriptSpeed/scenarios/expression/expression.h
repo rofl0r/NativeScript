@@ -6,6 +6,7 @@
 
 namespace expression {
 	bool isRunOptimized(int c, char** v);
+	void validateResult(double result);
 }
 
 #endif

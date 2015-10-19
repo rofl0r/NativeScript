@@ -99,7 +99,7 @@ namespace lua {
 		double r = expression::isRunOptimized(c, v) ? runOptimized(L) : runNaive(L);
 		
 		measure::cpuDisplayResults();
-		printf("Result: %f", r);
+		expression::validateResult(r);
 
 		close(L);
 		return 0;

@@ -1,9 +1,11 @@
 x64
 Release
+Debug
 playground
 lib/*
 *.suo
 *.sdf
 *.opensdf
 *.xlsx
+*.csv
 scriptSpeed/CSCompiledScripts.dll

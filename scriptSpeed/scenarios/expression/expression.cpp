@@ -16,4 +16,20 @@ namespace expression {
 		}
 		return false;
 	}
+
+	void validateResult(double result)
+	{
+		double r = 0;
+		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+			double x = i;
+			double y = i*0.3;
+			r += (x-y)*(x-y);
+			r += x*y;
+		}
+
+		if (r != result)
+		{
+			printf("Incorrect result. The correct result is by %f bigger\n", r-result);
+		}
+	}
 }

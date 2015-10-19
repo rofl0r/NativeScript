@@ -17,7 +17,7 @@ ECHO %DATE% %TIME% > output.csv
 PATH=%PATH%;%~dp0lib\sdl;%~dp0lib\mono
 
 cd scriptSpeed
-FOR %%A IN (js lua cs) DO (
+FOR %%A IN (js lua cs gs) DO (
 	FOR %%B IN (
 		"expression"
 		"expression opt"

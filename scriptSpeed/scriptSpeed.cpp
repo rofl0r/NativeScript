@@ -2,6 +2,7 @@
 #include "lua/lua.h"
 #include "js/js.h"
 #include "cs/cs.h"
+#include "gs/gs.h"
 #include <stdio.h>
 #include <string.h>
 #include "Windows.h"
@@ -25,8 +26,6 @@ int printScenarios(const CallbackMap* scenarioMap, int scenarioMapSize, char* la
 	return 1;
 }
 
-
-
 int processInput(int argc, char** argv) 
 {
 	if (argc <= 1) {
@@ -49,6 +48,11 @@ int processInput(int argc, char** argv)
 	{
 		scenarioMap = cs::scenarioMap;
 		scenarioMapSize = sizeof(cs::scenarioMap) / sizeof(CallbackMap);
+	}
+	else if (strcmp(argv[1], "gs") == 0)
+	{
+		scenarioMap = gs::scenarioMap;
+		scenarioMapSize = sizeof(gs::scenarioMap) / sizeof(CallbackMap);
 	}
 	else
 	{

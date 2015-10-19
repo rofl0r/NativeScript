@@ -55,6 +55,12 @@
     <Filter Include="js\pointSimul\scriptControl">
       <UniqueIdentifier>{85587c01-8e57-4d3c-8222-51fbe3abe9de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gs">
+      <UniqueIdentifier>{b1485865-19cf-400f-852c-e5674d1ccb19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gs\expression">
+      <UniqueIdentifier>{2c081f95-3a70-473f-9883-56bb38fda8a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scriptSpeed.cpp" />
@@ -164,6 +170,9 @@
     <ClCompile Include="scenarios\expression\expression.cpp">
       <Filter>scenarios\expression</Filter>
     </ClCompile>
+    <ClCompile Include="gs\expression\gs_expression.cpp">
+      <Filter>gs\expression</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="settings.h" />
@@ -203,6 +212,9 @@
     </ClInclude>
     <ClInclude Include="scenarios\expression\expression.h">
       <Filter>scenarios\expression</Filter>
+    </ClInclude>
+    <ClInclude Include="gs\gs.h">
+      <Filter>gs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
