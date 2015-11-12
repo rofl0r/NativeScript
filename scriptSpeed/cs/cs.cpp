@@ -41,9 +41,19 @@ namespace cs
 		return m;
 	}
 
-	// TODO, switch to compileSourceCleaner()
+	// Creates temporary file with desired content and compiles it using compileFile()
+	MonoAssembly* compileString(MonoDomain* domain, const char* source)
+	{
+		FILE* f = fopen("cs/scripts/tmp","wb");
+		fwrite(source, sizeof(char), strlen(source), f);
+		fclose(f);
+
+		return compileFile(domain, "tmp");
+	}
+
+	// TODO, switch to compileFileCleaner()
 	// compiles source trough manual mono process call
-	MonoAssembly* compileSource(MonoDomain* domain, const char* fileName)
+	MonoAssembly* compileFile(MonoDomain* domain, const char* fileName)
 	{
 		char *s = (char*)malloc(strlen(fileName) + 60);
 		//sprintf(s, "mono CSCompiler.exe %s Scripts.dll", fileName);
@@ -57,7 +67,7 @@ namespace cs
 
 	// TODO fix
 	// compiles source trough loading invoking compiler assembly
-	MonoAssembly* compileSourceCleaner(MonoDomain *domain, const char* fileName)
+	MonoAssembly* compileFileCleaner(MonoDomain *domain, const char* fileName)
 	{
 		char * assemblyName = "CSCompiler.exe";
 		MonoAssembly *compilerAssembly = mono_domain_assembly_open(domain, assemblyName);

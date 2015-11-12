@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include <map>
 
 namespace gs {
 
@@ -26,17 +24,55 @@ namespace gs {
 	#define GS_IMPORT_EXPORT
 #endif
 
-	class CodeGen;
+	// Define type of external function for interpreter
+	typedef double(*ExternalFunction)(int argCnt, const double* args);
+
+	class Parser;
+	class Executor;
+	class Interpreter;
+
+	// Compiled script which runs much faster but requires llvm.
+	class CompiledScript
+	{
+	private:
+		CompiledScript(Executor* exec) : exec(exec) {};
+		~CompiledScript();
+		Executor* exec;
+		friend class Script;
+	public:
+		GS_IMPORT_EXPORT void bindExternal(const char* name, void* fnc); // can be run only before finalization
+		GS_IMPORT_EXPORT void* getFunction(const char* name); // first call to getFunction finalizes the object
+		GS_IMPORT_EXPORT void dumpCode();
+		GS_IMPORT_EXPORT void free();
+	};
+
+	// Creates interpreted script which runs everywhere.
+	class InterpretableScript
+	{
+	private:
+		InterpretableScript(Interpreter* inter) : inter(inter){}
+		~InterpretableScript();
+		Interpreter* inter;
+		friend class Script;
+	public:
+		GS_IMPORT_EXPORT void bindExternal(const char* name, ExternalFunction fnc);
+		GS_IMPORT_EXPORT double runFunction(const char* name, double* params);
+		GS_IMPORT_EXPORT void free();
+	};
 
 	class Script
 	{
 	private:
-		CodeGen* codeGen;
+		Parser* parser;
+		Script(Parser* parser) : parser(parser) {};
+		~Script();
 	public:
-		GS_IMPORT_EXPORT Script(FILE* file, bool dumpCode = false);
-		GS_IMPORT_EXPORT Script(const char* source, bool dumpCode = false);
-		GS_IMPORT_EXPORT void* getFunction(const char* name);
-		GS_IMPORT_EXPORT double interpretFunction(const char* name, double* params);
-		GS_IMPORT_EXPORT ~Script();
+		GS_IMPORT_EXPORT static Script* parseString(const char* source);
+		GS_IMPORT_EXPORT static Script* parseFile(const char* path);
+		GS_IMPORT_EXPORT CompiledScript* compile();
+		GS_IMPORT_EXPORT InterpretableScript* getInterpreter();
+		GS_IMPORT_EXPORT void free();
 	};
+
+	
 }

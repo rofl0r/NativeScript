@@ -21,7 +21,7 @@ namespace cs {
 		MonoDomain* domain = init();
 
 		// load script
-		MonoAssembly *assembly = compileSource(domain, "Callback.cs");
+		MonoAssembly *assembly = compileFile(domain, "Callback.cs");
 		if (!assembly)
 		{
 			printf("JIT compiled assembly failed to load");

@@ -1,0 +1,1 @@
+class E{public static void Main(string[] args){}public static double f(double x,double y,double z,double u,double v,double w){return (x*y)+(z+u)*(v-w);}}

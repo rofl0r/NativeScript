@@ -34,7 +34,7 @@ namespace cs {
 		{
 			MonoDomain* domMS = init();
 
-			MonoAssembly* assembly = compileSource(domMS, "PointSimulStruct.cs");
+			MonoAssembly* assembly = compileFile(domMS, "PointSimulStruct.cs");
 			if (!assembly)
 			{
 				printf("JIT compiled assembly failed to load\n");

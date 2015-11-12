@@ -1,2 +1,3 @@
-add(x y) x+y
-times(x y) x*y
+extern testExtern(a)
+
+test(x,y) testExtern(x+y)

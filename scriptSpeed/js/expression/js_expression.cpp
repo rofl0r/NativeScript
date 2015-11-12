@@ -2,11 +2,9 @@
 #include "include/v8.h"
 #include "Windows.h"
 #include <iostream>
+#include <cmath>
 #include "../../measure.h"
 #include "../../scenarios/expression/expression.h"
-
-#define SB_JS_EXPRESSION_1 "(x-y)*(x-y)"
-#define SB_JS_EXPRESSION_2 "x * y"
 
 using namespace v8;
 
@@ -14,26 +12,28 @@ namespace js {
 	
 	double runNaive(Isolate* is, Local<Context> context)
 	{
-		Local<String> source1 = String::NewFromUtf8(is, SB_JS_EXPRESSION_1);
-		Local<Script> script1 = Script::Compile(source1);
-		Local<String> source2 = String::NewFromUtf8(is, SB_JS_EXPRESSION_2);
-		Local<Script> script2 = Script::Compile(source2);
+		Local<String> source = String::NewFromUtf8(is, expression::getExpression());
+		Local<Script> script1 = Script::Compile(source);
 
+		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
+		Local<String> varName[maxParamCnt];
+
+		for (int j = 0; j < expression::getParamCount(); j++)
+		{
+			varName[j] = v8::String::NewFromUtf8(is, paramNames[j]);
+		}
+		Local<Value> varValue[maxParamCnt];
 		double r = 0;
 		measure::cpuStart();
-		Local<String> xName = v8::String::NewFromUtf8(is, "x");
-		Local<String> yName = v8::String::NewFromUtf8(is, "y");
 		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
-			Local<Number> x = Number::New(is, i);
-			Local<Number> y = Number::New(is, i*0.3);
+			for (int j = 0; j < expression::getParamCount(); j++)
+			{
+				varValue[j] = Number::New(is, i*pow(0.7,j));
+				context->Global()->Set(varName[j], varValue[j]);
+			}
 
-			context->Global()->Set(xName, x);
-			context->Global()->Set(yName, y);
 			r += script1->Run()->NumberValue();
-
-			context->Global()->Set(xName, x);
-			context->Global()->Set(yName, y);
-			r += script2->Run()->NumberValue();
 		}
 		measure::cpuStop();
 
@@ -42,20 +42,35 @@ namespace js {
 
 	double runOptimized(Isolate* is, Local<Context> context)
 	{
-		char source[55+11+5];
-		sprintf(source, "function a(x, y) {return %s}; function b(x, y) {return %s}", SB_JS_EXPRESSION_1, SB_JS_EXPRESSION_2);
+		// wrap the expression into function
+		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
+		char sourceParam[11 + 2 * maxParamCnt];
+		sprintf(sourceParam, "function f(");
+		int cur = 10;
+		sourceParam[++cur] = paramNames[0][0];
+		for (int j = 1; j < expression::getParamCount(); j++)
+		{
+			sourceParam[++cur] = ',';
+			sourceParam[++cur] = paramNames[j][0];
+		}
+		sourceParam[++cur] = 0;
+		char source[11 + sizeof(sourceParam) / sizeof(char) + SB_EXPRESSION_MAX_LENGTH];
+		sprintf(source, "%s) {return %s}", sourceParam, expression::getExpression());
 		Local<String> source1 = String::NewFromUtf8(is, source);
 		Local<Script> script1 = Script::Compile(source1);
 		script1->Run();
-		Local<Function> f1 = getFunction(is, context, "a");
-		Local<Function> f2 = getFunction(is, context, "b");
+		Local<Function> f1 = getFunction(is, context, "f");
 
+		Local<Value> varValue[maxParamCnt];
 		double r = 0;
 		measure::cpuStart();
 		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
-			Handle<Value> argv[2] = { Number::New(is, i), Number::New(is, i*0.3) };
-			r += f1->Call(context->Global(), 2, argv)->NumberValue();
-			r += f2->Call(context->Global(), 2, argv)->NumberValue();
+			for (int j = 0; j < expression::getParamCount(); j++)
+			{
+				varValue[j] = Number::New(is, i*pow(0.7, j));
+			}
+			r += f1->Call(context->Global(), expression::getParamCount(), varValue)->NumberValue();
 		}
 		measure::cpuStop();
 
@@ -64,6 +79,11 @@ namespace js {
 
 	int runExpression(int c, char** v) 
 	{
+		if (!expression::readArgs(c, v))
+		{
+			return 1;
+		}
+
 		Isolate* is = init();
 		{
 			// Create a stack-allocated handle scope.
@@ -73,7 +93,7 @@ namespace js {
 			Local<Context> context = Context::New(is);
 			Context::Scope context_scope(context);
 
-			double r = expression::isRunOptimized(c, v) ? runOptimized(is, context) : runNaive(is, context);
+			double r = expression::isRunOptimized() ? runOptimized(is, context) : runNaive(is, context);
 
 			measure::cpuDisplayResults();
 			expression::validateResult(r);

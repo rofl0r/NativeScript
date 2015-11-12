@@ -3,15 +3,31 @@
 
 using namespace gs;
 
+typedef double(*fnc)(double, double);
+
+extern "C" double testExtern(double X) {
+	fputc((char)X, stderr);
+	return 0;
+}
+
 int main(int argc, char** argv)
 {
-	Script s("test(x) x+1+1");
+	Script* s = Script::parseFile("source.gs");
+	CompiledScript *cs = s->compile();
+	InterpretableScript *is = s->getInterpreter();
+	s->free();
+	//Script* s = Script::parseString("test(x y) if (x<y) x else y", true);
 
-	double(*f)(double) = (double(*)(double))s.getFunction("test");
+	//fnc f = (fnc)cs->getFunction("test");
+	//double res = f(120, 122);
 
-	double res = f(1.2);
+	//double params[] = { 1.2, 1.5 };
+	//double res = is.interpretFunction("test", params);
 
-	std::cout << res << std::endl;
+	//std::cout << res << std::endl;
+
+	cs->free();
+	is->free();
 
 	return 0;
 }

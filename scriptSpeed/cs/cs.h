@@ -8,7 +8,8 @@ namespace cs {
 
 	MonoDomain* init();
 	void close(MonoDomain* domain);
-	MonoAssembly* compileSource(MonoDomain* domain, const char* fileName);
+	MonoAssembly* compileFile(MonoDomain* domain, const char* fileName);
+	MonoAssembly* compileString(MonoDomain* domain, const char* source);
 	MonoMethod* getMethod(MonoAssembly* assembly, char* nmspace, char* clazz, char* method, int argcnt);
 	void* callMethod(MonoMethod* method, void** params);
 

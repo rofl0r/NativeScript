@@ -1,46 +1,87 @@
 #include "include/gameScript.h"
 #include "ast.h"
-#include "codegen.h"
-#include <iostream>
-
-extern FILE *yyin;
-extern int yyparse();
-extern std::vector<gs::NFunction*> *astRoot;
+#include "interpreter.h"
+#include "parser.h"
+#include "executor.h"
 
 namespace gs {
 
-	extern void scan_string(const char* str);
-
-	Script::Script(FILE *file, bool dumpCode)
+	void CompiledScript::bindExternal(const char* name, void* fnc)
 	{
-		yyin = file;
-		do {
-			yyparse();
-		} while (!feof(yyin));
-		codeGen = new CodeGen(astRoot,dumpCode);
-		astRoot = nullptr;
+		exec->bindExternal(name, fnc);
 	}
 
-	Script::Script(const char* source, bool dumpCode)
+	void* CompiledScript::getFunction(const char* name)
 	{
-		scan_string(source);
-		codeGen = new CodeGen(astRoot, dumpCode);
-		astRoot = nullptr;
+		return exec->getFunction(name);
 	}
 
-	void* Script::getFunction(const char* name)
+	void CompiledScript::dumpCode()
 	{
-		return codeGen->getFunction(name);
+		exec->dumpCode();
 	}
 
-	double Script::interpretFunction(const char* name, double* params)
+	void CompiledScript::free()
 	{
-		return codeGen->interpretFunction(name, params);
+		delete this;
 	}
 
+	CompiledScript::~CompiledScript()
+	{
+		delete exec;
+	}
+
+	void InterpretableScript::bindExternal(const char* name, ExternalFunction fnc)
+	{
+		inter->bindExternal(name, fnc);
+	}
+
+	double InterpretableScript::runFunction(const char* name, double* params)
+	{
+		return inter->runFunction(name, params);
+	}
+
+	void InterpretableScript::free()
+	{
+		delete this;
+	}
+
+	InterpretableScript::~InterpretableScript()
+	{
+		delete inter;
+	}
+
+	Script* Script::parseString(const char* source)
+	{
+		return new Script(new Parser(source));
+	}
+
+	Script* Script::parseFile(const char* path)
+	{
+		FILE* f = fopen(path, "r");
+		Script* s = new Script(new Parser(f));
+		fclose(f);
+		return s;
+	}
+
+	CompiledScript* Script::compile()
+	{
+		return new CompiledScript(new Executor(parser->astRoot));
+	}
+
+	InterpretableScript* Script::getInterpreter()
+	{
+		return new InterpretableScript(new Interpreter(parser->astRoot));
+	}
+	
 	Script::~Script()
 	{
-		delete codeGen;
+		delete parser;
+	}
+
+	void Script::free()
+	{
+		delete this;
 	}
 
 }

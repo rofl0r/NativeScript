@@ -4,22 +4,22 @@
     <LocalDebuggerEnvironment>
     </LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>gs expression</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>js expression 3</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerEnvironment>
     </LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>gs expression</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>js expression 3</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerEnvironment>PATH=%PATH%;$(SolutionDir)\lib\sdl\x64;$(SolutionDir)\lib\mono\x64</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>gs expression</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>js expression 3</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerEnvironment>PATH=%PATH%;$(SolutionDir)\lib\sdl\x64;$(SolutionDir)\lib\mono\x64</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>gs expression</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>js expression 3</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

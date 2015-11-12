@@ -33,7 +33,7 @@ namespace cs {
 		{
 			dom = init();
 
-			assembly = compileSource(dom, "PointSimul.cs");
+			assembly = compileFile(dom, "PointSimul.cs");
 			if (!assembly)
 			{
 				printf("JIT compiled assembly failed to load\n");
