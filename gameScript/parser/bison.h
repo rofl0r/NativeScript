@@ -52,7 +52,7 @@ extern int yydebug;
      TELSE = 261,
      TFOR = 262,
      TEQUAL = 263,
-     TEXTERN = 264
+     TDECLARE = 264
    };
 #endif
 

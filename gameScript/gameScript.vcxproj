@@ -34,6 +34,7 @@
     <ClInclude Include="interpreter.h" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="parser\bison.h" />
+    <ClInclude Include="parser\tokens.h" />
   </ItemGroup>
   <ItemGroup>
     <Bison Include="parser\bison.y" />

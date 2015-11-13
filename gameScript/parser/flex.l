@@ -1,7 +1,6 @@
 %{
 #include <string>
-#include "../ast.h"
-#include "bison.h"
+#include "tokens.h"
 
 extern int yyparse();
 
@@ -18,22 +17,16 @@ namespace gs {
 %%
 
 [ \t]                   ;
-[ \n]					gs::source_line_number++;
+\/\/[^\n]*\n			gs::source_line_number++;
+[\n]					gs::source_line_number++;
 "if"					DEBUG; return TIF;
 "else"					DEBUG; return TELSE;
-"extern"				DEBUG; return TEXTERN;
+"declare"				DEBUG; return TDECLARE;
 "for"					DEBUG; return TFOR;
 [a-zA-Z_][a-zA-Z0-9_]*  DEBUG; yylval.string = new std::string(yytext, yyleng); return TIDENTIFIER;
 [0-9]+(\.[0-9]+)?       DEBUG; yylval.num = atof(yytext); return TNUMBER;
-"("                     DEBUG; return '(';
-")"                     DEBUG; return ')';
-"+"                     DEBUG; return '+';
-"-"                     DEBUG; return '-';
-"*"                     DEBUG; return '*';
-"<"						DEBUG; return '<';
+[\(\)\{\}\+\*-<=,]      DEBUG; return yytext[0];
 "=="					DEBUG; return TEQUAL;
-"="						DEBUG; return '=';
-","						DEBUG; return ',';
 .                       printf("Unknown token: \"%s\" on line %d!\n", yytext, gs::source_line_number); yyterminate();
 
 %%

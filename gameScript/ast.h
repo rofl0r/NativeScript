@@ -24,7 +24,6 @@ namespace gs {
 		virtual void visit(const NForloop* node) = 0;
 		virtual void visit(const NFunctionCall* node) = 0;
 		virtual void visit(const NFunction* node) = 0;
-		virtual ~AstVisitor();
 	};
 
 	class NExpression {
@@ -98,6 +97,6 @@ namespace gs {
 		NFunction(const std::string& name, std::vector<std::string*>& args, NExpression* body = nullptr) :
 			name(name), args(args), body(body) {}
 		void accept(AstVisitor* visitor) const { visitor->visit(this); }
-		bool hasBody() const { return body == nullptr; };
+		bool hasBody() const { return body != nullptr; };
 	};	
 }

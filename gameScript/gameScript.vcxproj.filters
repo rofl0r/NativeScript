@@ -24,6 +24,9 @@
     <ClInclude Include="parser\bison.h">
       <Filter>parser</Filter>
     </ClInclude>
+    <ClInclude Include="parser\tokens.h">
+      <Filter>parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">

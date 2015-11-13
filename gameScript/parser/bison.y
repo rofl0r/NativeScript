@@ -1,10 +1,10 @@
 %{
     #include "../ast.h"
 	#include <vector>
-    std::vector<gs::NFunction*> *astRootBison; /* the top level root node of our final AST */
 
     extern int yylex();
 	namespace gs {
+		std::vector<gs::NFunction*> *astRootBison; /* the top level root node of our final AST */
 		extern int source_line_number;
 	}
 
@@ -29,10 +29,10 @@
  */
 %token <string> TIDENTIFIER 
 %token <num> TNUMBER
-%token '(' ')' 
+%token '(' ')' '{' '}'
 %token TIF TELSE TFOR
 %token '+' '-' '*' '<' TEQUAL
-%token ',' '=' TEXTERN
+%token ',' '=' TDECLARE
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -54,14 +54,14 @@
 
 %%
 
-program : funcList { astRootBison = $1; }
+program : funcList { gs::astRootBison = $1; }
 
 funcList : func { $$ = new std::vector<gs::NFunction*>(); $$->push_back($<func>1); }
 		 | funcList func { $1->push_back($<func>2); }
 		 ;
 
-func : TIDENTIFIER '(' funcArgs ')' expr { $$ = new gs::NFunction(*$1, *$3, $5); }
-	 | TEXTERN TIDENTIFIER '(' funcArgs ')' {$$ = new gs::NFunction(*$2, *$4); }
+func : TIDENTIFIER '(' funcArgs ')' '{' expr '}' { $$ = new gs::NFunction(*$1, *$3, $6); }
+	 | TDECLARE TIDENTIFIER '(' funcArgs ')' {$$ = new gs::NFunction(*$2, *$4); }
 	 ;
 
 funcArgs : TIDENTIFIER { $$ = new std::vector<std::string*>(); $$->push_back($1); }

@@ -1,5 +1,5 @@
 #include "executor.h"
-#include "parser/bison.h"
+#include "parser/tokens.h"
 #include "include/gameScript.h"
 #include <vector>
 #include "llvm/IR/Verifier.h"
@@ -30,7 +30,7 @@ namespace gs
 		// Make the module, which holds all the code.
 		module = make_unique<Module>("GameScript JIT", getGlobalContext());
 
-		// COFF not supported on Win32
+		// COFF not supported by llvm on Win32
 #if defined(GS_PLATFORM_WINDOWS) && !defined(_WIN64)
 		auto triple = llvm::sys::getProcessTriple();
 		module->setTargetTriple(triple + "-elf");
@@ -71,7 +71,9 @@ namespace gs
 			return;
 		}
 		Function *f = functions[name];
-		if (f == nullptr)
+
+		// make sure the function was declared, but not defined
+		if (f == nullptr || !f->isDeclaration()) 
 		{
 			error("External function cannot be bound - it wasn't defined as external in script.");
 			return;
@@ -125,18 +127,23 @@ namespace gs
 		switch (node->op) {
 		case '+':
 			result = builder.CreateFAdd(l, r, "add");
+			break;
 		case '-':
 			result = builder.CreateFSub(l, r, "sub");
+			break;
 		case '*':
 			result = builder.CreateFMul(l, r, "mul");
+			break;
 		case '<':
 			l = builder.CreateFCmpOLT(l, r, "cmpLT");
 			// Convert bool 0/1 to double 0.0 or 1.0
 			result = builder.CreateUIToFP(l, Type::getDoubleTy(getGlobalContext()), "boolToD");
+			break;
 		case TEQUAL:
 			l = builder.CreateFCmpOEQ(l, r, "cmpEQ");
 			// Convert bool 0/1 to double 0.0 or 1.0
 			result = builder.CreateUIToFP(l, Type::getDoubleTy(getGlobalContext()), "boolToD");
+			break;
 		default:
 			result = error("Invalid binary operator");
 		}
@@ -302,23 +309,37 @@ namespace gs
 
 	void Executor::visit(const NFunction* node)
 	{
-		if (functions[node->name] != nullptr)
+		// if the function was already defined, throw an error
+		if (functions[node->name] != nullptr && !functions[node->name]->isDeclaration())
 		{
 			result = error("Attempt to redefine function");
 			return;
 		}
-		std::vector<Type *> argTypes(node->args.size(), Type::getDoubleTy(getGlobalContext()));
-		FunctionType *ftype = FunctionType::get(Type::getDoubleTy(getGlobalContext()), argTypes, false);
-		Function *f = Function::Create(ftype, Function::ExternalLinkage, node->name.c_str(), module.get());
 
-		unsigned Idx = 0;
-		locals.clear();
-		for (auto &arg : f->args()) {
-			arg.setName(node->args[Idx++]->c_str());
-			locals[arg.getName()] = &arg;
+		Function *f;
+
+		// if the function wasn't declared yet, declare it
+		if (functions[node->name] == nullptr) {
+			std::vector<Type *> argTypes(node->args.size(), Type::getDoubleTy(getGlobalContext()));
+			FunctionType *ftype = FunctionType::get(Type::getDoubleTy(getGlobalContext()), argTypes, false);
+			f = Function::Create(ftype, Function::ExternalLinkage, node->name.c_str(), module.get());
+
+			functions[node->name] = f;
+		} else
+		{
+			// Otherwise use previous declaration
+			f = functions[node->name];
 		}
 
+		// if this is definition, create the body
 		if (node->hasBody()) {
+			unsigned Idx = 0;
+			locals.clear();
+			for (auto &arg : f->args()) {
+				arg.setName(node->args[Idx++]->c_str());
+				locals[arg.getName()] = &arg;
+			}
+
 			// Add a basic block to the FooF function.
 			BasicBlock *BB = BasicBlock::Create(getGlobalContext(), "EntryBlock", f);
 
@@ -332,8 +353,6 @@ namespace gs
 
 			verifyFunction(*f);
 		}
-
-		functions[node->name] = f;
 	}
 
 }
