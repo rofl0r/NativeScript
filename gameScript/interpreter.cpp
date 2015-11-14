@@ -16,14 +16,13 @@ namespace gs {
 		const NFuncPtr f = functions[name];
 		// TODO: if not found throw error about calling undefined function
 		if (f->hasBody()) {
-			// TODO: solve overriding current locals (save and restore after run)
+			locals.clear();
 			for (std::string* arg : f->args)
 			{
 				locals[*arg] = *(params++);
 			}
-			f->body->accept(this);
-			locals.clear();
-			// TODO: clear only when called externally, otherwise restore
+			f->accept(this);
+			
 			return result;
 		}
 		else
@@ -43,9 +42,15 @@ namespace gs {
 		result = node->value;
 	}
 
-	void Interpreter::visit(const NIdentifier* node)
+	void Interpreter::visit(const NVariable* node)
 	{
 		result = locals[node->name];
+	}
+
+	void Interpreter::visit(const NAssignment* node)
+	{
+		node->value.accept(this);
+		locals[node->name] = result;
 	}
 
 	void Interpreter::visit(const NBinaryOperator* node)
@@ -89,13 +94,12 @@ namespace gs {
 		node->start.accept(this);
 		double loopVar = result;
 
-		// save variable shadowed by for variable
-		bool oldValExists = false;
-		double oldVal = 0;
+		// Shading is not allowed
 		if (locals.find(node->varName) != locals.end())
 		{
-			oldValExists = true;
-			oldVal = locals[node->varName];
+			// TODO: raise error
+			result = 0;
+			return;
 		}
 
 		// put loop variable into context
@@ -113,15 +117,6 @@ namespace gs {
 			locals[node->varName] = loopVar;
 			// check condition again
 			node->end.accept(this);
-		};
-
-		if (oldValExists)
-		{
-			locals[node->varName] = oldVal;
-		}
-		else
-		{
-			locals.erase(node->varName);
 		}
 
 		result = 0;
@@ -136,13 +131,22 @@ namespace gs {
 			e->accept(this);
 			vals[ptr++] = result;
 		}
+		std::map<std::string, double> localsTmp(locals);
+		
 		result = runFunction(node->funcName.c_str(), vals);
+		
+		locals = localsTmp;
 
 		delete[] vals;
 	}
 
 	void Interpreter::visit(const NFunction* node)
 	{
-		// TODO
+		for (NExpression* e : *node->body)
+		{
+			e->accept(this);
+		}
+
+		node->returnExp->accept(this);
 	}
 }

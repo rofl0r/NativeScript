@@ -1,12 +1,12 @@
 #pragma once
-#include <llvm/IR/Value.h>
 #include <vector>
 #include <memory>
 
 namespace gs {
 	
 	class NNumber;
-	class NIdentifier;
+	class NVariable;
+	class NAssignment;
 	class NBinaryOperator;
 	class NCondition;
 	class NForloop;
@@ -18,7 +18,8 @@ namespace gs {
 	class AstVisitor {
 	public:
 		virtual void visit(const NNumber* node) = 0;
-		virtual void visit(const NIdentifier* node) = 0;
+		virtual void visit(const NVariable* node) = 0;
+		virtual void visit(const NAssignment* node) = 0;
 		virtual void visit(const NBinaryOperator* node) = 0;
 		virtual void visit(const NCondition* node) = 0;
 		virtual void visit(const NForloop* node) = 0;
@@ -39,10 +40,18 @@ namespace gs {
 		void accept(AstVisitor* visitor) const override { visitor->visit(this); }
 	};
 
-	class NIdentifier : public NExpression {
+	class NVariable : public NExpression {
 	public:
 		std::string name;
-		NIdentifier(const std::string& name) : name(name) { }
+		NVariable(const std::string& name) : name(name) { }
+		void accept(AstVisitor* visitor) const override { visitor->visit(this); }
+	};
+
+	class NAssignment : public NExpression {
+	public:
+		std::string name;
+		NExpression& value;
+		NAssignment(const std::string& name, NExpression& value) : name(name), value(value) { }
 		void accept(AstVisitor* visitor) const override { visitor->visit(this); }
 	};
 
@@ -91,12 +100,13 @@ namespace gs {
 	public:
 		std::string name;
 		std::vector<std::string*> args;
-		NExpression* body;
+		std::vector<NExpression*>* body;
+		NExpression* returnExp;
 
 		~NFunction() {}
-		NFunction(const std::string& name, std::vector<std::string*>& args, NExpression* body = nullptr) :
-			name(name), args(args), body(body) {}
+		NFunction(const std::string& name, std::vector<std::string*>& args, NExpression* returnExp = nullptr, std::vector<NExpression*>* body = nullptr) :
+			name(name), args(args), body(body), returnExp(returnExp) {}
 		void accept(AstVisitor* visitor) const { visitor->visit(this); }
-		bool hasBody() const { return body != nullptr; };
+		bool hasBody() const { return returnExp != nullptr; };
 	};	
 }

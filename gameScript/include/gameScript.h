@@ -42,7 +42,7 @@ namespace gs {
 	public:
 		GS_IMPORT_EXPORT void bindExternal(const char* name, void* fnc); // can be run only before finalization
 		GS_IMPORT_EXPORT void* getFunction(const char* name); // first call to getFunction finalizes the object
-		GS_IMPORT_EXPORT void dumpCode();
+		GS_IMPORT_EXPORT void dumpIR();
 		GS_IMPORT_EXPORT void free();
 	};
 

@@ -23,9 +23,10 @@ namespace gs {
 "else"					DEBUG; return TELSE;
 "declare"				DEBUG; return TDECLARE;
 "for"					DEBUG; return TFOR;
+"return"				DEBUG; return TRETURN;
 [a-zA-Z_][a-zA-Z0-9_]*  DEBUG; yylval.string = new std::string(yytext, yyleng); return TIDENTIFIER;
 [0-9]+(\.[0-9]+)?       DEBUG; yylval.num = atof(yytext); return TNUMBER;
-[\(\)\{\}\+\*-<=,]      DEBUG; return yytext[0];
+[\(\)\{\}\+\*-<=,;]     DEBUG; return yytext[0];
 "=="					DEBUG; return TEQUAL;
 .                       printf("Unknown token: \"%s\" on line %d!\n", yytext, gs::source_line_number); yyterminate();
 

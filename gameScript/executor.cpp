@@ -28,7 +28,8 @@ namespace gs
 		InitializeNativeTargetAsmParser();
 
 		// Make the module, which holds all the code.
-		module = make_unique<Module>("GameScript JIT", getGlobalContext());
+		auto m = make_unique<Module>("GameScript JIT", getGlobalContext());
+		module = m.get();
 
 		// COFF not supported by llvm on Win32
 #if defined(GS_PLATFORM_WINDOWS) && !defined(_WIN64)
@@ -36,9 +37,20 @@ namespace gs
 		module->setTargetTriple(triple + "-elf");
 #endif
 
+		engine = EngineBuilder(std::move(m)).create();
 
 		// Create a new pass manager attached to it.
-		auto TheFPM = llvm::make_unique<legacy::FunctionPassManager>(module.get());
+		auto TheFPM = llvm::make_unique<legacy::FunctionPassManager>(module);
+
+		// Set up the optimizer pipeline.  Start with registering info about how the
+		// target lays out data structures.
+		module->setDataLayout(*engine->getDataLayout());;
+		// Promote allocas to registers.
+		TheFPM->add(createPromoteMemoryToRegisterPass());
+		// Do simple "peephole" optimizations and bit-twiddling optzns.
+		TheFPM->add(createInstructionCombiningPass());
+		// Reassociate expressions.
+		TheFPM->add(createReassociatePass());
 
 		// Provide basic AliasAnalysis support for GVN.
 		TheFPM->add(createBasicAliasAnalysisPass());
@@ -59,8 +71,6 @@ namespace gs
 			f->accept(this);
 			TheFPM->run(*(functions[f->name]));
 		}
-
-		engine = EngineBuilder(std::move(module)).create();
 	}
 
 	void Executor::bindExternal(const char* name, void* fnc)
@@ -93,7 +103,7 @@ namespace gs
 		return engine->getPointerToFunction(f);
 	}
 
-	void Executor::dumpCode()
+	void Executor::dumpIR()
 	{
 		module->dump();
 	}
@@ -103,17 +113,47 @@ namespace gs
 		return nullptr;
 	}
 
+	AllocaInst *Executor::createVariable(llvm::Function *f, const std::string &name)
+	{
+		IRBuilder<> varBuilder(&f->getEntryBlock(), f->getEntryBlock().begin());
+		return varBuilder.CreateAlloca(Type::getDoubleTy(getGlobalContext()), 0, name.c_str());
+	}
+
+	AllocaInst *Executor::createVariable(const std::string &name)
+	{
+		return createVariable(builder.GetInsertBlock()->getParent(), name);
+	}
+
+
 	void Executor::visit(const NNumber* node)
 	{
 		result = ConstantFP::get(getGlobalContext(), APFloat(node->value));
 	}
 
-	void Executor::visit(const NIdentifier* node)
+	void Executor::visit(const NVariable* node)
 	{
 		result = locals[node->name];
 		if (!result) {
 			error("Unknown variable name");
 		}
+
+		result = builder.CreateLoad(result, node->name.c_str());
+	}
+
+	void Executor::visit(const NAssignment* node)
+	{
+		AllocaInst* var = locals[node->name];
+
+		// lazy allocation
+		if (!var) {
+			var = createVariable(node->name);
+			locals[node->name] = var;
+		}
+		node->value.accept(this);
+
+		builder.CreateStore(result, var);
+
+		// result is already set
 	}
 
 	void Executor::visit(const NBinaryOperator* node)
@@ -207,14 +247,14 @@ namespace gs
 		// TODO: this is DO WHILE now, (condition is not checked for the first execution of body)
 		// probably just add comparison instead of explicit fall trough from current block to loop block
 
+		AllocaInst *forVar = createVariable(node->varName);
 
 		node->start.accept(this);
-		Value *start = result;
+		builder.CreateStore(result, forVar);
 
 		// Make the new basic block for the loop header, inserting after current
 		// block.
 		Function *f = builder.GetInsertBlock()->getParent();
-		BasicBlock *preheaderBlock = builder.GetInsertBlock(); // save current block
 		BasicBlock *loopBlock = BasicBlock::Create(getGlobalContext(), "loop", f);
 
 		// Insert an explicit fall through from the current block to the LoopBB.
@@ -223,15 +263,11 @@ namespace gs
 		// Start insertion in LoopBB.
 		builder.SetInsertPoint(loopBlock);
 
-		// Start the PHI node with an entry for Start.
-		PHINode *Variable = builder.CreatePHI(Type::getDoubleTy(getGlobalContext()),
-			2, node->varName.c_str());
-		Variable->addIncoming(start, preheaderBlock);
-
-		// Within the loop, the variable is defined equal to the PHI node.  If it
-		// shadows an existing variable, we have to restore it, so save it now.
-		Value *oldVal = locals[node->varName];
-		locals[node->varName] = Variable;
+		// Don't allow shading variables
+		if (locals[node->varName]) {
+			result = error("For loop variable name already defined."); 
+			return;
+		}
 
 		// Emit the body of the loop.  This, like any other expr, can change the
 		// current BB.  Note that we ignore the value computed by the body, but don't
@@ -251,8 +287,9 @@ namespace gs
 		// If not specified, use 1.0.
 		//	StepVal = ConstantFP::get(getGlobalContext(), APFloat(1.0));
 		//}
-
-		Value *NextVar = builder.CreateFAdd(Variable, stepVal, "nextvar");
+		Value *CurVar = builder.CreateLoad(forVar);
+		Value *NextVar = builder.CreateFAdd(CurVar, stepVal, "nextvar");
+		builder.CreateStore(NextVar, forVar);
 
 		// Compute the end condition.
 		node->end.accept(this);
@@ -264,7 +301,6 @@ namespace gs
 			EndCond, ConstantFP::get(getGlobalContext(), APFloat(0.0)), "loopcond");
 
 		// Create the "after loop" block and insert it.
-		BasicBlock *LoopEndBB = builder.GetInsertBlock();
 		BasicBlock *AfterBB =
 			BasicBlock::Create(getGlobalContext(), "afterloop", f);
 
@@ -273,15 +309,6 @@ namespace gs
 
 		// Any new code will be inserted in AfterBB.
 		builder.SetInsertPoint(AfterBB);
-
-		// Add a new entry to the PHI node for the backedge.
-		Variable->addIncoming(NextVar, LoopEndBB);
-
-		// Restore the unshadowed variable.
-		if (oldVal)
-			locals[node->varName] = oldVal;
-		else
-			locals.erase(node->varName);
 
 		// for expr always returns 0.0.
 		result = Constant::getNullValue(Type::getDoubleTy(getGlobalContext()));
@@ -322,7 +349,7 @@ namespace gs
 		if (functions[node->name] == nullptr) {
 			std::vector<Type *> argTypes(node->args.size(), Type::getDoubleTy(getGlobalContext()));
 			FunctionType *ftype = FunctionType::get(Type::getDoubleTy(getGlobalContext()), argTypes, false);
-			f = Function::Create(ftype, Function::ExternalLinkage, node->name.c_str(), module.get());
+			f = Function::Create(ftype, Function::ExternalLinkage, node->name.c_str(), module);
 
 			functions[node->name] = f;
 		} else
@@ -333,20 +360,30 @@ namespace gs
 
 		// if this is definition, create the body
 		if (node->hasBody()) {
-			unsigned Idx = 0;
-			locals.clear();
-			for (auto &arg : f->args()) {
-				arg.setName(node->args[Idx++]->c_str());
-				locals[arg.getName()] = &arg;
-			}
-
 			// Add a basic block to the FooF function.
 			BasicBlock *BB = BasicBlock::Create(getGlobalContext(), "EntryBlock", f);
 
 			// Tell the basic block builder to attach itself to the new basic block
 			builder.SetInsertPoint(BB);
 
-			node->body->accept(this);
+			Function::arg_iterator AI = f->arg_begin();
+			for (unsigned Idx = 0, e = node->args.size(); Idx != e; ++Idx, ++AI) {
+				// Create an alloca for this variable.
+				AllocaInst *parVar = createVariable(*node->args[Idx]);
+
+				// Store the initial value into the alloca.
+				builder.CreateStore(AI, parVar);
+
+				// Add arguments to variable symbol table.
+				locals[*node->args[Idx]] = parVar;
+			}
+
+			for (NExpression* e : *node->body)
+			{
+				e->accept(this);
+			}
+			
+			node->returnExp->accept(this);
 
 			// Create the return instruction and add it to the basic block.
 			builder.CreateRet(result);

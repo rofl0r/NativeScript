@@ -17,7 +17,8 @@ namespace gs {
 		void bindExternal(const char* name, ExternalFunction fnc);
 		
 		void visit(const NNumber* node) override;
-		void visit(const NIdentifier* node) override;
+		void visit(const NVariable* node) override;
+		void visit(const NAssignment* node) override;
 		void visit(const NBinaryOperator* node) override;
 		void visit(const NCondition* node) override;
 		void visit(const NForloop* node) override;

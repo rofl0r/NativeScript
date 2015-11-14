@@ -51,8 +51,9 @@ extern int yydebug;
      TIF = 260,
      TELSE = 261,
      TFOR = 262,
-     TEQUAL = 263,
-     TDECLARE = 264
+     TRETURN = 263,
+     TDECLARE = 264,
+     TEQUAL = 265
    };
 #endif
 
@@ -73,7 +74,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 77 "bison.h"
+#line 78 "bison.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -30,9 +30,9 @@
 %token <string> TIDENTIFIER 
 %token <num> TNUMBER
 %token '(' ')' '{' '}'
-%token TIF TELSE TFOR
+%token TIF TELSE TFOR TRETURN TDECLARE
 %token '+' '-' '*' '<' TEQUAL
-%token ',' '=' TDECLARE
+%token ',' '=' ';'
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -41,11 +41,13 @@
  */
 %type <funcList> funcList
 %type <exprList> exprList
+%type <exprList> stmtList
 %type <funcArgs> funcArgs
 %type <expr> expr
 %type <func> func
 
 /* Operator precedence for mathematical operators */
+%left '='
 %left '<' TEQUAL
 %left '+' '-'
 %left '*'
@@ -60,7 +62,7 @@ funcList : func { $$ = new std::vector<gs::NFunction*>(); $$->push_back($<func>1
 		 | funcList func { $1->push_back($<func>2); }
 		 ;
 
-func : TIDENTIFIER '(' funcArgs ')' '{' expr '}' { $$ = new gs::NFunction(*$1, *$3, $6); }
+func : TIDENTIFIER '(' funcArgs ')' '{' stmtList TRETURN expr ';' '}' { $$ = new gs::NFunction(*$1, *$3, $8, $6); }
 	 | TDECLARE TIDENTIFIER '(' funcArgs ')' {$$ = new gs::NFunction(*$2, *$4); }
 	 ;
 
@@ -72,9 +74,14 @@ exprList : /*blank*/  { $$ = new std::vector<gs::NExpression*>(); }
           | expr { $$ = new std::vector<gs::NExpression*>(); $$->push_back($1); }
           | exprList ',' expr  { $1->push_back($3); }
           ;
+stmtList : /*blank*/  { $$ = new std::vector<gs::NExpression*>(); }
+          | expr ';' { $$ = new std::vector<gs::NExpression*>(); $$->push_back($1); }
+          | stmtList expr ';'  { $1->push_back($2); }
+          ;
     
 /* The binary operators must be explicitly listed to make the precedence work */
-expr : TIDENTIFIER { $$ = new gs::NIdentifier(*$1); delete $1; }
+expr : TIDENTIFIER { $$ = new gs::NVariable(*$1); delete $1; }
+	 | TIDENTIFIER '=' expr { $$ = new gs::NAssignment(*$1,*$3); delete $1;}
 	 | expr '+' expr { BINARY_OP_ACTION($$,$1,'+',$3); }
 	 | expr '-' expr { BINARY_OP_ACTION($$,$1,'-',$3); }
 	 | expr '*' expr { BINARY_OP_ACTION($$,$1,'*',$3); }

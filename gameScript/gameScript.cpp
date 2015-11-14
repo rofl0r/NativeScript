@@ -16,9 +16,9 @@ namespace gs {
 		return exec->getFunction(name);
 	}
 
-	void CompiledScript::dumpCode()
+	void CompiledScript::dumpIR()
 	{
-		exec->dumpCode();
+		exec->dumpIR();
 	}
 
 	void CompiledScript::free()

@@ -19,8 +19,9 @@ int main(int argc, char** argv)
 	//Script* s = Script::parseString("test(x y) if (x<y) x else y", true);
 
 	cs->bindExternal("testExtern", testExtern);
+	cs->dumpIR();
 	fnc f = (fnc)cs->getFunction("test");
-	double res = f(120, 1);
+	double res = f(120, 121);
 
 	//double params[] = { 1.2, 1.5 };
 	//double res = is.interpretFunction("test", params);
