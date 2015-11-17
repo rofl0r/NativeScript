@@ -55,7 +55,7 @@ namespace js {
 			sourceParam[++cur] = paramNames[j][0];
 		}
 		sourceParam[++cur] = 0;
-		char source[11 + sizeof(sourceParam) / sizeof(char) + SB_EXPRESSION_MAX_LENGTH];
+		char source[11 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s) {return %s}", sourceParam, expression::getExpression());
 		Local<String> source1 = String::NewFromUtf8(is, source);
 		Local<Script> script1 = Script::Compile(source1);

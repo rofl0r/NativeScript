@@ -23,22 +23,27 @@ namespace gs {
 		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
 		double params[sizeof(paramNames) / sizeof(char*)];
 		double r = 0;
+		gs::InterpretableScript* is = fncs->getInterpreter();
+		
 		measure::cpuStart();
 		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < expression::getParamCount(); j++)
 			{
 				params[j] = i*pow(0.7, j);
 			}
-			r += fncs->interpretFunction("f", params);
+			r += is->runFunction("f", params);
 		}
 		measure::cpuStop();
+
+		is->free();
 
 		return r;
 	}
 
 	double runOptimized(gs::Script* fncs)
 	{
-		void* fnc = fncs->getFunction("f");
+		gs::CompiledScript* cs = fncs->compile();
+		void* fnc = cs->getFunction("f");
 		gsFnc2 f2 = (gsFnc2)fnc;
 		gsFnc3 f3 = (gsFnc3)fnc;
 		gsFnc4 f4 = (gsFnc4)fnc;
@@ -86,6 +91,8 @@ namespace gs {
 			break;
 		}
 
+		cs->free();
+
 		return r;
 	}
 
@@ -108,9 +115,9 @@ namespace gs {
 			sourceParam[++cur] = paramNames[j][0];
 		}
 		sourceParam[++cur] = 0;
-		char source[2 + sizeof(sourceParam) / sizeof(char) + SB_EXPRESSION_MAX_LENGTH];
+		char source[2 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s) %s", sourceParam, expression::getExpression());
-		gs::Script* fncs = gs::Script::parseString(source, true);
+		gs::Script* fncs = gs::Script::parseString(source);
 
 		double r = expression::isRunOptimized() ? runOptimized(fncs) : runNaive(fncs);
 

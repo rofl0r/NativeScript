@@ -61,6 +61,9 @@
     <Filter Include="gs\expression">
       <UniqueIdentifier>{2c081f95-3a70-473f-9883-56bb38fda8a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gs\callback">
+      <UniqueIdentifier>{ff180a77-0b68-4e66-88d7-5777a8abfeb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scriptSpeed.cpp" />
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="gs\expression\gs_expression.cpp">
       <Filter>gs\expression</Filter>
+    </ClCompile>
+    <ClCompile Include="gs\callback\gs_callback.cpp">
+      <Filter>gs\callback</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

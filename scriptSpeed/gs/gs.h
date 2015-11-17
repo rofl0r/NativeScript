@@ -7,9 +7,11 @@ namespace gs {
 
 	// main scenarios
 	int runExpression(int c, char** v);
+	int runCallback(int c, char** v);
 
 	static const ::CallbackMap scenarioMap[] = {
-		{ "expression", runExpression }
+		{ "expression", runExpression },
+		{ "callback", runCallback }
 	};
 };
 

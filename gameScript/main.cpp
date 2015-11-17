@@ -3,7 +3,7 @@
 
 using namespace gs;
 
-typedef double(*fnc)(double, double);
+typedef double(*fnc)();
 
 double testExtern(double X) {
 	fputc((char)X, stderr);
@@ -21,12 +21,12 @@ int main(int argc, char** argv)
 	cs->bindExternal("testExtern", testExtern);
 	cs->dumpIR();
 	fnc f = (fnc)cs->getFunction("test");
-	double res = f(120, 121);
+	double res = f();
 
 	//double params[] = { 1.2, 1.5 };
 	//double res = is.interpretFunction("test", params);
 
-	//std::cout << res << std::endl;
+	std::cout << res << std::endl;
 
 	cs->free();
 	is->free();

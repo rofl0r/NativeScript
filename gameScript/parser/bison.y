@@ -66,7 +66,8 @@ func : TIDENTIFIER '(' funcArgs ')' '{' stmtList TRETURN expr ';' '}' { $$ = new
 	 | TDECLARE TIDENTIFIER '(' funcArgs ')' {$$ = new gs::NFunction(*$2, *$4); }
 	 ;
 
-funcArgs : TIDENTIFIER { $$ = new std::vector<std::string*>(); $$->push_back($1); }
+funcArgs : /*blank*/  { $$ = new std::vector<std::string*>(); }
+		 | TIDENTIFIER { $$ = new std::vector<std::string*>(); $$->push_back($1); }
 		 | funcArgs ',' TIDENTIFIER { $1->push_back($3); }
 		 ;
 
@@ -74,6 +75,7 @@ exprList : /*blank*/  { $$ = new std::vector<gs::NExpression*>(); }
           | expr { $$ = new std::vector<gs::NExpression*>(); $$->push_back($1); }
           | exprList ',' expr  { $1->push_back($3); }
           ;
+
 stmtList : /*blank*/  { $$ = new std::vector<gs::NExpression*>(); }
           | expr ';' { $$ = new std::vector<gs::NExpression*>(); $$->push_back($1); }
           | stmtList expr ';'  { $1->push_back($2); }

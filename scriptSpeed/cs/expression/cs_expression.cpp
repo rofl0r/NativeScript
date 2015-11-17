@@ -120,7 +120,7 @@ namespace cs {
 			sourceParam[++cur] = paramNames[j][0];
 		}
 		sourceParam[++cur] = 0;
-		char source[12 + sizeof(sourceParam) / sizeof(char) + SB_EXPRESSION_MAX_LENGTH];
+		char source[12 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s){return %s;}}", sourceParam, expression::getExpression());
 
 		// init

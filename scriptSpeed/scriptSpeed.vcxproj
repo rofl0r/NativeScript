@@ -166,6 +166,7 @@ xcopy /d /y "$(SolutionDir)lib\mono\mono-2.0.dll" "$(OutDir)"</Command>
     <ClCompile Include="cs\pointSimul\cs_pointSimul_allScriptStruct.cpp" />
     <ClCompile Include="cs\pointSimul\cs_pointSimul_scriptToNative.cpp" />
     <ClCompile Include="cs\pointSimul\cs_pointSimul_scriptToNativeStruct.cpp" />
+    <ClCompile Include="gs\callback\gs_callback.cpp" />
     <ClCompile Include="gs\expression\gs_expression.cpp" />
     <ClCompile Include="js\callback\js_callback.cpp" />
     <ClCompile Include="js\expression\js_expression.cpp" />

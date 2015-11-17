@@ -397,7 +397,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  26
+#define YYNRULES  27
 /* YYNRULES -- Number of states.  */
 #define YYNSTATES  69
 
@@ -445,9 +445,9 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     5,     7,    10,    21,    27,    29,    33,
-      34,    36,    40,    41,    44,    48,    50,    54,    58,    62,
-      66,    70,    74,    76,    80,    88,   100
+       0,     0,     3,     5,     7,    10,    21,    27,    28,    30,
+      34,    35,    37,    41,    42,    45,    49,    51,    55,    59,
+      63,    67,    71,    75,    77,    81,    89,   101
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -455,23 +455,23 @@ static const yytype_int8 yyrhs[] =
 {
       23,     0,    -1,    24,    -1,    25,    -1,    24,    25,    -1,
        3,     5,    26,     6,     7,    28,    12,    29,    21,     8,
-      -1,    13,     3,     5,    26,     6,    -1,     3,    -1,    26,
-      19,     3,    -1,    -1,    29,    -1,    27,    19,    29,    -1,
-      -1,    29,    21,    -1,    28,    29,    21,    -1,     3,    -1,
-       3,    20,    29,    -1,    29,    14,    29,    -1,    29,    15,
-      29,    -1,    29,    16,    29,    -1,    29,    17,    29,    -1,
-      29,    18,    29,    -1,     4,    -1,     5,    29,     6,    -1,
-       9,     5,    29,     6,    29,    10,    29,    -1,    11,     5,
-       3,    20,    29,    19,    29,    19,    29,     6,    29,    -1,
-       3,     5,    27,     6,    -1
+      -1,    13,     3,     5,    26,     6,    -1,    -1,     3,    -1,
+      26,    19,     3,    -1,    -1,    29,    -1,    27,    19,    29,
+      -1,    -1,    29,    21,    -1,    28,    29,    21,    -1,     3,
+      -1,     3,    20,    29,    -1,    29,    14,    29,    -1,    29,
+      15,    29,    -1,    29,    16,    29,    -1,    29,    17,    29,
+      -1,    29,    18,    29,    -1,     4,    -1,     5,    29,     6,
+      -1,     9,     5,    29,     6,    29,    10,    29,    -1,    11,
+       5,     3,    20,    29,    19,    29,    19,    29,     6,    29,
+      -1,     3,     5,    27,     6,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    59,    59,    61,    62,    65,    66,    69,    70,    73,
-      74,    75,    77,    78,    79,    83,    84,    85,    86,    87,
-      88,    89,    90,    91,    92,    93,    94
+       0,    59,    59,    61,    62,    65,    66,    69,    70,    71,
+      74,    75,    76,    79,    80,    81,    85,    86,    87,    88,
+      89,    90,    91,    92,    93,    94,    95,    96
 };
 #endif
 
@@ -501,17 +501,17 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    22,    23,    24,    24,    25,    25,    26,    26,    27,
-      27,    27,    28,    28,    28,    29,    29,    29,    29,    29,
-      29,    29,    29,    29,    29,    29,    29
+       0,    22,    23,    24,    24,    25,    25,    26,    26,    26,
+      27,    27,    27,    28,    28,    28,    29,    29,    29,    29,
+      29,    29,    29,    29,    29,    29,    29,    29
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     1,     2,    10,     5,     1,     3,     0,
-       1,     3,     0,     2,     3,     1,     3,     3,     3,     3,
-       3,     3,     1,     3,     7,    11,     4
+       0,     2,     1,     1,     2,    10,     5,     0,     1,     3,
+       0,     1,     3,     0,     2,     3,     1,     3,     3,     3,
+       3,     3,     3,     1,     3,     7,    11,     4
 };
 
 /* YYDEFACT[STATE-NAME] -- Default reduction number in state STATE-NUM.
@@ -519,13 +519,13 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     2,     3,     0,     0,     1,     4,
-       7,     0,     0,     0,     0,     0,    12,     8,     6,    15,
-      22,     0,     0,     0,     0,     0,     9,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    13,     0,
-      10,    16,    23,     0,     0,     0,    14,    17,    18,    19,
-      20,    21,    26,     0,     0,     0,     0,    11,     0,     0,
-       5,     0,     0,    24,     0,     0,     0,     0,    25
+       0,     0,     0,     0,     2,     3,     7,     0,     1,     4,
+       8,     0,     7,     0,     0,     0,    13,     9,     6,    16,
+      23,     0,     0,     0,     0,     0,    10,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    14,     0,
+      11,    17,    24,     0,     0,     0,    15,    18,    19,    20,
+      21,    22,    27,     0,     0,     0,     0,    12,     0,     0,
+       5,     0,     0,    25,     0,     0,     0,     0,    26
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -1441,126 +1441,132 @@ yyreduce:
   case 7:
 /* Line 1792 of yacc.c  */
 #line 69 "bison.y"
-    { (yyval.funcArgs) = new std::vector<std::string*>(); (yyval.funcArgs)->push_back((yyvsp[(1) - (1)].string)); }
+    { (yyval.funcArgs) = new std::vector<std::string*>(); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
 #line 70 "bison.y"
-    { (yyvsp[(1) - (3)].funcArgs)->push_back((yyvsp[(3) - (3)].string)); }
+    { (yyval.funcArgs) = new std::vector<std::string*>(); (yyval.funcArgs)->push_back((yyvsp[(1) - (1)].string)); }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 73 "bison.y"
-    { (yyval.exprList) = new std::vector<gs::NExpression*>(); }
+#line 71 "bison.y"
+    { (yyvsp[(1) - (3)].funcArgs)->push_back((yyvsp[(3) - (3)].string)); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
 #line 74 "bison.y"
-    { (yyval.exprList) = new std::vector<gs::NExpression*>(); (yyval.exprList)->push_back((yyvsp[(1) - (1)].expr)); }
+    { (yyval.exprList) = new std::vector<gs::NExpression*>(); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
 #line 75 "bison.y"
-    { (yyvsp[(1) - (3)].exprList)->push_back((yyvsp[(3) - (3)].expr)); }
+    { (yyval.exprList) = new std::vector<gs::NExpression*>(); (yyval.exprList)->push_back((yyvsp[(1) - (1)].expr)); }
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 77 "bison.y"
-    { (yyval.exprList) = new std::vector<gs::NExpression*>(); }
+#line 76 "bison.y"
+    { (yyvsp[(1) - (3)].exprList)->push_back((yyvsp[(3) - (3)].expr)); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 78 "bison.y"
-    { (yyval.exprList) = new std::vector<gs::NExpression*>(); (yyval.exprList)->push_back((yyvsp[(1) - (2)].expr)); }
+#line 79 "bison.y"
+    { (yyval.exprList) = new std::vector<gs::NExpression*>(); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 79 "bison.y"
-    { (yyvsp[(1) - (3)].exprList)->push_back((yyvsp[(2) - (3)].expr)); }
+#line 80 "bison.y"
+    { (yyval.exprList) = new std::vector<gs::NExpression*>(); (yyval.exprList)->push_back((yyvsp[(1) - (2)].expr)); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 83 "bison.y"
-    { (yyval.expr) = new gs::NVariable(*(yyvsp[(1) - (1)].string)); delete (yyvsp[(1) - (1)].string); }
+#line 81 "bison.y"
+    { (yyvsp[(1) - (3)].exprList)->push_back((yyvsp[(2) - (3)].expr)); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 84 "bison.y"
-    { (yyval.expr) = new gs::NAssignment(*(yyvsp[(1) - (3)].string),*(yyvsp[(3) - (3)].expr)); delete (yyvsp[(1) - (3)].string);}
+#line 85 "bison.y"
+    { (yyval.expr) = new gs::NVariable(*(yyvsp[(1) - (1)].string)); delete (yyvsp[(1) - (1)].string); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 85 "bison.y"
-    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'+',(yyvsp[(3) - (3)].expr)); }
+#line 86 "bison.y"
+    { (yyval.expr) = new gs::NAssignment(*(yyvsp[(1) - (3)].string),*(yyvsp[(3) - (3)].expr)); delete (yyvsp[(1) - (3)].string);}
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 86 "bison.y"
-    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'-',(yyvsp[(3) - (3)].expr)); }
+#line 87 "bison.y"
+    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'+',(yyvsp[(3) - (3)].expr)); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 87 "bison.y"
-    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'*',(yyvsp[(3) - (3)].expr)); }
+#line 88 "bison.y"
+    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'-',(yyvsp[(3) - (3)].expr)); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 88 "bison.y"
-    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'<',(yyvsp[(3) - (3)].expr)); }
+#line 89 "bison.y"
+    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'*',(yyvsp[(3) - (3)].expr)); }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 89 "bison.y"
-    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),TEQUAL,(yyvsp[(3) - (3)].expr)); }
+#line 90 "bison.y"
+    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),'<',(yyvsp[(3) - (3)].expr)); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 90 "bison.y"
-    {(yyval.expr) = new gs::NNumber((yyvsp[(1) - (1)].num));}
+#line 91 "bison.y"
+    { BINARY_OP_ACTION((yyval.expr),(yyvsp[(1) - (3)].expr),TEQUAL,(yyvsp[(3) - (3)].expr)); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 91 "bison.y"
-    { (yyval.expr) = (yyvsp[(2) - (3)].expr); }
+#line 92 "bison.y"
+    {(yyval.expr) = new gs::NNumber((yyvsp[(1) - (1)].num));}
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 92 "bison.y"
-    { (yyval.expr) = new gs::NCondition(*(yyvsp[(3) - (7)].expr),*(yyvsp[(5) - (7)].expr),*(yyvsp[(7) - (7)].expr)); }
+#line 93 "bison.y"
+    { (yyval.expr) = (yyvsp[(2) - (3)].expr); }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 93 "bison.y"
-    { (yyval.expr) = new gs::NForloop(*(yyvsp[(3) - (11)].string),*(yyvsp[(5) - (11)].expr),*(yyvsp[(7) - (11)].expr),*(yyvsp[(9) - (11)].expr),*(yyvsp[(11) - (11)].expr)); }
+#line 94 "bison.y"
+    { (yyval.expr) = new gs::NCondition(*(yyvsp[(3) - (7)].expr),*(yyvsp[(5) - (7)].expr),*(yyvsp[(7) - (7)].expr)); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 94 "bison.y"
+#line 95 "bison.y"
+    { (yyval.expr) = new gs::NForloop(*(yyvsp[(3) - (11)].string),*(yyvsp[(5) - (11)].expr),*(yyvsp[(7) - (11)].expr),*(yyvsp[(9) - (11)].expr),*(yyvsp[(11) - (11)].expr)); }
+    break;
+
+  case 27:
+/* Line 1792 of yacc.c  */
+#line 96 "bison.y"
     { (yyval.expr) = new gs::NFunctionCall(*(yyvsp[(1) - (4)].string),*(yyvsp[(3) - (4)].exprList)); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1564 "bison.cpp"
+#line 1570 "bison.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1792,6 +1798,6 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 97 "bison.y"
+#line 99 "bison.y"
 
 

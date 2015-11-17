@@ -8,7 +8,7 @@ using namespace v8;
 namespace js {
 	namespace callback {
 		void callbackNative(const v8::FunctionCallbackInfo<v8::Value>& args) {
-			::callback::executeCallbackBody();
+			::callback::processCallback(0);
 		}
 	}
 
@@ -28,7 +28,8 @@ namespace js {
 			script->Run();
 			
 			// prepare parameters
-			Handle<Value> cycles = Number::New(i, ::callback::getCycleCount(c, v));
+			::callback::readArgs(c, v);
+			Handle<Value> cycles = Number::New(i, ::callback::getCycleCount());
 			Handle<Value> argv[1] = {cycles};
 			Handle<Function> f = getFunction(i, context, "simpleCallback");
 			Local<Object> g = context->Global();
@@ -38,7 +39,7 @@ namespace js {
 			measure::cpuStop();
 
 			measure::cpuDisplayResults();
-			::callback::displayResults();
+			::callback::validateResults();
 		}
 		close(i);
 

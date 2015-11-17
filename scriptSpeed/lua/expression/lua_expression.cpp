@@ -60,7 +60,7 @@ namespace lua {
 		}
 		sourceParam[++cur] = 0;
 
-		char source[14 + sizeof(sourceParam) / sizeof(char) + SB_EXPRESSION_MAX_LENGTH];
+		char source[14 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s) return %s; end", sourceParam, expression::getExpression());
 		luaL_dostring(L, source);
 		lua_getglobal(L, "f");

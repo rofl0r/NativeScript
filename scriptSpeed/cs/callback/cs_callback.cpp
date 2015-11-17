@@ -11,7 +11,7 @@ namespace cs {
 
 		// callback
 		__declspec(dllexport) void countFnc() {
-			::callback::executeCallbackBody();
+			::callback::processCallback(0);
 		}
 	}
 
@@ -37,7 +37,8 @@ namespace cs {
 		
 		// prepare parameters
 		MonoException* ex;
-		long cycl = ::callback::getCycleCount(c, v);
+		::callback::readArgs(c, v);
+		long cycl = ::callback::getCycleCount();
 
 		// run test
 		measure::cpuStart();
@@ -46,7 +47,7 @@ namespace cs {
 
 		// print results
 		measure::cpuDisplayResults();
-		::callback::displayResults();
+		::callback::validateResults();
 
 		// cleanup
 		close(domain);

@@ -8,7 +8,7 @@
 namespace lua {
 	namespace callback {	
 		int callbackNative(lua_State * L) {
-			::callback::executeCallbackBody();
+			::callback::processCallback(0);
 			return 0;
 		}
 	}
@@ -24,7 +24,8 @@ namespace lua {
 
 		// load script function to be run and push parameters
 		lua_getglobal(L, "simpleCallback");
-		lua_pushnumber(L, ::callback::getCycleCount(c, v));
+		::callback::readArgs(c, v);
+		lua_pushnumber(L, ::callback::getCycleCount());
 		
 		// call the script function (1 argument, no result)
 		measure::cpuStart();
@@ -35,7 +36,7 @@ namespace lua {
 
 		// display results
 		measure::cpuDisplayResults();
-		::callback::displayResults();
+		::callback::validateResults();
 
 		close(L);
 

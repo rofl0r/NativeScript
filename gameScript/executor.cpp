@@ -268,6 +268,7 @@ namespace gs
 			result = error("For loop variable name already defined."); 
 			return;
 		}
+		locals[node->varName] = forVar;
 
 		// Emit the body of the loop.  This, like any other expr, can change the
 		// current BB.  Note that we ignore the value computed by the body, but don't
