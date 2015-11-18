@@ -54,6 +54,9 @@ namespace expression {
 			case 4: return SB_EXPRESSION_PARAM_4;
 			case 5: return SB_EXPRESSION_PARAM_5;
 			case 6: return SB_EXPRESSION_PARAM_6;
+			default: 
+				printf("Requested argument count is not implemented in expression scenario.");
+				return "";
 		}
 	};
 

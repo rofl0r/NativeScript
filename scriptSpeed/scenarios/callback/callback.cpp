@@ -11,10 +11,10 @@ namespace callback {
 		if (c > 0)
 		{
 			paramCnt = atol(v[0]);
-			if (paramCnt < 0 || paramCnt > 4)
+			if (paramCnt < 0 || paramCnt > SB_C_MAX_PARAMS)
 			{
 				paramCnt = SB_C_DEFAULT_PARAM_COUNT;
-				printf("Invalid param count, allowed only 0 to 4. Using default value.");
+				printf("Invalid param count, allowed only 0 to %d. Using default value.", SB_C_MAX_PARAMS);
 				return 1;
 			}
 		}
@@ -53,22 +53,9 @@ namespace callback {
 		return true;
 	}
 
-	double processCallback(double val)
+	void processCallback(double val)
 	{
 		result += val/cycleCnt;
-		return 0;
-	}
-
-	char* getParamDeclarationString()
-	{
-		switch (paramCnt)
-		{
-		case 1: return "a";
-		case 2: return "a,b";
-		case 3: return "a,b,c";
-		case 4: return "a,b,c,d";
-		default: return "";
-		}
 	}
 
 	char* getParamCallString()
