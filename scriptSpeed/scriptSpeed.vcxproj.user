@@ -4,13 +4,13 @@
     <LocalDebuggerEnvironment>
     </LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>gs callback 1</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>java helloWorld</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerEnvironment>
     </LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>lua callback 0 10000</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>lua callback 4</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerEnvironment>PATH=%PATH%;$(SolutionDir)\lib\sdl\x64;$(SolutionDir)\lib\mono\x64</LocalDebuggerEnvironment>

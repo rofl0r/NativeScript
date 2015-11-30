@@ -64,6 +64,9 @@
     <Filter Include="gs\callback">
       <UniqueIdentifier>{ff180a77-0b68-4e66-88d7-5777a8abfeb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="java">
+      <UniqueIdentifier>{134d88cb-0b61-4549-8511-7c724bd2002c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scriptSpeed.cpp" />
@@ -179,6 +182,9 @@
     <ClCompile Include="gs\callback\gs_callback.cpp">
       <Filter>gs\callback</Filter>
     </ClCompile>
+    <ClCompile Include="java\java.cpp">
+      <Filter>java</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="settings.h" />
@@ -221,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="gs\gs.h">
       <Filter>gs</Filter>
+    </ClInclude>
+    <ClInclude Include="java\java.h">
+      <Filter>java</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
