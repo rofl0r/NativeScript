@@ -9,3 +9,6 @@ lib/*
 *.xlsx
 *.csv
 scriptSpeed/CSCompiledScripts.dll
+
+CMakeCache.txt
+CMakeFiles
