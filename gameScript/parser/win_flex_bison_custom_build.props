@@ -12,7 +12,7 @@
   <ItemDefinitionGroup>
     <Bison>
       <OutputFile>%(Filename).cpp</OutputFile>
-      <DefinesFile>%(Filename).h</DefinesFile>
+      <DefinesFile>%(Filename).hpp</DefinesFile>
       <CommandLineTemplate>
         start /B /WAIT /D "%(RootDir)%(Directory)" $(SolutionDir)lib\flex_bison\win_bison.exe [AllOptions] [AdditionalOptions] "%(Filename)%(Extension)"
         exit /b %errorlevel%</CommandLineTemplate>
