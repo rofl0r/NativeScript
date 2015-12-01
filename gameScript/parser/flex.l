@@ -13,6 +13,8 @@ namespace gs {
 %}
 
 %option noyywrap
+%option nounistd
+%option never-interactive
 
 %%
 
