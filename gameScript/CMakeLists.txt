@@ -4,6 +4,7 @@ file(GLOB_RECURSE GS_SOURCES *.cpp *.c)
 
 # Export interfaces
 add_definitions(-DGS_BUILD_DLL)
+add_definitions("-fno-rtti")
 
 
 # Workaround for the bug which sets in MSVC Linker->CommandLine->AdditionalOptions /machine:x64 regardless of architecture

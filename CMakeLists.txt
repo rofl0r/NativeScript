@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.6)
 
 project(ScriptSpeed)
 
+# Set path to custom modules
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 # Prevent in source build
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
    message(SEND_ERROR "In-source builds are not allowed. You must create separate build directory.")
@@ -21,4 +24,4 @@ endif()
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
-subdirs(gameScript)
+subdirs(gameScript scriptSpeed)

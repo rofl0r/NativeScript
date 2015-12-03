@@ -1,4 +1,5 @@
 #include "cs.h"
+#include "../settings.h"
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
@@ -20,7 +21,12 @@ namespace cs
 	MonoDomain* init()
 	{
 		// create domain
-		mono_set_dirs("..\\lib", "..\\lib");
+		#if defined(SS_PLATFORM_WINDOWS)
+			#if !defined(SS_MONO_LIB_DIR) || !defined(SS_MONO_ETC_DIR)
+				#error Macros SS_MONO_LIB_DIR and SS_MONO_ETC_DIR were not defined. Cannot compile, mono wouldn't work.
+			#endif
+				mono_set_dirs(SS_MONO_LIB_DIR, SS_MONO_ETC_DIR);
+		#endif
 		MonoDomain *domain = mono_jit_init_version("scriptSpeed", "v4.0.30319");
 
 		//mono_set_dirs("C:\\Program Files (x86)\\Mono\\lib", ":\\Program Files (x86)\\Mono\\etc");
@@ -55,10 +61,17 @@ namespace cs
 	// compiles source trough manual mono process call
 	MonoAssembly* compileFile(MonoDomain* domain, const char* fileName)
 	{
-		char *s = (char*)malloc(strlen(fileName) + 60);
+		char *s = (char*)malloc(strlen(fileName) + strlen(SS_MONO_MCS_DIR) + 60);
 		//sprintf(s, "mono CSCompiler.exe %s Scripts.dll", fileName);
 		//printf("Compiling C# script...");
-		sprintf(s, "..\\lib\\mono\\mcs.exe cs/scripts/%s -out:CSCompiledScripts.dll -warn:0", fileName);
+		#if defined(SS_PLATFORM_WINDOWS)
+			#if !defined(SS_MONO_MCS_DIR)
+				#error Macro SS_MONO_MCS_DIR is not defined. Cannot compile, mono wouldn't work.
+			#endif
+			sprintf(s, "%s\\mcs.exe cs/scripts/%s -out:CSCompiledScripts.dll -warn:0", SS_MONO_MCS_DIR, fileName);
+		#else
+			sprintf(s, "mcs cs/scripts/%s -out:CSCompiledScripts.dll -warn:0", fileName);
+		#endif
 		system(s);
 		free(s);
 		//printf(" Done\n");

@@ -19,7 +19,8 @@ namespace js
 
 		// initialize js
 		// Create a new Isolate and make it the current one.
-		Isolate* isolate = Isolate::New();
+		Isolate::CreateParams create_params;
+  		Isolate* isolate = Isolate::New(create_params);
 		Isolate::Scope isolate_scope(isolate);
 		return isolate;
 	}
