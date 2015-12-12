@@ -1,5 +1,5 @@
 #include "../lua.h"
-#include "../../scenarios/callback/callback.h"
+#include "../../scenario/callback/callback.h"
 #include "../../measure.h"
 #include "lua.hpp"
 #include "Windows.h"

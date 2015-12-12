@@ -1,4 +1,4 @@
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "include/v8.h"
 #include "js_pointSimul.h"
 #include "js_pointSimul_loop.h"

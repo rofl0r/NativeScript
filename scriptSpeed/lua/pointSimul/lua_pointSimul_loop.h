@@ -1,5 +1,5 @@
-#ifndef SB_LUA_POINT_SIMUL_LOOP_H
-#define SB_LUA_POINT_SIMUL_LOOP_H
+#ifndef SS_LUA_POINT_SIMUL_LOOP_H
+#define SS_LUA_POINT_SIMUL_LOOP_H
 
 #include "lua.hpp"
 

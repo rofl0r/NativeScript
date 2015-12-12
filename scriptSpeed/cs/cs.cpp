@@ -35,8 +35,9 @@ namespace cs
 
 	void close(MonoDomain* domain)
 	{
-		// TODO: terminate with cleanup (now it throws exception)
-		//mono_jit_cleanup(domain);
+		mono_jit_cleanup(domain);
+		// remove compiled scripts if some were created
+		remove("CsScriptsTmp.dll");
 	}
 
 	MonoMethod* getMethod(MonoAssembly* assembly, char* nmspace, char* clazz, char* method, int argcnt)
@@ -50,32 +51,37 @@ namespace cs
 	// Creates temporary file with desired content and compiles it using compileFile()
 	MonoAssembly* compileString(MonoDomain* domain, const char* source)
 	{
-		FILE* f = fopen("cs/scripts/tmp","wb");
+		char *s = (char*)malloc(strlen(SS_CS_SCRIPT_PATH) + 15);
+		sprintf(s, "%s/sourceTmp.cs", SS_CS_SCRIPT_PATH);
+		FILE* f = fopen(s,"wb");
 		fwrite(source, sizeof(char), strlen(source), f);
 		fclose(f);
 
-		return compileFile(domain, "tmp");
+		MonoAssembly* ass = compileFile(domain, "sourceTmp.cs");
+		remove(s);
+		return ass;
 	}
 
 	// TODO, switch to compileFileCleaner()
 	// compiles source trough manual mono process call
 	MonoAssembly* compileFile(MonoDomain* domain, const char* fileName)
 	{
-		char *s = (char*)malloc(strlen(fileName) + strlen(SS_MONO_MCS_DIR) + 60);
+		char *s = (char*)malloc(strlen(fileName) + strlen(SS_MONO_MCS_DIR) + strlen(SS_CS_SCRIPT_PATH) + 60);
 		//sprintf(s, "mono CSCompiler.exe %s Scripts.dll", fileName);
 		//printf("Compiling C# script...");
 		#if defined(SS_PLATFORM_WINDOWS)
 			#if !defined(SS_MONO_MCS_DIR)
 				#error Macro SS_MONO_MCS_DIR is not defined. Cannot compile, mono wouldn't work.
 			#endif
-			sprintf(s, "%s\\mcs.exe cs/scripts/%s -out:CSCompiledScripts.dll -warn:0", SS_MONO_MCS_DIR, fileName);
+			sprintf(s, "\"%s\\mcs.exe\" %s/%s -out:CsScriptsTmp.dll -warn:0", SS_MONO_MCS_DIR, SS_CS_SCRIPT_PATH, fileName);
 		#else
-			sprintf(s, "mcs cs/scripts/%s -out:CSCompiledScripts.dll -warn:0", fileName);
+			sprintf(s, "mcs %s/%s -out:CsScriptsTmp.dll -warn:0", SS_CS_SCRIPT_PATH, fileName);
 		#endif
 		system(s);
 		free(s);
 		//printf(" Done\n");
-		return mono_domain_assembly_open(domain, "CSCompiledScripts.dll");
+
+		return mono_domain_assembly_open(domain, "CsScriptsTmp.dll");
 	}
 
 	// TODO fix

@@ -2,7 +2,7 @@
 #define SB_CS_POINT_SIMUL_H
 
 #include <mono/jit/jit.h>
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 
 using namespace pointSimul;
 

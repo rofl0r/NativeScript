@@ -1,7 +1,7 @@
 #include "../cs.h"
 #include "../../measure.h"
 #include <cmath>
-#include "../../scenarios/expression/expression.h"
+#include "../../scenario/expression/expression.h"
 
 #include <mono/jit/jit.h>
 
@@ -133,10 +133,11 @@ namespace cs {
 			printf("JIT compiled assembly failed to load");
 			return 1;
 		}
+
 		MonoMethod* f = getMethod(assembly, "", "E", "f", expression::getParamCount());
 
 		double r = expression::isRunOptimized() ? runOptimized(f) : runNaive(f);
-		
+
 		measure::cpuDisplayResults();
 		expression::validateResult(r);
 		// cleanup

@@ -1,14 +1,10 @@
-/*
-Evaluation of 2000 of simple expressions takes ~200ms
-*/
-
 #include "../lua.h"
 #include "lua.hpp"
 #include "Windows.h"
 #include <iostream>
 #include <cmath>
 #include "../../measure.h"
-#include "../../scenarios/expression/expression.h"
+#include "../../scenario/expression/expression.h"
 
 #define SB_LUA_EXPRESSION_1 "(x-y)*(x-y)"
 #define SB_LUA_EXPRESSION_2 "x*y"

@@ -1,5 +1,5 @@
 #include "../cs.h"
-#include "../../scenarios/callback/callback.h"
+#include "../../scenario/callback/callback.h"
 #include "../../measure.h"
 
 #include <mono/jit/jit.h>

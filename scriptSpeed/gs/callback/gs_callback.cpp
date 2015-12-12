@@ -1,5 +1,5 @@
 #include "../gs.h"
-#include "../../scenarios/callback/callback.h"
+#include "../../scenario/callback/callback.h"
 #include "../../measure.h"
 #include "gameScript.h"
 

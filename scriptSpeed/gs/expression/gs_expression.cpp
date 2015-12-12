@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cmath>
 #include "../../measure.h"
-#include "../../scenarios/expression/expression.h"
+#include "../../scenario/expression/expression.h"
 
 namespace gs {
 
@@ -111,12 +111,12 @@ namespace gs {
 		sourceParam[++cur] = paramNames[0][0];
 		for (int j = 1; j < expression::getParamCount(); j++)
 		{
-			sourceParam[++cur] = ' ';
+			sourceParam[++cur] = ',';
 			sourceParam[++cur] = paramNames[j][0];
 		}
 		sourceParam[++cur] = 0;
-		char source[2 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
-		sprintf(source, "%s) %s", sourceParam, expression::getExpression());
+		char source[10 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
+		sprintf(source, "%s) {return %s;}", sourceParam, expression::getExpression());
 		gs::Script* fncs = gs::Script::parseString(source);
 
 		double r = expression::isRunOptimized() ? runOptimized(fncs) : runNaive(fncs);

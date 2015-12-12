@@ -1,8 +1,8 @@
-#ifndef SB_LUA_POINT_SIMUL_H
-#define SB_LUA_POINT_SIMUL_H
+#ifndef SS_LUA_POINT_SIMUL_H
+#define SS_LUA_POINT_SIMUL_H
 
 #include "lua.hpp"
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 
 namespace lua {
 	namespace pointSimul {

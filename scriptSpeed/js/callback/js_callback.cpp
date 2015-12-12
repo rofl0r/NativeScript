@@ -1,4 +1,4 @@
-#include "../../scenarios/callback/callback.h"
+#include "../../scenario/callback/callback.h"
 #include "include/v8.h"
 #include "../../measure.h"
 #include "../js.h"

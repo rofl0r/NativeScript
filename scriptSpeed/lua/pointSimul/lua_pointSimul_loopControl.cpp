@@ -1,15 +1,6 @@
-/* Lua results in ms:
-
-        Release Wall   Release CPU
-Native:       35          
-LoopTN:      225         
-Script:     2400        
-*/
-
-
 #include <stdio.h>
 #include "../../measure.h"
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "lua.hpp"
 #include "../lua.h"
 #include "lua_pointSimul.h"

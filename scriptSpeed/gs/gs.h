@@ -1,7 +1,9 @@
 #ifndef SB_GS_H
 #define SB_GS_H
 
-#include "../scenarios/scenarios.h"
+#include "../scenario/scenario.h"
+
+#define SS_GS_SCRIPT_PATH "script"
 
 namespace gs {
 

@@ -1,6 +1,12 @@
 file(GLOB_RECURSE GS_HEADERS *.h *.hpp)
 file(GLOB_RECURSE GS_SOURCES *.cpp *.c)
 
+# MSVC filters
+file(GLOB GS_ROOT_DIR_FILES *.h *.cpp)
+SOURCE_GROUP("src" FILES ${GS_ROOT_DIR_FILES})
+SOURCE_GROUP("include" REGULAR_EXPRESSION include/*)
+SOURCE_GROUP("src\\parser" REGULAR_EXPRESSION parser/*)
+
 
 # Export interfaces
 add_definitions(-DGS_BUILD_DLL)

@@ -1,5 +1,5 @@
-#ifndef SB_JS_POINT_SIMUL_LOOP_H
-#define SB_JS_POINT_SIMUL_LOOP_H
+#ifndef SS_JS_POINT_SIMUL_LOOP_H
+#define SS_JS_POINT_SIMUL_LOOP_H
 
 #include "include/v8.h"
 

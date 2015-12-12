@@ -2,8 +2,24 @@ file(GLOB_RECURSE SS_HEADERS *.h *.hpp)
 file(GLOB_RECURSE SS_SOURCES *.cpp *.c)
 
 
+# MSVC filters
+file(GLOB SS_ROOT_DIR_FILES *.h *.cpp)
+SOURCE_GROUP("src" FILES ${SS_ROOT_DIR_FILES})
+FOREACH(GROUP_NAME scenario cs lua js gs)
+  SOURCE_GROUP("src\\${GROUP_NAME}" REGULAR_EXPRESSION ${GROUP_NAME}/*)
+  SOURCE_GROUP("src\\${GROUP_NAME}\\expression" REGULAR_EXPRESSION ${GROUP_NAME}/expression/*)
+  SOURCE_GROUP("src\\${GROUP_NAME}\\callback" REGULAR_EXPRESSION ${GROUP_NAME}/callback/*)
+  SOURCE_GROUP("src\\${GROUP_NAME}\\pointSimul" REGULAR_EXPRESSION ${GROUP_NAME}/pointSimul/*)
+ENDFOREACH(GROUP_NAME)
+
+
 # gameScript (it is located in this project, no need to find)
 include_directories(../gameScript/include)
+
+
+# find SDL
+find_package(SDL REQUIRED)
+include_directories(${SDL_INCLUDE_DIR})
 
 
 # find v8, implemented in cmake/FindV8.cmake
@@ -18,6 +34,7 @@ find_package(MONO REQUIRED)
 include_directories(${MONO_INCLUDE_DIRS})
 link_directories(${MONO_LIBRARY_DIRS})
 IF (WIN32)
+	STRING(REGEX REPLACE "/" "\\\\\\\\" MONO_MCS_DIR "${MONO_MCS_DIR}")
 	add_definitions(-DSS_MONO_LIB_DIR="${MONO_LIB_DIR}")
 	add_definitions(-DSS_MONO_ETC_DIR="${MONO_ETC_DIR}")
 	add_definitions(-DSS_MONO_MCS_DIR="${MONO_MCS_DIR}")
@@ -44,18 +61,18 @@ IF(LUA_DIR_MANUAL)
 ELSE(LUA_DIR_MANUAL)
 	find_package(LUA)
 	IF(NOT LUA_FOUND) 
-		MESSAGE(FATAL_ERROR "Lua not found. If you don't have cmake version, specify its location in LUA_DIR_MANUAL.")
+		MESSAGE(FATAL_ERROR "Lua not found. Specify its location in LUA_DIR_MANUAL.")
 	ENDIF(NOT LUA_FOUND)
 ENDIF(LUA_DIR_MANUAL)
 include_directories(${LUA_INCLUDE_DIR})
 
 
 # Create the application
-add_executable(scriptSpeed ${SS_SOURCES})
+add_executable(scriptSpeed ${SS_SOURCES} ${SS_HEADERS})
 
 
 # Link against libraries
-target_link_libraries(scriptSpeed gameScript ${V8_LIBRARIES} ${MONO_LIBRARIES} ${LUA_LIBRARIES})
+target_link_libraries(scriptSpeed gameScript ${SDL_LIBRARY} ${V8_LIBRARIES} ${MONO_LIBRARIES} ${LUA_LIBRARIES})
 
 IF (WIN32)
  	target_link_libraries(scriptSpeed winmm)

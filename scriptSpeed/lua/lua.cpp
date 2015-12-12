@@ -19,7 +19,7 @@ namespace lua
 	int loadScriptFromFile(lua_State * L, char* fileName)
 	{
 		char *s = (char*)malloc(strlen(fileName) + 15);
-		sprintf(s, "lua/scripts/%s", fileName);
+		sprintf(s, "%s/%s", SS_LUA_SCRIPT_PATH, fileName);
 		
 		// load script with functions
 		if (luaL_dofile(L, s) != 0) {

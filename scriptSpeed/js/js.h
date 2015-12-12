@@ -1,8 +1,10 @@
-#ifndef SB_JS_H
-#define SB_JS_H
+#ifndef SS_JS_H
+#define SS_JS_H
 
-#include "../scenarios/scenarios.h"
+#include "../scenario/scenario.h"
 #include "include/v8.h"
+
+#define SS_JS_SCRIPT_PATH "script"
 
 using namespace v8;
 

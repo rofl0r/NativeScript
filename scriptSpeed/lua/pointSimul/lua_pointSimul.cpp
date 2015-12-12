@@ -1,13 +1,4 @@
-/* Lua results in ms:
-						
-		Release Wall (new str)
-Native:        60            
-ScToNa:      1700          
-ScMinC:      2800          
-Script:      3000         
-*/
-
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "lua.hpp"
 #include "lua_pointSimul.h"
 

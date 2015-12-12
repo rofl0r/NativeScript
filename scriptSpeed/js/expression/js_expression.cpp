@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include "../../measure.h"
-#include "../../scenarios/expression/expression.h"
+#include "../../scenario/expression/expression.h"
 
 using namespace v8;
 

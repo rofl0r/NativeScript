@@ -1,13 +1,4 @@
-/* JavaScript results in ms:
-
-		Release Wall (new str)
-Native:        60            
-ScToNa:      1250          
-ScMinC:      1600          
-Script:      1950         
-*/
-
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "js_pointSimul.h"
 #include "include/v8.h"
 

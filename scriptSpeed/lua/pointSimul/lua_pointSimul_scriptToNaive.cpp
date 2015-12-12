@@ -1,4 +1,4 @@
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 #include <stdio.h>
 #include "lua.hpp"
 #include "../lua.h"

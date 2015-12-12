@@ -2,7 +2,7 @@
 #define SB_JS_POINT_SIMUL_H
 
 #include "include/v8.h"
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 
 using namespace v8;
 

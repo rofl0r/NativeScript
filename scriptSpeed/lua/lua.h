@@ -2,7 +2,9 @@
 #define SB_LUA_H
 
 #include "lua.hpp"
-#include "../scenarios/scenarios.h"
+#include "../scenario/scenario.h"
+
+#define SS_LUA_SCRIPT_PATH "script"
 
 namespace lua {
 

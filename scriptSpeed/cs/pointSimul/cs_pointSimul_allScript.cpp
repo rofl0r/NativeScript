@@ -1,7 +1,6 @@
-#include "../../scenarios/pointSimul/pointSimul.h"
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "cs_pointSimul.h"
 #include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
 #include "../cs.h"
 
 using namespace pointSimul;

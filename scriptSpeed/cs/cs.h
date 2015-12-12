@@ -1,5 +1,10 @@
-#include "../scenarios/scenarios.h"
+#ifndef SB_CS_H
+#define SB_CS_H
+
+#include "../scenario/scenario.h"
 #include <mono/jit/jit.h>
+
+#define SS_CS_SCRIPT_PATH "script"
 
 namespace cs {
 	int runExpression(int c, char** v);
@@ -19,3 +24,5 @@ namespace cs {
 		{ "callback", runCallback }
 	};	
 }
+
+#endif

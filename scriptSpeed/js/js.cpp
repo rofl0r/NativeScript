@@ -2,6 +2,7 @@
 #include "include/libplatform/libplatform.h"
 #include <iostream>
 #include <fstream>
+#include "js.h"
 
 using namespace v8;
 
@@ -35,7 +36,7 @@ namespace js
 
 	Local<Script> loadScriptFromFile(Isolate* isolate, const char* fileName) {
 		char *s = (char*)malloc(strlen(fileName) + 15);
-		sprintf(s, "js/scripts/%s", fileName);
+		sprintf(s, "%s/%s", SS_JS_SCRIPT_PATH, fileName);
 		std::ifstream in(s, std::ios::in | std::ios::binary);
 		free(s);
 		std::string contents;
