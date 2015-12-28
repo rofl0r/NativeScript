@@ -1,11 +1,11 @@
-#ifndef SB_GS_H
-#define SB_GS_H
+#ifndef SB_NS_H
+#define SB_NS_H
 
 #include "../scenario/scenario.h"
 
-#define SS_GS_SCRIPT_PATH "script"
+#define SS_NS_SCRIPT_PATH "script"
 
-namespace gs {
+namespace ns {
 
 	// main scenarios
 	int runExpression(int c, char** v);

@@ -1,9 +1,10 @@
+#include <atomic>
+
+#include <mono/jit/jit.h>
+
 #include "../cs.h"
 #include "../../scenario/callback/callback.h"
 #include "../../measure.h"
-
-#include <mono/jit/jit.h>
-#include <atomic>
 
 namespace cs {
 	namespace callback {
@@ -22,8 +23,8 @@ namespace cs {
 	{
 		if (::callback::readArgs(c, v)) return 1;
 		
-		char declVar[9*SB_C_MAX_PARAMS];
-		char typeVar[7*SB_C_MAX_PARAMS];
+		char declVar[9*SS_C_MAX_PARAMS];
+		char typeVar[7*SS_C_MAX_PARAMS];
 		char* curD = declVar;
 		char* curT = typeVar;
 		if (::callback::getParamCount() > 0)
@@ -44,7 +45,7 @@ namespace cs {
 		curD[0] = 0;
 		curT[0] = 0;
 
-		char source[240 + 20 + SB_C_PARAM_CALL_STRING_MAX_LENGTH + sizeof(declVar)]; // base string literal + long digits(64bits) + callback str max length
+		char source[240 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH + sizeof(declVar)]; // base string literal + long digits(64bits) + callback str max length
 		sprintf(source, "using System;using System.Runtime.CompilerServices;class C{public static void Main(string[] args){}public static void f(){for(long i=1;i<%d;i++){c(%s);}}[MethodImplAttribute(MethodImplOptions.InternalCall)]public static extern void c(%s);}",
 			::callback::getCycleCount() + 1, ::callback::getParamCallString(), declVar);
 
@@ -72,12 +73,12 @@ namespace cs {
 		MonoException* ex;
 
 		// run test
-		measure::cpuStart();
+		measure::start();
 		f(&ex);
-		measure::cpuStop();
+		measure::stop();
 
 		// print results
-		measure::cpuDisplayResults();
+		measure::displayResults();
 		::callback::validateResults();
 
 		// cleanup

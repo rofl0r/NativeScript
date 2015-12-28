@@ -1,9 +1,10 @@
-#include "cs.h"
-#include "../settings.h"
+#include <string>
 
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
-#include <windows.h>
+
+#include "cs.h"
+#include "../settings.h"
 
 namespace cs
 {
@@ -27,7 +28,7 @@ namespace cs
 			#endif
 				mono_set_dirs(SS_MONO_LIB_DIR, SS_MONO_ETC_DIR);
 		#endif
-		MonoDomain *domain = mono_jit_init_version("scriptSpeed", "v4.0.30319");
+		MonoDomain *domain = mono_jit_init_version("scriptSpeed", "v4.0");
 
 		//mono_set_dirs("C:\\Program Files (x86)\\Mono\\lib", ":\\Program Files (x86)\\Mono\\etc");
 		return domain;

@@ -1,27 +1,24 @@
-#include "../lua.h"
-#include "lua.hpp"
-#include "Windows.h"
 #include <iostream>
 #include <cmath>
+
+#include "../lua.h"
+
 #include "../../measure.h"
 #include "../../scenario/expression/expression.h"
-
-#define SB_LUA_EXPRESSION_1 "(x-y)*(x-y)"
-#define SB_LUA_EXPRESSION_2 "x*y"
 
 namespace lua {
 
 	double runNaive(lua_State* L)
 	{
-		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
-		char source[8 + SB_EXPRESSION_MAX_LENGTH];
+		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		char source[8 + SS_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "return %s", expression::getExpression());
 		luaL_loadstring(L, source);
 		int expr = luaL_ref(L, LUA_REGISTRYINDEX);
 
 		double r = 0;
-		measure::cpuStart();
-		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+		measure::start();
+		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < expression::getParamCount(); j++)
 			{
 				lua_pushnumber(L, i*pow(0.7, j));
@@ -35,7 +32,7 @@ namespace lua {
 			r += lua_tonumber(L, -1);
 			lua_pop(L, 1);
 		}
-		measure::cpuStop();
+		measure::stop();
 
 		return r;
 	}
@@ -43,7 +40,7 @@ namespace lua {
 	double runOptimized(lua_State* L)
 	{
 		// wrap the expression into function
-		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[11 + 2 * maxParamCnt];
 		sprintf(sourceParam, "function f(");
@@ -56,15 +53,15 @@ namespace lua {
 		}
 		sourceParam[++cur] = 0;
 
-		char source[14 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
+		char source[14 + sizeof(sourceParam) + SS_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s) return %s; end", sourceParam, expression::getExpression());
 		luaL_dostring(L, source);
 		lua_getglobal(L, "f");
 		int expr = luaL_ref(L, LUA_REGISTRYINDEX);
 
 		double r = 0;
-		measure::cpuStart();
-		for (double i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+		measure::start();
+		for (double i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			lua_rawgeti(L, LUA_REGISTRYINDEX, expr);
 			for (int j = 0; j < expression::getParamCount(); j++)
 			{
@@ -76,7 +73,7 @@ namespace lua {
 			r += lua_tonumber(L, -1);
 			lua_pop(L, 1);
 		}
-		measure::cpuStop();
+		measure::stop();
 
 		return r;
 	}
@@ -92,7 +89,7 @@ namespace lua {
 
 		double r = expression::isRunOptimized() ? runOptimized(L) : runNaive(L);
 		
-		measure::cpuDisplayResults();
+		measure::displayResults();
 		expression::validateResult(r);
 
 		close(L);

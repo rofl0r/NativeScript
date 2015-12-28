@@ -1,7 +1,8 @@
-#ifndef SB_CS_POINT_SIMUL_H
-#define SB_CS_POINT_SIMUL_H
+#ifndef SS_CS_POINT_SIMUL_H
+#define SS_CS_POINT_SIMUL_H
 
 #include <mono/jit/jit.h>
+
 #include "../../scenario/pointSimul/pointSimul.h"
 
 using namespace pointSimul;

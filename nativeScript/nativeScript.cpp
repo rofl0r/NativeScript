@@ -1,10 +1,10 @@
-#include "include/gameScript.h"
+#include "include/nativeScript.h"
 #include "ast.h"
-#include "interpreter.h"
 #include "parser.h"
+#include "interpreter.h"
 #include "executor.h"
 
-namespace gs {
+namespace ns {
 
 	void CompiledScript::bindExternal(const char* name, void* fnc)
 	{

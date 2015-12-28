@@ -1,16 +1,16 @@
-#include "../../scenario/pointSimul/pointSimul.h"
 #include <stdio.h>
+
 #include "lua.hpp"
+
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "../lua.h"
 #include "lua_pointSimul.h"
-#include "Windows.h"
 
 using namespace pointSimul;
 
 namespace lua {
 	namespace pointSimul {
 
-		// TODO: get rid of this global
 		lua_State* Lsmc;
 
 		/*
@@ -30,7 +30,7 @@ namespace lua {
 			*(mousePtr) = getMouse();
 
 			// push friction parameter
-			lua_pushnumber(Lsmc, SB_PS_FRICTION);
+			lua_pushnumber(Lsmc, SS_PS_FRICTION);
 
 			// call the script function (3 arguments, no result)
 			if (lua_pcall(Lsmc, 3, 0, 0) != 0) {

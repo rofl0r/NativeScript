@@ -1,9 +1,10 @@
-#include "../gs.h"
+#include "nativeScript.h"
+
+#include "../ns.h"
 #include "../../scenario/callback/callback.h"
 #include "../../measure.h"
-#include "gameScript.h"
 
-namespace gs
+namespace ns
 {
 	namespace callback
 	{
@@ -21,7 +22,7 @@ namespace gs
 	{
 		if (::callback::readArgs(c, v)) return 1;
 
-		char declVar[2 * SB_C_MAX_PARAMS];
+		char declVar[2 * SS_C_MAX_PARAMS];
 		int curD = -1;
 		if (::callback::getParamCount() > 0)
 		{
@@ -34,22 +35,23 @@ namespace gs
 		}
 		declVar[++curD] = 0;
 
-		char source[45 + 20 + SB_C_PARAM_CALL_STRING_MAX_LENGTH + sizeof(declVar)]; // base string literal + long digits(64bits) + callback str max length
-		sprintf(source, "declare c(%s) f() {return for(i=1,i<%d,1) c(%s);}", 
+		char source[45 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH + sizeof(declVar)]; // base string literal + long digits(64bits) + callback str max length
+		sprintf(source, "external c(%s) f() {return for(i=1,i<%d,1) c(%s);}", 
 			declVar, ::callback::getCycleCount()+1, ::callback::getParamCallString());
 
-		gs::Script *src = gs::Script::parseString(source);
-		gs::CompiledScript *script = src->compile();
+		Script *src = Script::parseString(source);
+		CompiledScript *script = src->compile();
 		src->free();
 		script->bindExternal("c", callback::fncs[::callback::getParamCount()]);
 		double(*f)() = (double(*)())script->getFunction("f");
 
-		::measure::cpuStart();
+		::measure::start();
 		f();
-		::measure::cpuStop();
+		::measure::stop();
 
 		::callback::validateResults();
-		::measure::cpuDisplayResults();
+		::measure::displayResults();
+
 		script->free();
 		return 0;
 	}

@@ -1,15 +1,15 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "scenario/scenario.h"
 #include "lua/lua.h"
 #include "js/js.h"
 #include "cs/cs.h"
-#include "gs/gs.h"
-#include <stdio.h>
-#include <string.h>
-#include "Windows.h"
+#include "ns/ns.h"
 
 int printLanguages() 
 {
-	printf("First argument has to be target scripting language, you can pick from the following:\nlua js cs gs\n");
+	printf("First argument has to be target scripting language, you can pick from the following:\nlua js cs ns\n");
 
 	return 1;
 }
@@ -49,10 +49,10 @@ int processInput(int argc, char** argv)
 		scenarioMap = cs::scenarioMap;
 		scenarioMapSize = sizeof(cs::scenarioMap) / sizeof(CallbackMap);
 	}
-	else if (strcmp(argv[1], "gs") == 0)
+	else if (strcmp(argv[1], "ns") == 0)
 	{
-		scenarioMap = gs::scenarioMap;
-		scenarioMapSize = sizeof(gs::scenarioMap) / sizeof(CallbackMap);
+		scenarioMap = ns::scenarioMap;
+		scenarioMapSize = sizeof(ns::scenarioMap) / sizeof(CallbackMap);
 	}
 	else
 	{

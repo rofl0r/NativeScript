@@ -5,7 +5,7 @@ file(GLOB_RECURSE SS_SOURCES *.cpp *.c)
 # MSVC filters
 file(GLOB SS_ROOT_DIR_FILES *.h *.cpp)
 SOURCE_GROUP("src" FILES ${SS_ROOT_DIR_FILES})
-FOREACH(GROUP_NAME scenario cs lua js gs)
+FOREACH(GROUP_NAME scenario cs lua js ns)
   SOURCE_GROUP("src\\${GROUP_NAME}" REGULAR_EXPRESSION ${GROUP_NAME}/*)
   SOURCE_GROUP("src\\${GROUP_NAME}\\expression" REGULAR_EXPRESSION ${GROUP_NAME}/expression/*)
   SOURCE_GROUP("src\\${GROUP_NAME}\\callback" REGULAR_EXPRESSION ${GROUP_NAME}/callback/*)
@@ -13,8 +13,8 @@ FOREACH(GROUP_NAME scenario cs lua js gs)
 ENDFOREACH(GROUP_NAME)
 
 
-# gameScript (it is located in this project, no need to find)
-include_directories(../gameScript/include)
+# nativeScript (it is located in this project, no need to find)
+include_directories(../nativeScript/include)
 
 
 # find SDL
@@ -72,7 +72,7 @@ add_executable(scriptSpeed ${SS_SOURCES} ${SS_HEADERS})
 
 
 # Link against libraries
-target_link_libraries(scriptSpeed gameScript ${SDL_LIBRARY} ${V8_LIBRARIES} ${MONO_LIBRARIES} ${LUA_LIBRARIES})
+target_link_libraries(scriptSpeed nativeScript ${SDL_LIBRARY} ${V8_LIBRARIES} ${MONO_LIBRARIES} ${LUA_LIBRARIES})
 
 IF (WIN32)
  	target_link_libraries(scriptSpeed winmm)
@@ -81,4 +81,3 @@ ELSE()
 ENDIF()
 
 # TODO: install ${MONO_DIR}/bin/mono-2.0.dll and v8.dll
-

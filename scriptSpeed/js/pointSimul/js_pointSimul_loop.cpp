@@ -1,8 +1,12 @@
-#include "../../scenario/pointSimul/pointSimul.h"
+/* Drawing is disabled for this scenario, because there switching it off 
+during testing while using this approach is curretly not implemented.
+This test is however only experimental and is not included in the final work. */
+
 #include "include/v8.h"
+
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "js_pointSimul.h"
 #include "js_pointSimul_loop.h"
-#include "lua.h"
 #include "../../measure.h"
 #include "../js.h"
 
@@ -14,7 +18,7 @@ namespace js {
 		Local<ObjectTemplate> pointClass;
 		Local<ObjectTemplate> mouseClass;
 
-		void registerCallbacks(v8::Local<v8::ObjectTemplate> global, Isolate* i) {
+		void registerCallbacks(Local<ObjectTemplate> global, Isolate* i) {
 			global->Set(String::NewFromUtf8(i, "stepPoint"), FunctionTemplate::New(i, stepPoint)); 
 			global->Set(String::NewFromUtf8(i, "updateVelocity"), FunctionTemplate::New(i, updateVelocity));
 			global->Set(String::NewFromUtf8(i, "updatePoints"), FunctionTemplate::New(i, updatePoints));
@@ -31,20 +35,16 @@ namespace js {
 			global->Set(String::NewFromUtf8(i, "processInput"), FunctionTemplate::New(i, processInput));
 		}
 
-		void updateVelocity(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void updateVelocity(const FunctionCallbackInfo<Value>& args) {
 			Local<Object> self = Local<Object>::Cast(args[0]);
 			Local<External> wrap = Local<External>::Cast(self->GetInternalField(0));
-			//::pointSimul::updateVelocity(static_cast<point*>(wrap->Value()));
-
-			// TODO: remove hack
-			point* p = static_cast<point*>(wrap->Value());
-			::pointSimul::updateVelocity(::pointSimul::getPoint(0));
+			::pointSimul::updateVelocity(static_cast<point*>(wrap->Value()));
 		}
 
 		/*
 		Update all points
 		*/
-		void updatePoints(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void updatePoints(const FunctionCallbackInfo<Value>& args) {
 			for (int i = 0; i < getPointCount(); i++) {
 				point * p = ::pointSimul::getPoint(i);
 				updateVelocity(p);
@@ -55,7 +55,7 @@ namespace js {
 		/*
 		Get point by index
 		*/
-		void getPoint(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void getPoint(const FunctionCallbackInfo<Value>& args) {
 			point* p = ::pointSimul::getPoint(Local<Value>::Cast(args[0])->Int32Value());
 			Local<Object> jsPoint = pointClass->NewInstance();
 			jsPoint->SetInternalField(0, External::New(args.GetIsolate(), p));
@@ -65,7 +65,7 @@ namespace js {
 		/*
 		Get mouse
 		*/
-		void getMouse(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void getMouse(const FunctionCallbackInfo<Value>& args) {
 			Local<Object> jsMouse = mouseClass->NewInstance();
 			jsMouse->SetInternalField(0, External::New(args.GetIsolate(), ::pointSimul::getMouse()));
 			args.GetReturnValue().Set(jsMouse);
@@ -74,7 +74,7 @@ namespace js {
 		/*
 		Initializes game and drawing variables.
 		*/
-		void initSimul(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void initSimul(const FunctionCallbackInfo<Value>& args) {
 			//initDrawing();
 
 			::pointSimul::initSimul();
@@ -83,16 +83,16 @@ namespace js {
 		/*
 		Draw points
 		*/
-		void draw(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void draw(const FunctionCallbackInfo<Value>& args) {
 			//::pointSimul::drawCurrentState();
 		}
 
-		void preDraw(const v8::FunctionCallbackInfo<v8::Value>& args)
+		void preDraw(const FunctionCallbackInfo<Value>& args)
 		{
 			//::pointSimul::preDraw();
 		}
 
-		void postDraw(const v8::FunctionCallbackInfo<v8::Value>& args)
+		void postDraw(const FunctionCallbackInfo<Value>& args)
 		{
 			//::pointSimul::postDraw();
 		}
@@ -100,7 +100,7 @@ namespace js {
 		/*
 		Draw single point by its coordinates
 		*/
-		void drawPointByCoords(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void drawPointByCoords(const FunctionCallbackInfo<Value>& args) {
 			double x = Local<Value>::Cast(args[0])->NumberValue();
 			double y = Local<Value>::Cast(args[1])->NumberValue();
 			//::pointSimul::drawPoint(x, y);
@@ -109,14 +109,14 @@ namespace js {
 		/*
 		Draw single point
 		*/
-		void drawPoint(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void drawPoint(const FunctionCallbackInfo<Value>& args) {
 			Local<Object> self = Local<Object>::Cast(args[0]);
 			Local<External> wrap = Local<External>::Cast(self->GetInternalField(0));
 			point* p = static_cast<point*>(wrap->Value());
 			//::pointSimul::drawPoint(p);
 		}
 
-		void drawMouse(const v8::FunctionCallbackInfo<v8::Value>& args)
+		void drawMouse(const FunctionCallbackInfo<Value>& args)
 		{
 			//::pointSimul::drawMouse();
 		}
@@ -124,14 +124,14 @@ namespace js {
 		/*
 		Cleans all resources.
 		*/
-		void cleanup(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void cleanup(const FunctionCallbackInfo<Value>& args) {
 			//cleanupDrawing();
 		}
 
 		/*
 		Updates mouse and returns 0 if loop continues or 1 if flag for app quit is raised
 		*/
-		void processInput(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void processInput(const FunctionCallbackInfo<Value>& args) {
 			updateMouse();
 
 			args.GetReturnValue().Set(checkEndSingal());
@@ -155,19 +155,19 @@ namespace js {
 				pointClass = createPointDefinition(i);
 				mouseClass = createMouseDefinition(i);
 				
-				measure::cpuStart();
+				measure::start();
 
 				// create parameters
 				Handle<Value> c = Number::New(i, cycleCount);
 				Handle<Value> p = Number::New(i, pointCount);
-				Handle<Value> friction = Number::New(i, SB_PS_FRICTION);
+				Handle<Value> friction = Number::New(i, SS_PS_FRICTION);
 
 				// call the script function (3 arguments, ignore result)
 				Handle<Value> argv[3] = { p, c, friction };
 				Handle<Value> result = getFunction(i, context, name)->Call(context->Global(), 3, argv);
 
-				measure::cpuStop();
-				measure::cpuDisplayResults();
+				measure::stop();
+				measure::displayResults();
 			}
 			close(i);
 

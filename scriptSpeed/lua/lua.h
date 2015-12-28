@@ -1,5 +1,5 @@
-#ifndef SB_LUA_H
-#define SB_LUA_H
+#ifndef SS_LUA_H
+#define SS_LUA_H
 
 #include "lua.hpp"
 #include "../scenario/scenario.h"

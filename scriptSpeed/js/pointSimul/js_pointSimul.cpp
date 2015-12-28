@@ -1,6 +1,7 @@
+#include "include/v8.h"
+
 #include "../../scenario/pointSimul/pointSimul.h"
 #include "js_pointSimul.h"
-#include "include/v8.h"
 
 using namespace v8;
 using namespace pointSimul;
@@ -17,14 +18,10 @@ namespace js {
 
 		// js callbacks
 
-		void stepPoint(const v8::FunctionCallbackInfo<v8::Value>& args) {
+		void stepPoint(const FunctionCallbackInfo<Value>& args) {
 			Local<Object> self = Local<Object>::Cast(args[0]);
 			Local<External> wrap = Local<External>::Cast(self->GetInternalField(0));
-			//stepPoint(static_cast<point*>(wrap->Value()));
-
-			// TODO: remove hack
-			point* p = static_cast<point*>(wrap->Value());
-			stepPoint(getPoint(0));
+			stepPoint(static_cast<point*>(wrap->Value()));
 		}
 
 		// Js wrapper functions

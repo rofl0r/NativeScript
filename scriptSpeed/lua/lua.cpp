@@ -1,6 +1,6 @@
+#include <string>
+
 #include "lua.h"
-#include "lua.hpp"
-#include "Windows.h"
 
 namespace lua
 {

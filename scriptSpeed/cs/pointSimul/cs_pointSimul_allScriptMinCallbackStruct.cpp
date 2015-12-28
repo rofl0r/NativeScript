@@ -1,7 +1,7 @@
+#include <mono/jit/jit.h>
+
 #include "../../scenario/pointSimul/pointSimul.h"
 #include "cs_pointSimul.h"
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
 #include "../cs.h"
 
 using namespace pointSimul;
@@ -15,7 +15,7 @@ namespace cs {
 		The scripting that should happen for each point in every game loop
 		*/
 		void allScriptMinCallbackLoopStruct(int pointIndex) {
-			double f = SB_PS_FRICTION;
+			double f = SS_PS_FRICTION;
 			void* args[3] = { &f, getPoint(pointIndex), getMouse() };
 			mono_runtime_invoke(scriptMS, NULL, args, NULL);
 		}

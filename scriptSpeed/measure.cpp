@@ -1,58 +1,98 @@
-#include "measure.h"
 #include <stdio.h>
+#include "settings.h"
+
+#ifdef SS_PLATFORM_WINDOWS
 #include "Windows.h"
+#else
+#include <time.h>
+#endif
+
+#include "measure.h"
+
+
+#ifdef SS_PLATFORM_WINDOWS
+
+#else
+
+#endif
 
 namespace measure {
 
-	// TODO: get rid of the globals
+#ifdef SS_PLATFORM_WINDOWS	
 	LARGE_INTEGER time1, time2, freq;
 	FILETIME cpuTime1, sysTime1, createTime, exitTime;
 	FILETIME cpuTime2, sysTime2;
+#else
+	timespec time1, time2;
+#endif
 
-	void cpuStart()
+	void start()
 	{
+#ifdef SS_PLATFORM_WINDOWS
+	#if SS_MEASURE_MODE == SS_MEASURE_CPU
 		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime1, &cpuTime1);
+	#else
+		QueryPerformanceFrequency(&freq);
+		QueryPerformanceCounter(&time1);
+	#endif
+#else
+	#if SS_MEASURE_MODE == SS_MEASURE_CPU
+		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time1);
+	#else
+		clock_gettime(CLOCK_MONOTONIC, &time1);
+	#endif
+#endif
 	}
 
-	void cpuStop()
+	void stop()
 	{
-		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime2, &cpuTime2);
+#ifdef SS_PLATFORM_WINDOWS
+	#if SS_MEASURE_MODE == SS_MEASURE_CPU
+		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime2, &cpuTime2); only 1/64s precision!!!! wtf
+	#else
+		QueryPerformanceCounter(&time2);
+	#endif
+#else
+	#if SS_MEASURE_MODE == SS_MEASURE_CPU
+		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time2);
+	#else
+		clock_gettime(CLOCK_MONOTONIC, &time2);
+	#endif
+#endif
 	}
 
-	void cpuDisplayResults()
+	double getResults()
 	{
+#ifdef SS_PLATFORM_WINDOWS
+	#if SS_MEASURE_MODE == SS_MEASURE_CPU
 		double sTime1 = (double)(sysTime1.dwLowDateTime | ((unsigned long long)sysTime1.dwHighDateTime << 32)) * 0.0001;
 		double sTime2 = (double)(sysTime2.dwLowDateTime | ((unsigned long long)sysTime2.dwHighDateTime << 32)) * 0.0001;
 		double uTime1 = (double)(cpuTime1.dwLowDateTime | ((unsigned long long)cpuTime1.dwHighDateTime << 32)) * 0.0001;
 		double uTime2 = (double)(cpuTime2.dwLowDateTime | ((unsigned long long)cpuTime2.dwHighDateTime << 32)) * 0.0001;
-#if defined(SB_MEASURE_PRINT_HUMAN)
-		printf("Total system-time: %f\n", sTime2 - sTime1);
-		printf("Total user-time: %f\n\n", uTime2 - uTime1);
+		return sTime2 - sTime1 + uTime2 - uTime1;
+	#else
+		return (double)(time2.QuadPart - time1.QuadPart) * 1000.0 / freq.QuadPart;
+	#endif
 #else
-		printf("%f;", sTime2 - sTime1);
-		printf("%f;", uTime2 - uTime1);
+		time_t sec = time2.tv_sec - time1.tv_sec;
+		long nsec = time2.tv_nsec - time1.tv_nsec;
+		return sec*1000 + (double)nsec*0.000001;
 #endif
 	}
 
-	void wallStart()
+	void displayResults()
 	{
-		QueryPerformanceFrequency(&freq);
-		QueryPerformanceCounter(&time1);
-
-	}
-
-	void wallStop()
-	{
-		QueryPerformanceCounter(&time2);
-	}
-
-	void wallDisplayResults()
-	{
-		double time = (double)(time2.QuadPart - time1.QuadPart) * 1000.0 / freq.QuadPart;
-#if defined(SB_MEASURE_PRINT_HUMAN)
-		printf("Total wall-time: %f\n\n", time);
+		double time = getResults();
+		
+#if defined(SS_MEASURE_PRINT_HUMAN)
+	#if SS_MEASURE_MODE == SS_MEASURE_CPU
+		printf("Total CPU-time: %f ms\n", time);
+	#else
+		printf("Total wall-time: %f ms\n", time);
+	#endif
 #else
 		printf("%f;", time);
 #endif
 	}
+
 }

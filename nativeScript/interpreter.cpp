@@ -2,7 +2,7 @@
 #include "parser.h"
 #include "interpreter.h"
 
-namespace gs {
+namespace ns {
 
 	Interpreter::Interpreter(const std::vector<NFuncPtr>& fncs)  {
 		for (NFuncPtr f : fncs)

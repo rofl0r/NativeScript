@@ -1,7 +1,7 @@
+#include <mono/jit/jit.h>
+
 #include "../../scenario/pointSimul/pointSimul.h"
 #include "cs_pointSimul.h"
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
 #include "../cs.h"
 
 using namespace pointSimul;
@@ -27,13 +27,13 @@ namespace cs {
 			/*point* p = getPoint(pointIndex);
 			MonoObject * boxedPoint = mono_value_box(domS, pointClass, p);
 			MonoObject * boxedMouse = mono_value_box(domS, mouseClass, getMouse());
-			point* pm = (point*)mono_object_unbox(methodThunkS(SB_PS_FRICTION, boxedPoint, boxedMouse, &exS));
+			point* pm = (point*)mono_object_unbox(methodThunkS(SS_PS_FRICTION, boxedPoint, boxedMouse, &exS));
 			p->x = pm->x;
 			p->y = pm->y;
 			p->xVelocity = pm->xVelocity;
 			p->yVelocity = pm->yVelocity;*/
 
-			double f = SB_PS_FRICTION;
+			double f = SS_PS_FRICTION;
 			void* args[3] = { &f, getPoint(pointIndex), getMouse() };
 			mono_runtime_invoke(scriptS, NULL, args, NULL);
 		}

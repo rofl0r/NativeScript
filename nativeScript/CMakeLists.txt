@@ -1,15 +1,15 @@
-file(GLOB_RECURSE GS_HEADERS *.h *.hpp)
-file(GLOB_RECURSE GS_SOURCES *.cpp *.c)
+file(GLOB_RECURSE NS_HEADERS *.h *.hpp)
+file(GLOB_RECURSE NS_SOURCES *.cpp *.c)
 
 # MSVC filters
-file(GLOB GS_ROOT_DIR_FILES *.h *.cpp)
-SOURCE_GROUP("src" FILES ${GS_ROOT_DIR_FILES})
+file(GLOB NS_ROOT_DIR_FILES *.h *.cpp)
+SOURCE_GROUP("src" FILES ${NS_ROOT_DIR_FILES})
 SOURCE_GROUP("include" REGULAR_EXPRESSION include/*)
 SOURCE_GROUP("src\\parser" REGULAR_EXPRESSION parser/*)
 
 
 # Export interfaces
-add_definitions(-DGS_BUILD_DLL)
+add_definitions(-DNS_BUILD_DLL)
 add_definitions("-fno-rtti")
 
 
@@ -25,15 +25,15 @@ find_package(BISON)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/parser) 
 
 # Run flex and bison
-BISON_TARGET(GSParser ./parser/bison.y ${CMAKE_CURRENT_BINARY_DIR}/parser/bison.cpp)
-FLEX_TARGET(GSScanner ./parser/flex.l  ${CMAKE_CURRENT_BINARY_DIR}/parser/flex.cpp)
-ADD_FLEX_BISON_DEPENDENCY(GSScanner GSParser)
+BISON_TARGET(NSParser ./parser/bison.y ${CMAKE_CURRENT_BINARY_DIR}/parser/bison.cpp)
+FLEX_TARGET(NSScanner ./parser/flex.l  ${CMAKE_CURRENT_BINARY_DIR}/parser/flex.cpp)
+ADD_FLEX_BISON_DEPENDENCY(NSScanner NSParser)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/parser)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/parser)
 
 
 # Create library
-add_library(gameScript SHARED ${GS_HEADERS} ${GS_SOURCES} ${BISON_GSParser_OUTPUTS} ${FLEX_GSScanner_OUTPUTS})
+add_library(nativeScript SHARED ${NS_HEADERS} ${NS_SOURCES} ${BISON_NSParser_OUTPUTS} ${FLEX_NSScanner_OUTPUTS})
 
 
 # Link LLVM
@@ -73,4 +73,4 @@ llvm_map_components_to_libnames(llvm_libs
 )
 
 # Link against LLVM libraries
-target_link_libraries(gameScript ${llvm_libs})
+target_link_libraries(nativeScript ${llvm_libs})

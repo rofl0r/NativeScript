@@ -1,20 +1,21 @@
-#include "callback.h"
 #include <iostream>
+
+#include "callback.h"
 
 namespace callback {
 	double result = 0;
-	long cycleCnt = SB_C_DEFAULT_CYCLES;
-	int paramCnt = SB_C_DEFAULT_PARAM_COUNT;
+	long cycleCnt = SS_C_DEFAULT_CYCLES;
+	int paramCnt = SS_C_DEFAULT_PARAM_COUNT;
 
 	bool readArgs(int c, char** v)
 	{
 		if (c > 0)
 		{
 			paramCnt = atol(v[0]);
-			if (paramCnt < 0 || paramCnt > SB_C_MAX_PARAMS)
+			if (paramCnt < 0 || paramCnt > SS_C_MAX_PARAMS)
 			{
-				paramCnt = SB_C_DEFAULT_PARAM_COUNT;
-				printf("Invalid param count, allowed only 0 to %d. Using default value.", SB_C_MAX_PARAMS);
+				paramCnt = SS_C_DEFAULT_PARAM_COUNT;
+				printf("Invalid param count, allowed only 0 to %d. Using default value.", SS_C_MAX_PARAMS);
 				return 1;
 			}
 		}

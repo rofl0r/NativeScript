@@ -1,8 +1,9 @@
 #ifndef SS_JS_H
 #define SS_JS_H
 
-#include "../scenario/scenario.h"
 #include "include/v8.h"
+
+#include "../scenario/scenario.h"
 
 #define SS_JS_SCRIPT_PATH "script"
 

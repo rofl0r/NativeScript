@@ -1,5 +1,5 @@
-#ifndef SB_SCENARIO_H
-#define SB_SCENARIO_H
+#ifndef SS_SCENARIO_H
+#define SS_SCENARIO_H
 
 #include <stdio.h>
 

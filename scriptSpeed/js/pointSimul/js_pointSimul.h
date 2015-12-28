@@ -1,7 +1,8 @@
-#ifndef SB_JS_POINT_SIMUL_H
-#define SB_JS_POINT_SIMUL_H
+#ifndef SS_JS_POINT_SIMUL_H
+#define SS_JS_POINT_SIMUL_H
 
 #include "include/v8.h"
+
 #include "../../scenario/pointSimul/pointSimul.h"
 
 using namespace v8;
@@ -10,7 +11,7 @@ namespace js {
 	namespace pointSimul
 	{
 		// common util functions
-		void stepPoint(const v8::FunctionCallbackInfo<v8::Value>& args);
+		void stepPoint(const FunctionCallbackInfo<Value>& args);
 		Local<ObjectTemplate> createPointDefinition(Isolate* isolate);
 		Local<ObjectTemplate> createMouseDefinition(Isolate* isolate);
 

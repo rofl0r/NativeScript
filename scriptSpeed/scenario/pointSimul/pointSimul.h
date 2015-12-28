@@ -1,11 +1,11 @@
-#ifndef SB_POINT_SIMUL_H
-#define SB_POINT_SIMUL_H
+#ifndef SS_POINT_SIMUL_H
+#define SS_POINT_SIMUL_H
 
 // static settings
-#define SB_PS_FRICTION 0.2
-#define SB_PS_MOUSE_RADIUS 10
-#define SB_PS_DEFAULT_POINT_COUNT 400
-#define SB_PS_DEFAULT_CYCLES 1000
+#define SS_PS_FRICTION 0.2
+#define SS_PS_MOUSE_RADIUS 10
+#define SS_PS_DEFAULT_POINT_COUNT 400
+#define SS_PS_DEFAULT_CYCLES 1000
 
 namespace pointSimul {
 

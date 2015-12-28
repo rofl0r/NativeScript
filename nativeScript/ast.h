@@ -1,8 +1,10 @@
-#pragma once
+#ifndef NS_AST_H
+#define NS_AST_H
+
 #include <vector>
 #include <memory>
 
-namespace gs {
+namespace ns {
 	
 	class NNumber;
 	class NVariable;
@@ -110,3 +112,5 @@ namespace gs {
 		bool hasBody() const { return returnExp != nullptr; };
 	};	
 }
+
+#endif

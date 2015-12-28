@@ -1,5 +1,6 @@
-#include "expression.h"
 #include <iostream>
+
+#include "expression.h"
 
 namespace expression {
 
@@ -49,11 +50,11 @@ namespace expression {
 	{
 		switch (paramCount)
 		{
-			case 2: return SB_EXPRESSION_PARAM_2;
-			case 3: return SB_EXPRESSION_PARAM_3;
-			case 4: return SB_EXPRESSION_PARAM_4;
-			case 5: return SB_EXPRESSION_PARAM_5;
-			case 6: return SB_EXPRESSION_PARAM_6;
+			case 2: return SS_EXPRESSION_PARAM_2;
+			case 3: return SS_EXPRESSION_PARAM_3;
+			case 4: return SS_EXPRESSION_PARAM_4;
+			case 5: return SS_EXPRESSION_PARAM_5;
+			case 6: return SS_EXPRESSION_PARAM_6;
 			default: 
 				printf("Requested argument count is not implemented in expression scenario.");
 				return "";
@@ -74,23 +75,40 @@ namespace expression {
 		return false;
 	}
 
-	void validateResult(double result)
+	void validateResult(double result, double cycles)
 	{
-		/*double r = 0;
-		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
-			double x = i;
-			double y = i*0.3;
-			r += (x-y)*(x-y);
-			r += x*y;
+		double p[6];
+		double r = 0;
+		for (long i = 0; i < cycles; i++) {
+			for (int j = 0; j < paramCount; j++)
+			{
+				p[j] = i*pow(0.7, j);
+			}
+
+			switch(paramCount)
+			{
+			case 2:
+				r += (p[0]*p[1])+(p[0]+p[1])*(p[0]-p[1]);
+				break;
+			case 3:
+				r += (p[0]*p[1])+(p[2]+p[1])*(p[0]-p[2]);
+				break;
+			case 4:
+				r += (p[0]*p[1])+(p[2]+p[3])*(p[0]-p[1]);
+				break;
+			case 5:
+				r += (p[0]*p[1])+(p[2]+p[3])*(p[4]-p[1]);
+				break;
+			case 6:
+				r += (p[0]*p[1])+(p[2]+p[3])*(p[4]-p[5]);
+				break;
+			}
 		}
 
-		if (r != result)
+		if (r-result > 0.00000001) // tolerance for precision errors
 		{
 			printf("Incorrect result. The correct result is by %f bigger\n", r-result);
-		}*/
+		}
 
-		// TODO
-
-		printf("Result: %f\n", result);
 	}
 }

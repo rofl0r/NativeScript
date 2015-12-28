@@ -1,7 +1,9 @@
 #include <stdio.h>
+
+#include "lua.hpp"
+
 #include "../../measure.h"
 #include "../../scenario/pointSimul/pointSimul.h"
-#include "lua.hpp"
 #include "../lua.h"
 #include "lua_pointSimul.h"
 #include "lua_pointSimul_loop.h"
@@ -25,21 +27,21 @@ namespace lua {
 			// load script with functions
 			loadScriptFromFile(L, "pointSimulLoopPointsScripted.lua");
 
-			measure::cpuStart();
+			measure::start();
 
 			// load script function to be run and push parameters
 			lua_getglobal(L, "loopPointsScripted");
 			lua_pushnumber(L, p);
 			lua_pushnumber(L, c);
-			lua_pushnumber(L, SB_PS_FRICTION);
+			lua_pushnumber(L, SS_PS_FRICTION);
 
 			// call the script function (3 arguments, no result)
 			if (lua_pcall(L, 3, 0, 0) != 0) {
 				printf("Lua Error: %s\n", lua_tostring(L, -1));
 			}
 
-			measure::cpuStop();
-			measure::cpuDisplayResults();
+			measure::stop();
+			measure::displayResults();
 
 			close(L);
 

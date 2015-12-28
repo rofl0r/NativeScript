@@ -7,22 +7,22 @@ namespace js {
 	namespace pointSimul {
 
 		// Lua wrapper callbacks
-		void updateVelocity(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void updatePoints(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void getPoint(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void getMouse(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void initSimul(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void draw(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void preDraw(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void postDraw(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void drawMouse(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void drawPoint(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void drawPointByCoords(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void cleanup(const v8::FunctionCallbackInfo<v8::Value>& args);
-		void processInput(const v8::FunctionCallbackInfo<v8::Value>& args);
+		void updateVelocity(const FunctionCallbackInfo<Value>& args);
+		void updatePoints(const FunctionCallbackInfo<Value>& args);
+		void getPoint(const FunctionCallbackInfo<Value>& args);
+		void getMouse(const FunctionCallbackInfo<Value>& args);
+		void initSimul(const FunctionCallbackInfo<Value>& args);
+		void draw(const FunctionCallbackInfo<Value>& args);
+		void preDraw(const FunctionCallbackInfo<Value>& args);
+		void postDraw(const FunctionCallbackInfo<Value>& args);
+		void drawMouse(const FunctionCallbackInfo<Value>& args);
+		void drawPoint(const FunctionCallbackInfo<Value>& args);
+		void drawPointByCoords(const FunctionCallbackInfo<Value>& args);
+		void cleanup(const FunctionCallbackInfo<Value>& args);
+		void processInput(const FunctionCallbackInfo<Value>& args);
 
 		// one function to register all wrapper callbacks
-		void registerCallbacks(v8::Local<v8::ObjectTemplate> global, v8::Isolate* i);
+		void registerCallbacks(Local<ObjectTemplate> global, Isolate* i);
 		int runScenario(char* name, int cycleCount, int pointCount);
 	}
 }

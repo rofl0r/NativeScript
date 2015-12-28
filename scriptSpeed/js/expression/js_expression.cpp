@@ -1,8 +1,9 @@
-#include "../js.h"
-#include "include/v8.h"
-#include "Windows.h"
 #include <iostream>
 #include <cmath>
+
+#include "include/v8.h"
+
+#include "../js.h"
 #include "../../measure.h"
 #include "../../scenario/expression/expression.h"
 
@@ -15,7 +16,7 @@ namespace js {
 		Local<String> source = String::NewFromUtf8(is, expression::getExpression());
 		Local<Script> script1 = Script::Compile(source);
 
-		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		Local<String> varName[maxParamCnt];
 
@@ -25,8 +26,8 @@ namespace js {
 		}
 		Local<Value> varValue[maxParamCnt];
 		double r = 0;
-		measure::cpuStart();
-		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+		measure::start();
+		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < expression::getParamCount(); j++)
 			{
 				varValue[j] = Number::New(is, i*pow(0.7,j));
@@ -35,7 +36,7 @@ namespace js {
 
 			r += script1->Run()->NumberValue();
 		}
-		measure::cpuStop();
+		measure::stop();
 
 		return r;
 	}
@@ -43,7 +44,7 @@ namespace js {
 	double runOptimized(Isolate* is, Local<Context> context)
 	{
 		// wrap the expression into function
-		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[11 + 2 * maxParamCnt];
 		sprintf(sourceParam, "function f(");
@@ -55,7 +56,7 @@ namespace js {
 			sourceParam[++cur] = paramNames[j][0];
 		}
 		sourceParam[++cur] = 0;
-		char source[11 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
+		char source[11 + sizeof(sourceParam) + SS_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s) {return %s}", sourceParam, expression::getExpression());
 		Local<String> source1 = String::NewFromUtf8(is, source);
 		Local<Script> script1 = Script::Compile(source1);
@@ -64,15 +65,15 @@ namespace js {
 
 		Local<Value> varValue[maxParamCnt];
 		double r = 0;
-		measure::cpuStart();
-		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+		measure::start();
+		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < expression::getParamCount(); j++)
 			{
 				varValue[j] = Number::New(is, i*pow(0.7, j));
 			}
 			r += f1->Call(context->Global(), expression::getParamCount(), varValue)->NumberValue();
 		}
-		measure::cpuStop();
+		measure::stop();
 
 		return r;
 	}
@@ -95,7 +96,7 @@ namespace js {
 
 			double r = expression::isRunOptimized() ? runOptimized(is, context) : runNaive(is, context);
 
-			measure::cpuDisplayResults();
+			measure::displayResults();
 			expression::validateResult(r);
 		}
 

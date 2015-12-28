@@ -1,11 +1,14 @@
-#pragma once
+#ifndef NS_EXECUTOR_H
+#define NS_EXECUTOR_H
 
-#include "ast.h"
 #include <map>
+
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/ExecutionEngine/ExecutionEngine.h>
 
-namespace gs
+#include "ast.h"
+
+namespace ns
 {
 	class Executor : public AstVisitor
 	{
@@ -20,6 +23,7 @@ namespace gs
 		bool finalized = false;
 		llvm::AllocaInst *createVariable(llvm::Function *f,	const std::string &name);
 		llvm::AllocaInst *createVariable(const std::string &name); // usable only when the builder is set inside some fnc
+		void declareFunction(const NFunction* node);
 	public:
 		Executor(const std::vector<NFuncPtr>& functionAst);
 		void bindExternal(const char* name, void* fnc);
@@ -36,3 +40,5 @@ namespace gs
 		void visit(const NFunction* node) override;
 	};
 }
+
+#endif

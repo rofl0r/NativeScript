@@ -1,7 +1,7 @@
+#include <mono/jit/jit.h>
+
 #include "../../scenario/pointSimul/pointSimul.h"
 #include "cs_pointSimul.h"
-#include <mono/jit/jit.h>
-#include <mono/metadata/assembly.h>
 #include "../cs.h"
 
 using namespace pointSimul;
@@ -23,7 +23,7 @@ namespace cs {
 		void scriptToNativeLoop(int pointIndex) {
 			
 			MonoObject *p = createPoint(assemblyN, domN, pointIndex);
-			methodThunkN(SB_PS_FRICTION, p, monoMouseN, &exN);
+			methodThunkN(SS_PS_FRICTION, p, monoMouseN, &exN);
 		}
 
 		/*

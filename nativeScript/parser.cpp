@@ -1,7 +1,7 @@
-#include "parser.h"
 #include "ast.h"
+#include "parser.h"
 
-namespace gs{
+namespace ns {
 
 	extern void scan_string(const char* str);
 	extern void scan_file(FILE* f);

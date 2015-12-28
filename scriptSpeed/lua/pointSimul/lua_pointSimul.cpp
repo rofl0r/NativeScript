@@ -1,5 +1,6 @@
-#include "../../scenario/pointSimul/pointSimul.h"
 #include "lua.hpp"
+
+#include "../../scenario/pointSimul/pointSimul.h"
 #include "lua_pointSimul.h"
 
 using namespace pointSimul;

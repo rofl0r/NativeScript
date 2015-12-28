@@ -1,7 +1,7 @@
 #ifndef SS_LUA_POINT_SIMUL_LOOP_H
 #define SS_LUA_POINT_SIMUL_LOOP_H
 
-#include "lua.hpp"
+#include "lua.h"
 
 namespace lua {
 	namespace pointSimul {

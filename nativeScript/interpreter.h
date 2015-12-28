@@ -1,9 +1,12 @@
-#pragma once
-#include "ast.h"
-#include <map>
-#include "include/gameScript.h"
+#ifndef NS_INTERPRETER_H
+#define NS_INTERPRETER_H
 
-namespace gs {
+#include <map>
+
+#include "include/nativeScript.h"
+#include "ast.h"
+
+namespace ns {
 	class Interpreter : public AstVisitor
 	{
 	private:
@@ -25,5 +28,6 @@ namespace gs {
 		void visit(const NFunctionCall* node) override;
 		void visit(const NFunction* node) override;
 	};
-
 }
+
+#endif

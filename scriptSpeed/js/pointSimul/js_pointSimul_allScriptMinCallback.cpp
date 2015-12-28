@@ -1,6 +1,7 @@
+#include "include/v8.h"
+
 #include "../../scenario/pointSimul/pointSimul.h"
 #include "js_pointSimul.h"
-#include "include/v8.h"
 #include "../js.h"
 
 using namespace pointSimul;
@@ -8,7 +9,6 @@ using namespace pointSimul;
 namespace js {
 	namespace pointSimul {
 
-		// TODO: get rid of the globals
 		Isolate* isolateMC;
 		Local<ObjectTemplate> pointClassMC;
 		Local<ObjectTemplate> mouseClassMC;
@@ -31,7 +31,7 @@ namespace js {
 			jsMouse->SetInternalField(0, External::New(isolateMC, getMouse()));
 
 			// create friction parameter
-			Handle<Value> friction = Number::New(isolateMC, SB_PS_FRICTION);
+			Handle<Value> friction = Number::New(isolateMC, SS_PS_FRICTION);
 
 			// call the script function (3 arguments, ignore result)
 			Handle<Value> argv[3] = { jsPoint, jsMouse, friction };

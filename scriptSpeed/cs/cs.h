@@ -1,8 +1,9 @@
-#ifndef SB_CS_H
-#define SB_CS_H
+#ifndef SS_CS_H
+#define SS_CS_H
+
+#include <mono/jit/jit.h>
 
 #include "../scenario/scenario.h"
-#include <mono/jit/jit.h>
 
 #define SS_CS_SCRIPT_PATH "script"
 

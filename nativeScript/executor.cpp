@@ -1,7 +1,5 @@
-#include "executor.h"
-#include "parser/tokens.h"
-#include "include/gameScript.h"
 #include <vector>
+
 #include "llvm/IR/Verifier.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ExecutionEngine/MCJIT.h"
@@ -15,9 +13,13 @@
 #include "llvm/Analysis/Passes.h"
 #include "llvm/Transforms/Scalar.h"
 
+#include "include/nativeScript.h"
+#include "executor.h"
+#include "parser/tokens.h"
+
 using namespace llvm;
 
-namespace gs
+namespace ns
 {
 	Executor::Executor(const std::vector<NFuncPtr>& functionAst)
 		: builder(llvm::getGlobalContext())
@@ -32,7 +34,7 @@ namespace gs
 		module = m.get();
 
 		// COFF not supported by llvm on Win32
-#if defined(GS_PLATFORM_WINDOWS) && !defined(_WIN64)
+#if defined(NS_PLATFORM_WINDOWS) && !defined(_WIN64)
 		auto triple = llvm::sys::getProcessTriple();
 		module->setTargetTriple(triple + "-elf");
 #endif
@@ -55,7 +57,7 @@ namespace gs
 		// Provide basic AliasAnalysis support for GVN.
 		TheFPM->add(createBasicAliasAnalysisPass());
 		//NOT WORKING HERE - BECAUSE OF FLOAT?// Do simple "peephole" optimizations and bit-twiddling optzns.
-		TheFPM->add(createInstructionCombiningPass());
+		//TheFPM->add(createInstructionCombiningPass());
 		// Reassociate expressions.
 		TheFPM->add(createReassociatePass());
 		// Eliminate Common SubExpressions.
@@ -64,6 +66,12 @@ namespace gs
 		TheFPM->add(createCFGSimplificationPass());
 
 		TheFPM->doInitialization();
+
+		// declare all functions first so forward declarations aren't necessary
+		for (NFuncPtr f : functionAst)
+		{
+			declareFunction(f.get());
+		}
 
 		// generate code for all functions
 		for (NFuncPtr f : functionAst)
@@ -85,7 +93,7 @@ namespace gs
 		// make sure the function was declared, but not defined
 		if (f == nullptr || !f->isDeclaration()) 
 		{
-			error("External function cannot be bound - it wasn't defined as external in script.");
+			error("External function cannot be bound - it wasn't declared as external in script.");
 			return;
 		}
 		engine->addGlobalMapping(f, fnc);
@@ -188,7 +196,7 @@ namespace gs
 			result = error("Invalid binary operator");
 		}
 	}
-
+	
 	void Executor::visit(const NCondition* node)
 	{
 		node->cond.accept(this);
@@ -335,62 +343,63 @@ namespace gs
 		result = builder.CreateCall(f, paramVal, "call");
 	}
 
-	void Executor::visit(const NFunction* node)
+	void Executor::declareFunction(const NFunction* node)
 	{
-		// if the function was already defined, throw an error
+		// if the function was already declared, throw an error
 		if (functions[node->name] != nullptr && !functions[node->name]->isDeclaration())
 		{
-			result = error("Attempt to redefine function");
+			result = error("Attempt to redeclare a function (all functions must have a different name)");
 			return;
 		}
 
-		Function *f;
+		std::vector<Type *> argTypes(node->args.size(), Type::getDoubleTy(getGlobalContext()));
+		FunctionType *ftype = FunctionType::get(Type::getDoubleTy(getGlobalContext()), argTypes, false);
+		functions[node->name] = Function::Create(ftype, Function::ExternalLinkage, node->name.c_str(), module);
+	}
 
-		// if the function wasn't declared yet, declare it
-		if (functions[node->name] == nullptr) {
-			std::vector<Type *> argTypes(node->args.size(), Type::getDoubleTy(getGlobalContext()));
-			FunctionType *ftype = FunctionType::get(Type::getDoubleTy(getGlobalContext()), argTypes, false);
-			f = Function::Create(ftype, Function::ExternalLinkage, node->name.c_str(), module);
+	void Executor::visit(const NFunction* node)
+	{
+		// If this is an external declaration, do nothing
+		if (!node->hasBody()) {
+			return;
+		}
 
-			functions[node->name] = f;
-		} else
+		// All functions must be already declared by calling Executor::declareFunction()!
+		Function *f = functions[node->name];
+
+		// Add a basic block to the FooF function.
+		BasicBlock *BB = BasicBlock::Create(getGlobalContext(), "EntryBlock", f);
+
+		// Tell the basic block builder to attach itself to the new basic block
+		builder.SetInsertPoint(BB);
+
+		// Clear the locals
+		locals.clear();
+
+		// Create new locals from the parameters
+		Function::arg_iterator AI = f->arg_begin();
+		for (unsigned Idx = 0, e = node->args.size(); Idx != e; ++Idx, ++AI) {
+			// Create an alloca for this variable.
+			AllocaInst *parVar = createVariable(*node->args[Idx]);
+
+			// Store the initial value into the alloca.
+			builder.CreateStore(AI, parVar);
+
+			// Add arguments to variable symbol table.
+			locals[*node->args[Idx]] = parVar;
+		}
+
+		for (NExpression* e : *node->body)
 		{
-			// Otherwise use previous declaration
-			f = functions[node->name];
+			e->accept(this);
 		}
-
-		// if this is definition, create the body
-		if (node->hasBody()) {
-			// Add a basic block to the FooF function.
-			BasicBlock *BB = BasicBlock::Create(getGlobalContext(), "EntryBlock", f);
-
-			// Tell the basic block builder to attach itself to the new basic block
-			builder.SetInsertPoint(BB);
-
-			Function::arg_iterator AI = f->arg_begin();
-			for (unsigned Idx = 0, e = node->args.size(); Idx != e; ++Idx, ++AI) {
-				// Create an alloca for this variable.
-				AllocaInst *parVar = createVariable(*node->args[Idx]);
-
-				// Store the initial value into the alloca.
-				builder.CreateStore(AI, parVar);
-
-				// Add arguments to variable symbol table.
-				locals[*node->args[Idx]] = parVar;
-			}
-
-			for (NExpression* e : *node->body)
-			{
-				e->accept(this);
-			}
 			
-			node->returnExp->accept(this);
+		node->returnExp->accept(this);
 
-			// Create the return instruction and add it to the basic block.
-			builder.CreateRet(result);
+		// Create the return instruction and add it to the basic block.
+		builder.CreateRet(result);
 
-			verifyFunction(*f);
-		}
+		verifyFunction(*f);
 	}
 
 }

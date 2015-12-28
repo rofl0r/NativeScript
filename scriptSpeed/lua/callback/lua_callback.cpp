@@ -1,9 +1,9 @@
+#include <iostream>
+
 #include "../lua.h"
+
 #include "../../scenario/callback/callback.h"
 #include "../../measure.h"
-#include "lua.hpp"
-#include "Windows.h"
-#include <iostream>
 
 namespace lua {
 	namespace callback {	
@@ -32,7 +32,7 @@ namespace lua {
 	{
 		if (::callback::readArgs(c, v)) return 1;
 
-		char source[40 + 20 + SB_C_PARAM_CALL_STRING_MAX_LENGTH]; // base string literal + long digits(64bits) + callback str max length
+		char source[40 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH]; // base string literal + long digits(64bits) + callback str max length
 		sprintf(source, "function f()for i=1,%d,1 do c(%s);end end",
 			::callback::getCycleCount(), ::callback::getParamCallString());
 
@@ -47,14 +47,14 @@ namespace lua {
 		lua_getglobal(L, "f");;
 		
 		// call the script function (no argument, no result)
-		measure::cpuStart();
+		measure::start();
 		if (lua_pcall(L, 0, 0, 0) != 0) {
 			printf("Lua Error: %s\n", lua_tostring(L, -1));
 		}
-		measure::cpuStop();
+		measure::stop();
 
 		// display results
-		measure::cpuDisplayResults();
+		measure::displayResults();
 		::callback::validateResults();
 
 		close(L);

@@ -1,9 +1,12 @@
-#include "../cs.h"
-#include "../../measure.h"
+// The optimized scenario is expected to run very fast, thus 100 times more cycles are executed
+
 #include <cmath>
-#include "../../scenario/expression/expression.h"
 
 #include <mono/jit/jit.h>
+
+#include "../cs.h"
+#include "../../measure.h"
+#include "../../scenario/expression/expression.h"
 
 namespace cs {
 
@@ -13,9 +16,9 @@ namespace cs {
 	typedef double(__stdcall *csFnc5)(double, double, double, double, double, MonoException**);
 	typedef double(__stdcall *csFnc6)(double, double, double, double, double, double, MonoException**);
 
-	double runNaive(MonoMethod* f)
+	void runNaive(MonoMethod* f)
 	{
-		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 
 		double paramsRaw[maxParamCnt];
@@ -26,20 +29,20 @@ namespace cs {
 		}
 		double r = 0;
 
-		measure::cpuStart();
-		for (long i = 0; i < SB_E_DEFAULT_CYCLES; i++) {
+		measure::start();
+		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < expression::getParamCount(); j++)
 			{
 				paramsRaw[j] = i*pow(0.7, j);
 			}
 			r += *(double*)callMethod(f, params);
 		}
-		measure::cpuStop();
+		measure::stop();
 
-		return r;
+		expression::validateResult(r);
 	}
 
-	double runOptimized(MonoMethod* f)
+	void runOptimized(MonoMethod* f)
 	{
 		MonoException* ex;
 
@@ -50,48 +53,48 @@ namespace cs {
 		csFnc5 f5 = (csFnc5)fnc;
 		csFnc6 f6 = (csFnc6)fnc;
 
-		const long cycles = SB_E_DEFAULT_CYCLES*100;
+		const long cycles = SS_E_DEFAULT_CYCLES*100;
 		double r = 0;
 		switch (expression::getParamCount())
 		{
 		case 2:
-			measure::cpuStart();
+			measure::start();
 			for (long i = 0; i < cycles; i++) {
 				r += f2(i, i*0.7, &ex);
 			}
-			measure::cpuStop();
+			measure::stop();
 			break;
 		case 3:
-			measure::cpuStart();
+			measure::start();
 			for (long i = 0; i < cycles; i++) {
 				r += f3(i, i*0.7, i*pow(0.7, 2), &ex);
 			}
-			measure::cpuStop();
+			measure::stop();
 			break;
 		case 4:
-			measure::cpuStart();
+			measure::start();
 			for (long i = 0; i < cycles; i++) {
 				r += f4(i, i*0.7, i*pow(0.7, 2), i*pow(0.7, 3), &ex);
 			}
-			measure::cpuStop();
+			measure::stop();
 			break;
 		case 5:
-			measure::cpuStart();
+			measure::start();
 			for (long i = 0; i < cycles; i++) {
 				r += f5(i, i*0.7, i*pow(0.7, 2), i*pow(0.7, 3), i*pow(0.7, 4), &ex);
 			}
-			measure::cpuStop();
+			measure::stop();
 			break;
 		case 6:
-			measure::cpuStart();
+			measure::start();
 			for (long i = 0; i < cycles; i++) {
 				r += f6(i, i*0.7, i*pow(0.7, 2), i*pow(0.7, 3), i*pow(0.7, 4), i*pow(0.7, 5), &ex);
 			}
-			measure::cpuStop();
+			measure::stop();
 			break;
 		}
 
-		return r;
+		expression::validateResult(r, cycles);
 	}
 
 	int runExpression(int c, char** v)
@@ -101,7 +104,7 @@ namespace cs {
 			return 1;
 		}
 
-		char* paramNames[] = SB_EXPRESSION_PARAM_NAMES;
+		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[71 + 9 * maxParamCnt];
 		sprintf(sourceParam, "class E{public static void Main(string[] args){}public static double f(double ");
@@ -120,7 +123,7 @@ namespace cs {
 			sourceParam[++cur] = paramNames[j][0];
 		}
 		sourceParam[++cur] = 0;
-		char source[12 + sizeof(sourceParam) + SB_EXPRESSION_MAX_LENGTH];
+		char source[12 + sizeof(sourceParam) + SS_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "%s){return %s;}}", sourceParam, expression::getExpression());
 
 		// init
@@ -136,11 +139,10 @@ namespace cs {
 
 		MonoMethod* f = getMethod(assembly, "", "E", "f", expression::getParamCount());
 
-		double r = expression::isRunOptimized() ? runOptimized(f) : runNaive(f);
+		expression::isRunOptimized() ? runOptimized(f) : runNaive(f);
 
-		measure::cpuDisplayResults();
-		expression::validateResult(r);
-		// cleanup
+		measure::displayResults();
+		
 		close(domain);
 		
 		return 0;

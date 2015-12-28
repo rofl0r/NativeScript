@@ -1,18 +1,12 @@
-#ifndef SB_MEASURE_H
-#define SB_MEASURE_H
-
-// prints in human readible format (otherwise generates results for csv output file)
-//#define SB_MEASURE_PRINT_HUMAN
+#ifndef SS_MEASURE_H
+#define SS_MEASURE_H
 
 namespace measure
 {
-	void cpuStart();
-	void cpuStop();
-	void cpuDisplayResults();
-
-	void wallStart();
-	void wallStop();
-	void wallDisplayResults();
+	void start();
+	void stop();
+	double getResults(); // in miliseconds
+	void displayResults();
 }
 
 #endif

@@ -1,15 +1,14 @@
+#include <iostream>
+
+#include <SDL.h>
+
 #include "pointSimul.h"
 #include "../../measure.h"
-#include <SDL.h>
-#include "Windows.h"
-#include <iostream>
 
 namespace pointSimul {
 
-	// TODO: get rid of globals
-
-	int pointCount = SB_PS_DEFAULT_POINT_COUNT;
-	int cycles = SB_PS_DEFAULT_CYCLES;
+	int pointCount = SS_PS_DEFAULT_POINT_COUNT;
+	int cycles = SS_PS_DEFAULT_CYCLES;
 	point* points;
 	mouse m;
 	float mouseAngle;
@@ -17,7 +16,6 @@ namespace pointSimul {
 	bool quit;
 	SDL_Renderer *ren;
 	SDL_Window *win;
-	bool measureWall = false;
 
 	point * getPoint(int pointIndex) {
 		return points + pointIndex;
@@ -50,14 +48,14 @@ namespace pointSimul {
 
 	void stepPoint(point* p) {
 		double speed = sqrt(pow(p->xVelocity, 2) + pow(p->yVelocity, 2));
-		if (speed <= SB_PS_FRICTION) {
+		if (speed <= SS_PS_FRICTION) {
 			p->xVelocity = 0;
 			p->yVelocity = 0;
 		}
 		else {
 			// apply friction
-			p->xVelocity -= SB_PS_FRICTION*p->xVelocity / speed;
-			p->yVelocity -= SB_PS_FRICTION*p->yVelocity / speed;
+			p->xVelocity -= SS_PS_FRICTION*p->xVelocity / speed;
+			p->yVelocity -= SS_PS_FRICTION*p->yVelocity / speed;
 
 			// move points
 			p->x += p->xVelocity;
@@ -172,8 +170,8 @@ namespace pointSimul {
 	void simulateMouse()
 	{
 		mouseAngle += 0.25;
-		m.x = sin(mouseAngle)* SB_PS_MOUSE_RADIUS + pointCount / 2;
-		m.y = cos(mouseAngle)* SB_PS_MOUSE_RADIUS + pointCount / 2;
+		m.x = sin(mouseAngle)* SS_PS_MOUSE_RADIUS + pointCount / 2;
+		m.y = cos(mouseAngle)* SS_PS_MOUSE_RADIUS + pointCount / 2;
 	}
 
 	void updateMouse() {
@@ -244,14 +242,8 @@ namespace pointSimul {
 	int runTest(void(*scriptInLoop)(int pointIndex)) 
 	{
 		initSimul();
-		if (measureWall)
-		{
-			measure::wallStart();
-		} 
-		else
-		{
-			measure::cpuStart();
-		}
+
+		measure::start();
 
 		for (int i = 0; i < cycles; i++) {
 			simulateMouse();
@@ -262,16 +254,8 @@ namespace pointSimul {
 			}
 		}
 
-		if (measureWall)
-		{
-			measure::wallStop();
-			measure::wallDisplayResults();
-		}
-		else
-		{
-			measure::cpuStop();
-			measure::cpuDisplayResults();
-		}
+		measure::stop();
+		measure::displayResults();
 
 		return 0;
 	}
@@ -345,8 +329,6 @@ namespace pointSimul {
 				printf("Ignoring unknown argument: %s\n", v[1]);
 			}
 		}
-
-		// TODO: wall/cpu
 
 		if (c > 2)
 		{

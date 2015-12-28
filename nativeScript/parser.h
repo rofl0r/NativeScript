@@ -1,9 +1,11 @@
-#pragma once
+#ifndef NS_PARSER_H
+#define NS_PARSER_H
 
-#include "ast.h"
 #include <memory>
 
-namespace gs {
+#include "ast.h"
+
+namespace ns {
 
 	class Parser
 	{
@@ -16,3 +18,5 @@ namespace gs {
 		Parser(const char* source);
 	};
 }
+
+#endif
