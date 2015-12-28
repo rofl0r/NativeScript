@@ -1,5 +1,6 @@
 #include "../../scenario/pointSimul/pointSimul.h"
 #include "cs_pointSimul.h"
+#include "../cs.h"
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 
@@ -10,68 +11,68 @@ namespace cs {
 	// entry point
 	int runPointSimul(int c, char** v)
 	{
-		return processConfig(c, v, pointSimul::versionMap, sizeof(pointSimul::versionMap) / sizeof(CallbackMap));
+		return processConfig(c, v, pointSimul::versionMap, sizeof(pointSimul::versionMap) / sizeof(::pointSimul::CallbackMap));
 	}
 
 	namespace pointSimul {
 		
 		// wrapper functions
-		__declspec(dllexport) void setPointX(MonoObject* that, double val) {
+		SS_CS_CALLBACK_EXPORT void setPointX(MonoObject* that, double val) {
 			extractPoint(that)->x = val;
 		}
 
-		__declspec(dllexport) double getPointX(MonoObject* that) {
+		SS_CS_CALLBACK_EXPORT double getPointX(MonoObject* that) {
 			return extractPoint(that)->x;
 		}
 
-		__declspec(dllexport) void setPointY(MonoObject* that, double val) {
+		SS_CS_CALLBACK_EXPORT void setPointY(MonoObject* that, double val) {
 			extractPoint(that)->y = val;
 		}
 
-		__declspec(dllexport) double getPointY(MonoObject* that) {
+		SS_CS_CALLBACK_EXPORT double getPointY(MonoObject* that) {
 			return extractPoint(that)->y;
 		}
 
-		__declspec(dllexport) void setVelocityX(MonoObject* that, double val) {
+		SS_CS_CALLBACK_EXPORT void setVelocityX(MonoObject* that, double val) {
 			extractPoint(that)->xVelocity = val;
 		}
 
-		__declspec(dllexport) double getVelocityX(MonoObject* that) {
+		SS_CS_CALLBACK_EXPORT double getVelocityX(MonoObject* that) {
 			return extractPoint(that)->xVelocity;
 		}
 
-		__declspec(dllexport) void setVelocityY(MonoObject* that, double val) {
+		SS_CS_CALLBACK_EXPORT void setVelocityY(MonoObject* that, double val) {
 			extractPoint(that)->yVelocity = val;
 		}
 
-		__declspec(dllexport) double getVelocityY(MonoObject* that) {
+		SS_CS_CALLBACK_EXPORT double getVelocityY(MonoObject* that) {
 			return extractPoint(that)->yVelocity;
 		}
 		
-		__declspec(dllexport) double getMouseX(MonoObject* that) {
+		SS_CS_CALLBACK_EXPORT double getMouseX(MonoObject* that) {
 			return getMouse()->x;
 		}
 
-		__declspec(dllexport) double getMouseY(MonoObject* that) {
+		SS_CS_CALLBACK_EXPORT double getMouseY(MonoObject* that) {
 			return getMouse()->y;
 		}
 
 		void definePointCallbacks()
 		{
-			mono_add_internal_call("Point::setX(double)", setPointX);
-			mono_add_internal_call("Point::getX()", getPointX);
-			mono_add_internal_call("Point::setY(double)", setPointY);
-			mono_add_internal_call("Point::getY()", getPointY);
-			mono_add_internal_call("Point::setVelocityX(double)", setVelocityX);
-			mono_add_internal_call("Point::getVelocityX()", getVelocityX);
-			mono_add_internal_call("Point::setVelocityY(double)", setVelocityY);
-			mono_add_internal_call("Point::getVelocityY()", getVelocityY);
+			mono_add_internal_call("Point::setX(double)", (void*)setPointX);
+			mono_add_internal_call("Point::getX()", (void*)getPointX);
+			mono_add_internal_call("Point::setY(double)", (void*)setPointY);
+			mono_add_internal_call("Point::getY()", (void*)getPointY);
+			mono_add_internal_call("Point::setVelocityX(double)", (void*)setVelocityX);
+			mono_add_internal_call("Point::getVelocityX()", (void*)getVelocityX);
+			mono_add_internal_call("Point::setVelocityY(double)", (void*)setVelocityY);
+			mono_add_internal_call("Point::getVelocityY()", (void*)getVelocityY);
 		}
 
 		void defineMouseCallbacks()
 		{
-			mono_add_internal_call("Mouse::getX()", getMouseX);
-			mono_add_internal_call("Mouse::getY()", getMouseY);
+			mono_add_internal_call("Mouse::getX()", (void*)getMouseX);
+			mono_add_internal_call("Mouse::getY()", (void*)getMouseY);
 		}
 
 		MonoObject* createPoint(MonoAssembly* assembly, MonoDomain* domain, int pointIndex)

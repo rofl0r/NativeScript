@@ -9,7 +9,7 @@ using namespace pointSimul;
 namespace cs {
 	namespace pointSimul {
 
-		typedef void(__stdcall *ScriptFunction)(double, MonoObject*, MonoObject*, MonoException**);
+		typedef void(SS_CS_CALL *ScriptFunction)(double, MonoObject*, MonoObject*, MonoException**);
 
 		MonoDomain* domM;
 		MonoAssembly *assemblyM;

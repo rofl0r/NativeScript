@@ -68,16 +68,16 @@ include_directories(${LUA_INCLUDE_DIR})
 
 
 # Create the application
-add_executable(scriptSpeed ${SS_SOURCES} ${SS_HEADERS})
+add_executable(scrSpeed ${SS_SOURCES} ${SS_HEADERS})
 
 
 # Link against libraries
-target_link_libraries(scriptSpeed nativeScript ${SDL_LIBRARY} ${V8_LIBRARIES} ${MONO_LIBRARIES} ${LUA_LIBRARIES})
+target_link_libraries(scrSpeed nativeScript ${SDL_LIBRARY} ${V8_LIBRARIES} ${MONO_LIBRARIES} ${LUA_LIBRARIES})
 
 IF (WIN32)
- 	target_link_libraries(scriptSpeed winmm)
+ 	target_link_libraries(scrSpeed winmm)
 ELSE()
-	target_link_libraries(scriptSpeed pthread dl)
+	target_link_libraries(scrSpeed pthread dl)
 ENDIF()
 
 # TODO: install ${MONO_DIR}/bin/mono-2.0.dll and v8.dll

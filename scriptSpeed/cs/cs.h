@@ -3,9 +3,18 @@
 
 #include <mono/jit/jit.h>
 
+#include "../settings.h"
 #include "../scenario/scenario.h"
 
 #define SS_CS_SCRIPT_PATH "script"
+
+#if defined SS_PLATFORM_WINDOWS
+	#define SS_CS_CALLBACK_EXPORT __declspec(dllexport)
+	#define SS_CS_CALL __stdcall
+#else
+	#define SS_CS_CALLBACK_EXPORT
+	#define SS_CS_CALL
+#endif
 
 namespace cs {
 	int runExpression(int c, char** v);

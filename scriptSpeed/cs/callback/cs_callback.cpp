@@ -1,4 +1,5 @@
 #include <atomic>
+#include <string.h>
 
 #include <mono/jit/jit.h>
 
@@ -10,13 +11,13 @@ namespace cs {
 	namespace callback {
 
 		// callback function definitions
-		__declspec(dllexport) void cb0(MonoException**) { ::callback::processCallback(1); }
-		__declspec(dllexport) void cb1(double a, MonoException**) { ::callback::processCallback(a); }
-		__declspec(dllexport) void cb2(double a, double b, MonoException**) { ::callback::processCallback(a + b); }
-		__declspec(dllexport) void cb3(double a, double b, double c, MonoException**) { ::callback::processCallback(a + b + c); }
-		__declspec(dllexport) void cb4(double a, double b, double c, double d, MonoException**) { ::callback::processCallback(a + b + c + d); }
+		SS_CS_CALLBACK_EXPORT void cb0(MonoException**) { ::callback::processCallback(1); }
+		SS_CS_CALLBACK_EXPORT void cb1(double a, MonoException**) { ::callback::processCallback(a); }
+		SS_CS_CALLBACK_EXPORT void cb2(double a, double b, MonoException**) { ::callback::processCallback(a + b); }
+		SS_CS_CALLBACK_EXPORT void cb3(double a, double b, double c, MonoException**) { ::callback::processCallback(a + b + c); }
+		SS_CS_CALLBACK_EXPORT void cb4(double a, double b, double c, double d, MonoException**) { ::callback::processCallback(a + b + c + d); }
 
-		void* fncs[] = { cb0, cb1, cb2, cb3, cb4 };
+		void* fncs[] = { (void*)cb0, (void*)cb1, (void*)cb2, (void*)cb3, (void*)cb4 };
 	}
 
 	int runCallback(int c, char** v)

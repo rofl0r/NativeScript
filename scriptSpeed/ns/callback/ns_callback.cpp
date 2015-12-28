@@ -15,7 +15,7 @@ namespace ns
 		double cb3(double a, double b, double c) { ::callback::processCallback(a + b + c); return 0; }
 		double cb4(double a, double b, double c, double d) { ::callback::processCallback(a + b + c + d); return 0; }
 
-		void* fncs[] = { cb0, cb1, cb2, cb3, cb4 };
+		void* fncs[] = { (void*)cb0, (void*)cb1, (void*)cb2, (void*)cb3, (void*)cb4 };
 	}
 
 	int runCallback(int c, char** v)

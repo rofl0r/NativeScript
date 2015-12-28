@@ -10,11 +10,11 @@
 
 namespace cs {
 
-	typedef double(__stdcall *csFnc2)(double, double, MonoException**);
-	typedef double(__stdcall *csFnc3)(double, double, double, MonoException**);
-	typedef double(__stdcall *csFnc4)(double, double, double, double, MonoException**);
-	typedef double(__stdcall *csFnc5)(double, double, double, double, double, MonoException**);
-	typedef double(__stdcall *csFnc6)(double, double, double, double, double, double, MonoException**);
+	typedef double(SS_CS_CALL *csFnc2)(double, double, MonoException**);
+	typedef double(SS_CS_CALL *csFnc3)(double, double, double, MonoException**);
+	typedef double(SS_CS_CALL *csFnc4)(double, double, double, double, MonoException**);
+	typedef double(SS_CS_CALL *csFnc5)(double, double, double, double, double, MonoException**);
+	typedef double(SS_CS_CALL *csFnc6)(double, double, double, double, double, double, MonoException**);
 
 	void runNaive(MonoMethod* f)
 	{

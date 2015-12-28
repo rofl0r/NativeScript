@@ -16,11 +16,11 @@ namespace ns {
 	/// Define import or export
 
 #if defined NS_PLATFORM_WINDOWS && !defined NS_REMOVE_DLL_HEADERS
-#if defined NS_BUILD_DLL 
-	#define NS_IMPORT_EXPORT __declspec(dllexport)
-#else
-	#define NS_IMPORT_EXPORT __declspec(dllimport)
-#endif
+	#if defined NS_BUILD_DLL 
+		#define NS_IMPORT_EXPORT __declspec(dllexport)
+	#else
+		#define NS_IMPORT_EXPORT __declspec(dllimport)
+	#endif
 #else
 	#define NS_IMPORT_EXPORT
 #endif

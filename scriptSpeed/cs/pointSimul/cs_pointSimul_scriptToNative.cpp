@@ -9,7 +9,7 @@ using namespace pointSimul;
 namespace cs {
 	namespace pointSimul {
 
-		typedef void(__stdcall *ScriptFunction)(double, MonoObject*, MonoObject*, MonoException**);
+		typedef void(SS_CS_CALL *ScriptFunction)(double, MonoObject*, MonoObject*, MonoException**);
 
 		MonoDomain* domN;
 		MonoAssembly *assemblyN;
@@ -29,7 +29,7 @@ namespace cs {
 		/*
 		Callback method
 		*/
-		__declspec(dllexport) void stepPoint(MonoObject* p) {
+		SS_CS_CALLBACK_EXPORT void stepPoint(MonoObject* p) {
 			stepPoint(extractPoint(p));
 		}
 
@@ -47,7 +47,7 @@ namespace cs {
 				return 1;
 			}
 
-			mono_add_internal_call("PointSimul::stepPoint(Point)", stepPoint);
+			mono_add_internal_call("PointSimul::stepPoint(Point)", (void*)stepPoint);
 
 			MonoMethod* script = getMethod(assemblyN, "", "PointSimul", "scriptToNative", 3);
 			methodThunkN = (ScriptFunction)mono_method_get_unmanaged_thunk(script);

@@ -1,4 +1,4 @@
-#include <iostream>
+#include <string.h>
 #include <fstream>
 
 #include "include/v8.h"

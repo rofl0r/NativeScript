@@ -4,7 +4,8 @@ LINUX BUILD GUIDE
 First you have to build all dependencies:
 
 LLVM
-- get sources, create separate build directory, and cd into it
+- get sources (3.7.0, e.g. http://llvm.org/releases/download.html)
+- create separate build directory, and cd into it
 - cmake -DCMAKE_BUILD_TYPE=MinSizeRel <path_to_llvm_src>
 - cmake --build .
 - cmake --build . --target install (might need sudo)
@@ -28,10 +29,16 @@ Lua
 - cd lua-5.3.2
 - make linux
 
+SDL
+- apt-get install libsdl2-dev
+
 
 Now you can build the benchmark
 
 - create new build directory (in source build is prohibited), from there run:
 - cmake <path_to_scriptSpeed> -DV8_DIR=<path_to_v8> (paths have to be absolute!)
 - if needed, add -DLUA_DIR_MANUAL=<path_to_lua> (if lua wasn't installed in cmake compatible way)
+- sdl can cause issues as well, specify -DSDL_INCLUDE_DIR="<path_to_sdl_include_dir>" and -DSDL_LIBRARY="<path_to_libsdl2.so>" (e.g. on x86 64-bit ubuntu: /usr/include/SDL2 and /usr/lib/x86_64-linux-gnu/libSDL2.so)
 - make
+- copy "script" folder from original location to the same folder the executable is (it contains tested script files)
+- run test: "./scrSpeed lua expression" or "./scrSpeed cs pointSimul allScript interactive"

@@ -23,7 +23,7 @@ namespace cs {
 		/*
 		Callback method
 		*/
-		__declspec(dllexport) void stepPointStruct(struct point* p) {
+		SS_CS_CALLBACK_EXPORT void stepPointStruct(struct point* p) {
 			stepPoint(p);
 		}
 
@@ -41,7 +41,7 @@ namespace cs {
 				return 1;
 			}
 
-			mono_add_internal_call("PointSimulStruct::stepPoint(PointStruct&)", stepPointStruct);
+			mono_add_internal_call("PointSimulStruct::stepPoint(PointStruct&)", (void*)stepPointStruct);
 
 			scriptNS = getMethod(assembly, "", "PointSimulStruct", "scriptToNative", 3);
 
