@@ -19,8 +19,9 @@ namespace js {
 		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		Local<String> varName[maxParamCnt];
+		int paramCnt = expression::getParamCount();
 
-		for (int j = 0; j < expression::getParamCount(); j++)
+		for (int j = 0; j < paramCnt; j++)
 		{
 			varName[j] = v8::String::NewFromUtf8(is, paramNames[j]);
 		}
@@ -28,7 +29,7 @@ namespace js {
 		double r = 0;
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
-			for (int j = 0; j < expression::getParamCount(); j++)
+			for (int j = 0; j < paramCnt; j++)
 			{
 				varValue[j] = Number::New(is, i*pow(0.7,j));
 				context->Global()->Set(varName[j], varValue[j]);
@@ -49,8 +50,9 @@ namespace js {
 		char sourceParam[11 + 2 * maxParamCnt];
 		sprintf(sourceParam, "function f(");
 		int cur = 10;
+		int paramCnt = expression::getParamCount();
 		sourceParam[++cur] = paramNames[0][0];
-		for (int j = 1; j < expression::getParamCount(); j++)
+		for (int j = 1; j < paramCnt; j++)
 		{
 			sourceParam[++cur] = ',';
 			sourceParam[++cur] = paramNames[j][0];
@@ -67,11 +69,11 @@ namespace js {
 		double r = 0;
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
-			for (int j = 0; j < expression::getParamCount(); j++)
+			for (int j = 0; j < paramCnt; j++)
 			{
 				varValue[j] = Number::New(is, i*pow(0.7, j));
 			}
-			r += f1->Call(context->Global(), expression::getParamCount(), varValue)->NumberValue();
+			r += f1->Call(context->Global(), paramCnt, varValue)->NumberValue();
 		}
 		measure::stop();
 

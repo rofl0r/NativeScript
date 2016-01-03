@@ -48,7 +48,7 @@ namespace measure {
 	{
 #ifdef SS_PLATFORM_WINDOWS
 	#if SS_MEASURE_MODE == SS_MEASURE_CPU
-		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime2, &cpuTime2); only 1/64s precision!!!! wtf
+		GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &sysTime2, &cpuTime2); // only 1/64s precision!!!
 	#else
 		QueryPerformanceCounter(&time2);
 	#endif
@@ -91,7 +91,7 @@ namespace measure {
 		printf("Total wall-time: %f ms\n", time);
 	#endif
 #else
-		printf("%f;", time);
+		printf("%f", time);
 #endif
 	}
 

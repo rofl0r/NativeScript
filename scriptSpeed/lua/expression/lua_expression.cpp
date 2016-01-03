@@ -15,11 +15,12 @@ namespace lua {
 		sprintf(source, "return %s", expression::getExpression());
 		luaL_loadstring(L, source);
 		int expr = luaL_ref(L, LUA_REGISTRYINDEX);
+		int paramCnt = expression::getParamCount();
 
 		double r = 0;
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
-			for (int j = 0; j < expression::getParamCount(); j++)
+			for (int j = 0; j < paramCnt; j++)
 			{
 				lua_pushnumber(L, i*pow(0.7, j));
 				lua_setglobal(L, paramNames[j]);
@@ -45,8 +46,9 @@ namespace lua {
 		char sourceParam[11 + 2 * maxParamCnt];
 		sprintf(sourceParam, "function f(");
 		int cur = 10;
+		int paramCnt = expression::getParamCount();
 		sourceParam[++cur] = paramNames[0][0];
-		for (int j = 1; j < expression::getParamCount(); j++)
+		for (int j = 1; j < paramCnt; j++)
 		{
 			sourceParam[++cur] = ',';
 			sourceParam[++cur] = paramNames[j][0];
@@ -63,11 +65,11 @@ namespace lua {
 		measure::start();
 		for (double i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			lua_rawgeti(L, LUA_REGISTRYINDEX, expr);
-			for (int j = 0; j < expression::getParamCount(); j++)
+			for (int j = 0; j < paramCnt; j++)
 			{
 				lua_pushnumber(L, i*pow(0.7, j));
 			}
-			if (lua_pcall(L, expression::getParamCount(), 1, 0) != 0) {
+			if (lua_pcall(L, paramCnt, 1, 0) != 0) {
 				printf("Lua Error: %s\n", lua_tostring(L, -1));
 			}
 			r += lua_tonumber(L, -1);

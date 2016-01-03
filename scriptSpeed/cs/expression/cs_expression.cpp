@@ -23,7 +23,8 @@ namespace cs {
 
 		double paramsRaw[maxParamCnt];
 		void *params[maxParamCnt];
-		for (int j = 0; j < expression::getParamCount(); j++)
+		int paramCnt = expression::getParamCount();
+		for (int j = 0; j < paramCnt; j++)
 		{
 			params[j] = &(paramsRaw[j]);
 		}
@@ -31,7 +32,7 @@ namespace cs {
 
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
-			for (int j = 0; j < expression::getParamCount(); j++)
+			for (int j = 0; j < paramCnt; j++)
 			{
 				paramsRaw[j] = i*pow(0.7, j);
 			}

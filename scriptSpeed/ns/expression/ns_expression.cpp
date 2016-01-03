@@ -23,10 +23,11 @@ namespace ns {
 		double params[sizeof(paramNames) / sizeof(char*)];
 		double r = 0;
 		InterpretableScript* is = fncs->getInterpreter();
+		int paramCnt = expression::getParamCount();
 		
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
-			for (int j = 0; j < expression::getParamCount(); j++)
+			for (int j = 0; j < paramCnt; j++)
 			{
 				params[j] = i*pow(0.7, j);
 			}
