@@ -23,6 +23,7 @@ namespace lua {
 	lua_State* init();
 	void close(lua_State * L);
 	int loadScriptFromFile(lua_State * L, char* fileName);
+	void dumpFunction(lua_State * L, const char* funcName);
 };
 
 #endif

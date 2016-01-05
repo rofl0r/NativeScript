@@ -26,13 +26,14 @@ namespace js {
 			varName[j] = v8::String::NewFromUtf8(is, paramNames[j]);
 		}
 		Local<Value> varValue[maxParamCnt];
+		Local<Object> global = context->Global();
 		double r = 0;
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < paramCnt; j++)
 			{
-				varValue[j] = Number::New(is, i*pow(0.7,j));
-				context->Global()->Set(varName[j], varValue[j]);
+				varValue[j] = Number::New(is, 0.1+i);//*pow(0.7,j));
+				global->Set(varName[j], varValue[j]);
 			}
 
 			r += script1->Run()->NumberValue();
@@ -67,13 +68,15 @@ namespace js {
 
 		Local<Value> varValue[maxParamCnt];
 		double r = 0;
+
+		Local<Object> global = context->Global();
 		measure::start();
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < paramCnt; j++)
 			{
-				varValue[j] = Number::New(is, i*pow(0.7, j));
+				varValue[j] = Number::New(is, 0.1+i);//*pow(0.7, j));
 			}
-			r += f1->Call(context->Global(), paramCnt, varValue)->NumberValue();
+			r += f1->Call(global, paramCnt, varValue)->NumberValue();
 		}
 		measure::stop();
 

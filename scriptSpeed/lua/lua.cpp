@@ -2,6 +2,7 @@
 #include <cstdlib>
 
 #include "lua.h"
+#include <iostream>
 
 namespace lua
 {
@@ -30,5 +31,20 @@ namespace lua
 		free(s);
 
 		return 0;
+	}
+
+	int writer (lua_State *L, unsigned char* str, size_t sz, void* ud)
+	{
+		for (int i=0; i<sz; i++)
+			std::cout << (int)str[i] << " ";
+		std::cout << std::endl;
+
+		return 0;
+	}
+
+	void dumpFunction(lua_State * L, const char* funcName)
+	{
+		lua_getglobal(L, funcName);
+		lua_dump(L, (lua_Writer)writer, 0, 0);
 	}
 }

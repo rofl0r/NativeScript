@@ -85,7 +85,7 @@ namespace expression {
 		for (long i = 0; i < cycles; i++) {
 			for (int j = 0; j < paramCount; j++)
 			{
-				p[j] = i*pow(0.7, j);
+				p[j] = 0.1+i;//*pow(0.7, j);
 			}
 
 			switch(paramCount)

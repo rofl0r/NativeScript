@@ -44,7 +44,7 @@ namespace lua {
 		lua_setglobal(L, "c");
 
 		// load script function to be run and push parameters
-		lua_getglobal(L, "f");;
+		lua_getglobal(L, "f");
 		
 		// call the script function (no argument, no result)
 		measure::start();

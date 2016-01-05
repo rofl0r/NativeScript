@@ -22,7 +22,7 @@ namespace lua {
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < paramCnt; j++)
 			{
-				lua_pushnumber(L, i*pow(0.7, j));
+				lua_pushnumber(L, 0.1+i);//*pow(0.7, j));
 				lua_setglobal(L, paramNames[j]);
 			}
 
@@ -67,7 +67,7 @@ namespace lua {
 			lua_rawgeti(L, LUA_REGISTRYINDEX, expr);
 			for (int j = 0; j < paramCnt; j++)
 			{
-				lua_pushnumber(L, i*pow(0.7, j));
+				lua_pushnumber(L, 0.1+i);//*pow(0.7, j));
 			}
 			if (lua_pcall(L, paramCnt, 1, 0) != 0) {
 				printf("Lua Error: %s\n", lua_tostring(L, -1));

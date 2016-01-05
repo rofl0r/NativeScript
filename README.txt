@@ -42,3 +42,13 @@ Now you can build the benchmark
 - make
 - copy "script" folder from original location to the same folder the executable is (it contains tested script files)
 - run test: "./scrSpeed lua expression" or "./scrSpeed cs pointSimul allScript interactive"
+
+
+Run all tests
+- copy runTests.sh or runTests.bat from repository root to the same directory scrSpeed executable is in
+- run it (make sure it has executable permissions)
+- results will be in file output.csv
+- you can generate mean and standard deviation (sample) by using file OutputProcessor.class:
+- copy it the same way as runTests script
+- run it using java with a single argument - name of the file with results (e.g. java OutputProcessor output.csv)
+- file processed-<original-filename>.csv will be produced - first column is mean, second standard deviation

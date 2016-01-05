@@ -17,11 +17,37 @@ ECHO %DATE% %TIME% > output.csv
 PATH=%PATH%;%~dp0lib\sdl;%~dp0lib\mono
 
 cd scriptSpeed
-FOR %%A IN (js lua cs gs) DO (
+FOR %%A IN (js lua cs ns) DO (
 	FOR %%B IN (
-		"expression"
-		"expression opt"
-		"callback"
+		"expression 2"
+		"expression 3"
+		"expression 4"
+		"expression 5"
+		"expression 6"
+		"expression 2 opt"
+		"expression 3 opt"
+		"expression 4 opt"
+		"expression 5 opt"
+		"expression 6 opt"
+		"callback 0"
+		"callback 1"
+		"callback 2"
+		"callback 3"
+		"callback 4"
+	) DO (
+		ECHO. >> ..\output.csv
+		ECHO %%A %%~B >> ..\output.csv
+		ECHO %%A %%~B
+		FOR /L %%C IN (1,1,%repeats%) DO (
+			..\Release\scriptSpeed.exe %%A %%~B >> ..\output.csv
+			ECHO. >> ..\output.csv
+			if !errorlevel! neq 0 exit /b !errorlevel!
+		)
+	)
+)
+
+FOR %%A IN (js lua cs) DO (
+	FOR %%B IN (
 		"pointSimul allScript"
 		"pointSimul allNative"
 		"pointSimul allScriptMinCallback"
@@ -37,6 +63,22 @@ FOR %%A IN (js lua cs gs) DO (
 		)
 	)
 )
+
+FOR %%B IN (
+	"cs pointSimul allScriptStruct"
+	"cs pointSimul allScriptMinCallbackStruct"
+	"cs pointSimul scriptToNativeStruct"
+) DO (
+	ECHO. >> ..\output.csv
+	ECHO %%~B >> ..\output.csv
+	ECHO %%~B
+	FOR /L %%C IN (1,1,%repeats%) DO (
+		..\Release\scriptSpeed.exe %%~B >> ..\output.csv
+		ECHO. >> ..\output.csv
+		if !errorlevel! neq 0 exit /b !errorlevel!
+	)
+)
+
 
 :: Compute total time
 set end=%time%
@@ -55,4 +97,4 @@ if %ms% lss 0 set /a secs = %secs% - 1 & set /a ms = 100%ms%
 if 1%ms% lss 100 set ms=0%ms%
 
 set /a totalsecs = %hours%*3600 + %mins%*60 + %secs% 
-echo Total time running: %hours%:%mins%:%secs%.%ms% (%totalsecs%.%ms%s)
+echo Total runtime: %hours%:%mins%:%secs%.%ms% (%totalsecs%.%ms%s)
