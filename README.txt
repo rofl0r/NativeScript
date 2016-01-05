@@ -4,14 +4,18 @@ LINUX BUILD GUIDE
 First you have to build all dependencies:
 
 LLVM
+- might be necesary to set LLVM repo: wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
+- apt-get install libllvm3.6 llvm-3.6-dev (TODO: test)
+- OR build from source:
 - get sources (3.7.0, e.g. http://llvm.org/releases/download.html)
 - create separate build directory, and cd into it
 - cmake -DCMAKE_BUILD_TYPE=MinSizeRel <path_to_llvm_src>
 - cmake --build .
 - cmake --build . --target install (might need sudo)
-- apt-get might also work (and be way faster), but we haven't tested this yet
 
 v8
+- apt-get install libv8 libv8-dev (TODO: test, what configuration will be installed?)
+- OR build from source:
 - git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 - export PATH=`pwd`/depot_tools:"$PATH"
 - fetch v8
@@ -19,11 +23,12 @@ v8
 - make x64.release i18nsupport=off component=shared_library
 
 Mono
-- do what they say here http://www.mono-project.com/docs/getting-started/install/linux/
-- install the complete version - we are done :)
+- set mono repository, guide://www.mono-project.com/docs/getting-started/install/linux/
+- install the complete version (apt-get install mono-complete)
 
 Lua
-- you can even get it by apt-get, but the compilation takes just few seconds, so you can build whatever you want yourself, e.g.:
+- apt-get install lua5.3 (TODO: test)
+- OR build from source:
 - curl -R -O http://www.lua.org/ftp/lua-5.3.2.tar.gz
 - tar zxf lua-5.3.2.tar.gz
 - cd lua-5.3.2
@@ -44,7 +49,8 @@ Now you can build the benchmark
 - run test: "./scrSpeed lua expression" or "./scrSpeed cs pointSimul allScript interactive"
 
 
-Run all tests
+Run all tests using shipped script
+
 - copy runTests.sh or runTests.bat from repository root to the same directory scrSpeed executable is in
 - run it (make sure it has executable permissions)
 - results will be in file output.csv
