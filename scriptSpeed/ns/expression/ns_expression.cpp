@@ -19,7 +19,7 @@ namespace ns {
 
 	void runNaive(Script* fncs)
 	{
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		double params[sizeof(paramNames) / sizeof(char*)];
 		double r = 0;
 		InterpretableScript* is = fncs->getInterpreter();
@@ -102,7 +102,7 @@ namespace ns {
 			return 1;
 		}
 
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[2 + 2 * maxParamCnt];
 		sprintf(sourceParam, "f(");

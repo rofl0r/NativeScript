@@ -23,7 +23,7 @@ namespace js {
 
 		// one function to register all wrapper callbacks
 		void registerCallbacks(Local<ObjectTemplate> global, Isolate* i);
-		int runScenario(char* name, int cycleCount, int pointCount);
+		int runScenario(const char* name, int cycleCount, int pointCount);
 	}
 }
 

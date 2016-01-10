@@ -178,7 +178,7 @@ namespace lua {
 			return 1;
 		}
 
-		int runScenario(char* name, int cycleCount, int pointCount)
+		int runScenario(const char* name, int cycleCount, int pointCount)
 		{
 			lua_State* L = init();
 

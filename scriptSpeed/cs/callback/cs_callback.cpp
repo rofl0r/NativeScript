@@ -47,7 +47,7 @@ namespace cs {
 		curT[0] = 0;
 
 		char source[240 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH + sizeof(declVar)]; // base string literal + long digits(64bits) + callback str max length
-		sprintf(source, "using System;using System.Runtime.CompilerServices;class C{public static void Main(string[] args){}public static void f(){for(long i=1;i<%d;i++){c(%s);}}[MethodImplAttribute(MethodImplOptions.InternalCall)]public static extern void c(%s);}",
+		sprintf(source, "using System;using System.Runtime.CompilerServices;class C{public static void Main(string[] args){}public static void f(){for(long i=1;i<%ld;i++){c(%s);}}[MethodImplAttribute(MethodImplOptions.InternalCall)]public static extern void c(%s);}",
 			::callback::getCycleCount() + 1, ::callback::getParamCallString(), declVar);
 
 		// init

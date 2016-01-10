@@ -137,7 +137,7 @@ namespace js {
 			args.GetReturnValue().Set(checkEndSingal());
 		}
 
-		int runScenario(char* name, int cycleCount, int pointCount)
+		int runScenario(const char* name, int cycleCount, int pointCount)
 		{
 			Isolate* i = init();
 			{

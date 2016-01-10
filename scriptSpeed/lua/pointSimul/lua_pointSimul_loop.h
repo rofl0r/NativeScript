@@ -23,7 +23,7 @@ namespace lua {
 
 		// one function to register all wrapper callbacks
 		void registerCallbacks(lua_State * L);
-		int runScenario(char* name, int cycleCount, int pointCount);
+		int runScenario(const char* name, int cycleCount, int pointCount);
 	}
 }
 

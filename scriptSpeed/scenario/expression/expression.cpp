@@ -49,7 +49,7 @@ namespace expression {
 		return paramCount;
 	}
 
-	char* getExpression()
+	const char* getExpression()
 	{
 		switch (paramCount)
 		{

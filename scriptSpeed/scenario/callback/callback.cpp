@@ -59,7 +59,7 @@ namespace callback {
 		result += val/cycleCnt;
 	}
 
-	char* getParamCallString()
+	const char* getParamCallString()
 	{
 		switch (paramCnt)
 		{

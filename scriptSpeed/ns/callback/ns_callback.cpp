@@ -36,7 +36,7 @@ namespace ns
 		declVar[++curD] = 0;
 
 		char source[45 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH + sizeof(declVar)]; // base string literal + long digits(64bits) + callback str max length
-		sprintf(source, "external c(%s) f() {return for(i=1,i<%d,1) c(%s);}", 
+		sprintf(source, "external c(%s) f() {return for(i=1,i<%ld,1) c(%s);}", 
 			declVar, ::callback::getCycleCount()+1, ::callback::getParamCallString());
 
 		Script *src = Script::parseString(source);

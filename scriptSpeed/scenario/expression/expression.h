@@ -19,7 +19,7 @@ namespace expression {
 	bool isRunOptimized();
 	/* returns value read from arguments or default (expr. param 2) */
 	int getParamCount();
-	char* getExpression();
+	const char* getExpression();
 	/* validate result using current configuration, for parameters having 
 	values <cycle>+0.1, where <cycle> is indexed from 0 */
 	void validateResult(double result, double cycles = SS_E_DEFAULT_CYCLES);

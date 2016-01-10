@@ -36,7 +36,7 @@ namespace cs
 		remove("CsScriptsTmp.dll");
 	}
 
-	MonoMethod* getMethod(MonoAssembly* assembly, char* nmspace, char* clazz, char* method, int argcnt)
+	MonoMethod* getMethod(MonoAssembly* assembly, const char* nmspace, const char* clazz, const char* method, int argcnt)
 	{
 		MonoImage *	compilerImage = mono_assembly_get_image(assembly);
 		MonoClass *	claz = mono_class_from_name(compilerImage, nmspace, clazz);

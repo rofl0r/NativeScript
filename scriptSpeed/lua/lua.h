@@ -22,7 +22,7 @@ namespace lua {
 	// common util functions
 	lua_State* init();
 	void close(lua_State * L);
-	int loadScriptFromFile(lua_State * L, char* fileName);
+	int loadScriptFromFile(lua_State * L, const char* fileName);
 	void dumpFunction(lua_State * L, const char* funcName);
 };
 

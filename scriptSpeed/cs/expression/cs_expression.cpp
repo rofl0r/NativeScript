@@ -18,7 +18,7 @@ namespace cs {
 
 	void runNaive(MonoMethod* f)
 	{
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 
 		double paramsRaw[maxParamCnt];
@@ -106,7 +106,7 @@ namespace cs {
 			return 1;
 		}
 
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[71 + 9 * maxParamCnt];
 		sprintf(sourceParam, "class E{public static void Main(string[] args){}public static double f(double ");

@@ -25,7 +25,7 @@ namespace cs {
 	void close(MonoDomain* domain);
 	MonoAssembly* compileFile(MonoDomain* domain, const char* fileName);
 	MonoAssembly* compileString(MonoDomain* domain, const char* source);
-	MonoMethod* getMethod(MonoAssembly* assembly, char* nmspace, char* clazz, char* method, int argcnt);
+	MonoMethod* getMethod(MonoAssembly* assembly, const char* nmspace, const char* clazz, const char* method, int argcnt);
 	void* callMethod(MonoMethod* method, void** params);
 
 	static const ::CallbackMap scenarioMap[] = {

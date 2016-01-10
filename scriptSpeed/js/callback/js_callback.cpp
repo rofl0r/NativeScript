@@ -31,7 +31,7 @@ namespace js {
 		if (::callback::readArgs(c, v)) return 1;
 
 		char source[40 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH]; // base string literal + long digits(64bits) + callback str max length
-		sprintf(source, "function f(){for(var i=1;i<%d;i++){c(%s);}}",
+		sprintf(source, "function f(){for(var i=1;i<%ld;i++){c(%s);}}",
 			::callback::getCycleCount() + 1, ::callback::getParamCallString());
 
 		Isolate* i = init();

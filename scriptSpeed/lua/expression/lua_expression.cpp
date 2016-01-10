@@ -10,7 +10,7 @@ namespace lua {
 
 	double runNaive(lua_State* L)
 	{
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		char source[8 + SS_EXPRESSION_MAX_LENGTH];
 		sprintf(source, "return %s", expression::getExpression());
 		luaL_loadstring(L, source);
@@ -41,7 +41,7 @@ namespace lua {
 	double runOptimized(lua_State* L)
 	{
 		// wrap the expression into function
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[11 + 2 * maxParamCnt];
 		sprintf(sourceParam, "function f(");

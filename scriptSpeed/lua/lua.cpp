@@ -18,7 +18,7 @@ namespace lua
 		lua_close(L);
 	}
 
-	int loadScriptFromFile(lua_State * L, char* fileName)
+	int loadScriptFromFile(lua_State * L, const char* fileName)
 	{
 		char *s = (char*)malloc(strlen(fileName) + 15);
 		sprintf(s, "%s/%s", SS_LUA_SCRIPT_PATH, fileName);

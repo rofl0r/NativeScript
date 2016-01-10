@@ -16,7 +16,7 @@ namespace js {
 		Local<String> source = String::NewFromUtf8(is, expression::getExpression());
 		Local<Script> script1 = Script::Compile(source);
 
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		Local<String> varName[maxParamCnt];
 		int paramCnt = expression::getParamCount();
@@ -46,7 +46,7 @@ namespace js {
 	double runOptimized(Isolate* is, Local<Context> context)
 	{
 		// wrap the expression into function
-		char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
+		const char* paramNames[] = SS_EXPRESSION_PARAM_NAMES;
 		const int maxParamCnt = sizeof(paramNames) / sizeof(char*);
 		char sourceParam[11 + 2 * maxParamCnt];
 		sprintf(sourceParam, "function f(");

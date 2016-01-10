@@ -33,7 +33,7 @@ namespace lua {
 		if (::callback::readArgs(c, v)) return 1;
 
 		char source[40 + 20 + SS_C_PARAM_CALL_STRING_MAX_LENGTH]; // base string literal + long digits(64bits) + callback str max length
-		sprintf(source, "function f()for i=1,%d,1 do c(%s);end end",
+		sprintf(source, "function f()for i=1,%ld,1 do c(%s);end end",
 			::callback::getCycleCount(), ::callback::getParamCallString());
 
 		lua_State* L = init();
