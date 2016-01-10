@@ -1,11 +1,8 @@
 @echo off
 @setlocal 
 
-:: Read input (number of repeats - default is 10)
 set repeats=10
-set argC=0
-for %%x in (%*) do Set /A argC+=1
-if %argC% == 1 if %1 GTR 0 set repeats=%1
+
 echo Running each test %repeats% times.
 
 :: Start measuring total time
@@ -14,9 +11,7 @@ set start=%time%
 :: Run the tests
 setlocal enabledelayedexpansion
 ECHO %DATE% %TIME% > output.csv
-PATH=%PATH%;%~dp0lib\sdl;%~dp0lib\mono
 
-cd scriptSpeed
 FOR %%A IN (js lua cs ns) DO (
 	FOR %%B IN (
 		"expression 2"
@@ -35,12 +30,12 @@ FOR %%A IN (js lua cs ns) DO (
 		"callback 3"
 		"callback 4"
 	) DO (
-		ECHO. >> ..\output.csv
-		ECHO %%A %%~B >> ..\output.csv
+		ECHO. >> output.csv
+		ECHO %%A %%~B >> output.csv
 		ECHO %%A %%~B
 		FOR /L %%C IN (1,1,%repeats%) DO (
-			..\Release\scriptSpeed.exe %%A %%~B >> ..\output.csv
-			ECHO. >> ..\output.csv
+			scrSpeed.exe %%A %%~B >> output.csv
+			ECHO. >> output.csv
 			if !errorlevel! neq 0 exit /b !errorlevel!
 		)
 	)
@@ -53,12 +48,12 @@ FOR %%A IN (js lua cs) DO (
 		"pointSimul allScriptMinCallback"
 		"pointSimul scriptToNative"
 	) DO (
-		ECHO. >> ..\output.csv
-		ECHO %%A %%~B >> ..\output.csv
+		ECHO. >> output.csv
+		ECHO %%A %%~B >> output.csv
 		ECHO %%A %%~B
 		FOR /L %%C IN (1,1,%repeats%) DO (
-			..\Release\scriptSpeed.exe %%A %%~B >> ..\output.csv
-			ECHO. >> ..\output.csv
+			scrSpeed.exe %%A %%~B >> output.csv
+			ECHO. >> output.csv
 			if !errorlevel! neq 0 exit /b !errorlevel!
 		)
 	)
@@ -69,12 +64,12 @@ FOR %%B IN (
 	"cs pointSimul allScriptMinCallbackStruct"
 	"cs pointSimul scriptToNativeStruct"
 ) DO (
-	ECHO. >> ..\output.csv
-	ECHO %%~B >> ..\output.csv
+	ECHO. >> output.csv
+	ECHO %%~B >> output.csv
 	ECHO %%~B
 	FOR /L %%C IN (1,1,%repeats%) DO (
-		..\Release\scriptSpeed.exe %%~B >> ..\output.csv
-		ECHO. >> ..\output.csv
+		scrSpeed.exe %%~B >> output.csv
+		ECHO. >> output.csv
 		if !errorlevel! neq 0 exit /b !errorlevel!
 	)
 )
