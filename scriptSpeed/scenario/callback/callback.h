@@ -12,7 +12,7 @@ namespace callback {
 	/* returns whether arguments were successfully read */
 	bool readArgs(int c, char** v);
 	int getParamCount();
-	char* getParamCallString();  // e.g. "i,i*0.7,i*0.49" for 3 params
+	char* getParamCallString();  // all values are i+0.1
 	long getCycleCount();
 	void processCallback(double val);
 	bool validateResults();

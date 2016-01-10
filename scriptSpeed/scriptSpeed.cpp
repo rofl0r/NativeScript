@@ -9,7 +9,7 @@
 
 int printLanguages() 
 {
-	printf("First argument has to be target scripting language, you can pick from the following:\nlua js cs ns\n");
+	printf("First argument has to be target scripting language, you can pick from:\nlua\njs\ncs\nns\n");
 
 	return 1;
 }
@@ -19,9 +19,8 @@ int printScenarios(const CallbackMap* scenarioMap, int scenarioMapSize, char* la
 	printf("For \"%s\" you can select one of the following scenarios:\n", language);
 	for (int i = 0; i < scenarioMapSize; i++)
 	{
-		printf("%s ", scenarioMap[i].name);
+		printf("%s\n", scenarioMap[i].name);
 	}
-	printf("\n");
 
 	return 1;
 }

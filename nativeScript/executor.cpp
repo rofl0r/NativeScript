@@ -56,10 +56,6 @@ namespace ns
 
 		// Provide basic AliasAnalysis support for GVN.
 		TheFPM->add(createBasicAliasAnalysisPass());
-		//NOT WORKING HERE - BECAUSE OF FLOAT?// Do simple "peephole" optimizations and bit-twiddling optzns.
-		//TheFPM->add(createInstructionCombiningPass());
-		// Reassociate expressions.
-		TheFPM->add(createReassociatePass());
 		// Eliminate Common SubExpressions.
 		TheFPM->add(createGVNPass());
 		// Simplify the control flow graph (deleting unreachable blocks, etc).
@@ -104,7 +100,7 @@ namespace ns
 		if (!finalized)
 		{
 			finalized = true;
-			// compile the stuff
+			// generate the machine code and link it
 			engine->finalizeObject();
 		}
 		llvm::Function *f = functions[name];
@@ -252,9 +248,6 @@ namespace ns
 
 	void Executor::visit(const NForloop* node)
 	{
-		// TODO: this is DO WHILE now, (condition is not checked for the first execution of body)
-		// probably just add comparison instead of explicit fall trough from current block to loop block
-
 		AllocaInst *forVar = createVariable(node->varName);
 
 		node->start.accept(this);
@@ -285,17 +278,10 @@ namespace ns
 		if (!result) return;
 
 		// Emit the step value.
-		//Value *stepVal = nullptr;
-		//if (step) {
 		node->step.accept(this);
 		if (!result) return;
 		Value *stepVal = result;
 		
-		//}
-		//else {
-		// If not specified, use 1.0.
-		//	StepVal = ConstantFP::get(getGlobalContext(), APFloat(1.0));
-		//}
 		Value *CurVar = builder.CreateLoad(forVar);
 		Value *NextVar = builder.CreateFAdd(CurVar, stepVal, "nextvar");
 		builder.CreateStore(NextVar, forVar);

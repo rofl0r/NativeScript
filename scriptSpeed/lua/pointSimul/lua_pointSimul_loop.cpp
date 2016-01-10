@@ -1,3 +1,7 @@
+/* Drawing is disabled for this scenario, because switching it off 
+during testing (while using this approach) is curretly not implemented.
+This test is however only experimental and is not included in the final work. */
+
 #include "lua.hpp"
 
 #include "../../scenario/pointSimul/pointSimul.h"

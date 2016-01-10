@@ -21,7 +21,7 @@ namespace expression {
 	int getParamCount();
 	char* getExpression();
 	/* validate result using current configuration, for parameters having 
-	values <cycle>*pow(0.7,<paramNumber>), where both <cycle> and <paramNumber> start with 0 */
+	values <cycle>+0.1, where <cycle> is indexed from 0 */
 	void validateResult(double result, double cycles = SS_E_DEFAULT_CYCLES);
 }
 

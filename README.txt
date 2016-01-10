@@ -5,7 +5,7 @@ First you have to build all dependencies:
 
 LLVM
 - might be necesary to set LLVM repo: wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
-- apt-get install libllvm3.6 llvm-3.6-dev (TODO: test)
+- apt-get install libllvm3.7 llvm-3.7-dev (TODO: test if the last packaged version is 3.6 or 3.7)
 - OR build from source:
 - get sources (3.7.0, e.g. http://llvm.org/releases/download.html)
 - create separate build directory, and cd into it

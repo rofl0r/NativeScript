@@ -45,10 +45,6 @@ namespace callback {
 	{
 		
 		double multipl = paramCnt;;
-		/*for (int i = 0; i < paramCnt; i++)
-		{
-			multipl += pow(0.7, i);
-		}*/
 		multipl *= (cycleCnt+1.2)/2;
 		if (multipl == 0) multipl = 1;
 		if (abs(result - multipl) > 0.0001) {
@@ -66,12 +62,7 @@ namespace callback {
 	char* getParamCallString()
 	{
 		switch (paramCnt)
-		{/*
-		case 1: return "i";
-		case 2: return "i,i*0.7";
-		case 3: return "i,i*0.7,i*0.49";
-		case 4: return "i,i*0.7,i*0.49,i*0.343";
-		*/
+		{
 		case 1: return "0.1+i";
 		case 2: return "0.1+i,0.1+i";
 		case 3: return "0.1+i,0.1+i,0.1+i";

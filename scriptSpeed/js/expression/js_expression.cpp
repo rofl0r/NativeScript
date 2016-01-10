@@ -32,7 +32,7 @@ namespace js {
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < paramCnt; j++)
 			{
-				varValue[j] = Number::New(is, 0.1+i);//*pow(0.7,j));
+				varValue[j] = Number::New(is, 0.1+i);
 				global->Set(varName[j], varValue[j]);
 			}
 
@@ -74,7 +74,7 @@ namespace js {
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < paramCnt; j++)
 			{
-				varValue[j] = Number::New(is, 0.1+i);//*pow(0.7, j));
+				varValue[j] = Number::New(is, 0.1+i);
 			}
 			r += f1->Call(global, paramCnt, varValue)->NumberValue();
 		}

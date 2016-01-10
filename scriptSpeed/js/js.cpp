@@ -10,7 +10,6 @@ using namespace v8;
 
 namespace js
 {
-	// TODO: get rif of the global
 	Platform* platform;
 
 	Isolate* init()

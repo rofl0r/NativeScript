@@ -14,7 +14,7 @@ namespace ns {
 	double Interpreter::runFunction(const char* name, const double* params)
 	{
 		const NFuncPtr f = functions[name];
-		// TODO: if not found throw error about calling undefined function
+		
 		if (f->hasBody()) {
 			locals.clear();
 			for (std::string* arg : f->args)
@@ -28,7 +28,6 @@ namespace ns {
 		else
 		{
 			return externals[name](f->args.size(), params);
-			// TODO: if not found, throw error about external not being bound
 		}
 	}
 
@@ -97,7 +96,6 @@ namespace ns {
 		// Shading is not allowed
 		if (locals.find(node->varName) != locals.end())
 		{
-			// TODO: raise error
 			result = 0;
 			return;
 		}

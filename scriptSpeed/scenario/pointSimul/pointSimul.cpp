@@ -279,11 +279,13 @@ namespace pointSimul {
 		// default variant is first one
 		if (c <= 0)
 		{
-			printf("Running default configuration: measured test for %s.\n", variants[0].name);
-			points = new point[pointCount];
-			int result = variants[0].func(cycles, pointCount);
-			delete[] points;
-			return result;
+			printf("You have to specify configuration to run. You can pick from:\n");
+			for (int i = 0; i < variantCount; i++)
+			{
+				printf("%s\n", variants[i].name);
+			}
+
+			return 1;
 		}
 
 		// select custom variant
@@ -300,9 +302,8 @@ namespace pointSimul {
 			printf("Requested configuration doesn't exist. You can pick from:\n");
 			for (int i = 0; i < variantCount; i++)
 			{
-				printf("%s ", variants[i].name);
+				printf("%s\n", variants[i].name);
 			}
-			printf("\n");
 
 			return 1;
 		}

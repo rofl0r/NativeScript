@@ -29,7 +29,7 @@ namespace ns {
 		for (long i = 0; i < SS_E_DEFAULT_CYCLES; i++) {
 			for (int j = 0; j < paramCnt; j++)
 			{
-				params[j] = 0.1+i;//*pow(0.7, j);
+				params[j] = 0.1+i;
 			}
 			r += is->runFunction("f", params);
 		}
@@ -56,7 +56,6 @@ namespace ns {
 		case 2:
 			measure::start();
 			for (long i = 0; i < cycles; i++) {
-				//r += f2(i, i*0.7);
 				r += f2(0.1+i, 0.1+i);
 			}
 			measure::stop();
@@ -64,7 +63,6 @@ namespace ns {
 		case 3:
 			measure::start();
 			for (long i = 0; i < cycles; i++) {
-				//r += f3(i, i*0.7, i*pow(0.7, 2));
 				r += f3(0.1+i, 0.1+i, 0.1+i);
 			}
 			measure::stop();
@@ -72,7 +70,6 @@ namespace ns {
 		case 4:
 			measure::start();
 			for (long i = 0; i < cycles; i++) {
-				//r += f4(i, i*0.7, i*pow(0.7, 2), i*pow(0.7, 3));
 				r += f4(0.1+i, 0.1+i, 0.1+i, 0.1+i);
 			}
 			measure::stop();
@@ -80,7 +77,6 @@ namespace ns {
 		case 5:
 			measure::start();
 			for (long i = 0; i < cycles; i++) {
-				//r += f5(i, i*0.7, i*pow(0.7, 2), i*pow(0.7, 3), i*pow(0.7, 4));
 				r += f5(0.1+i, 0.1+i, 0.1+i, 0.1+i, 0.1+i);
 			}
 			measure::stop();
@@ -88,7 +84,6 @@ namespace ns {
 		case 6:
 			measure::start();
 			for (long i = 0; i < cycles; i++) {
-				//r += f6(i, i*0.7, i*pow(0.7, 2), i*pow(0.7, 3), i*pow(0.7, 4), i*pow(0.7, 5));
 				r += f6(0.1+i, 0.1+i, 0.1+i, 0.1+i, 0.1+i, 0.1+i);
 			}
 			measure::stop();
